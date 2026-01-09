@@ -13,6 +13,7 @@ import {
   Bell,
   Menu,
 } from "lucide-react"
+import useAuthStore from "@/store/useAuthStore"
 
 interface DashboardPageProps {
   onLogout: () => void
@@ -27,6 +28,7 @@ const quickActions = [
 
 export function DashboardPage({ onLogout }: DashboardPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+   const { userId } = useAuthStore();
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -55,7 +57,11 @@ export function DashboardPage({ onLogout }: DashboardPageProps) {
             <div>
               <h1 className="text-lg sm:text-xl font-bold text-foreground">Dashboard</h1>
               <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                Welcome back! Here's your overview.
+                Welcome back 
+                 <span className="text-yellow-500 font-medium px-1">
+                  {userId}
+                </span>
+                 ! Here's your overview.
               </p>
             </div>
           </div>

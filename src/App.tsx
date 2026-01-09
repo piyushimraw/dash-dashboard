@@ -1,16 +1,17 @@
-import { useState } from "react"
 import { LoginPage } from "@/pages/LoginPage"
 import { DashboardPage } from "@/pages/DashboardPage"
+import useAuthStore from "./store/useAuthStore";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { isLoggedIn, logout } = useAuthStore();
+  const login = useAuthStore((state) => state.login);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true)
+  const handleLogin = (userId:string) => {
+    login(userId);
   }
 
   const handleLogout = () => {
-    setIsLoggedIn(false)
+    logout();
   }
 
   if (!isLoggedIn) {

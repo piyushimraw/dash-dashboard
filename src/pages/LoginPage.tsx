@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Car, Lock, User, MapPin, Building2 } from "lucide-react"
 
 interface LoginPageProps {
-  onLogin: () => void
+  onLogin: (userId : string) => void
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
@@ -15,9 +15,11 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   const [userIdLocation, setUserIdLocation] = useState("")
   const [loginLocation, setLoginLocation] = useState("")
 
+  const isDisabled = !userId || !password;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onLogin()
+    onLogin(userId)
   }
 
   return (
@@ -188,7 +190,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   </div>
                 </div>
 
-                <Button type="submit" size="lg" className="w-full mt-6 min-h-[48px] touch-manipulation">
+                <Button disabled={isDisabled} type="submit" size="lg" className="w-full mt-6 min-h-[48px] touch-manipulation">
                   Sign In
                 </Button>
 
