@@ -39,10 +39,10 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   {
     label: "Counter Functions",
-    icon: <LayoutDashboard className="h-4 w-4" />,
+    icon: <LayoutDashboard className="h-4 w-4" aria-hidden="true" />,
     children: [
-      { label: "Rent", icon: <Car className="h-4 w-4" /> },
-      { label: "Return", icon: <ClipboardList className="h-4 w-4" /> },
+      { label: "Rent", icon: <Car className="h-4 w-4" aria-hidden="true" /> },
+      { label: "Return", icon: <ClipboardList className="h-4 w-4" aria-hidden="true" /> },
       { label: "GS Start Rent" },
       { label: "Select GS Res List" },
       { label: "Post Rent" },
@@ -60,7 +60,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Inventory Mgmt",
-    icon: <Package className="h-4 w-4" />,
+    icon: <Package className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Vehicle Status" },
       { label: "Fleet Report" },
@@ -69,7 +69,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Information Search",
-    icon: <Search className="h-4 w-4" />,
+    icon: <Search className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Customer Lookup" },
       { label: "Reservation Search" },
@@ -78,7 +78,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Admin",
-    icon: <Settings className="h-4 w-4" />,
+    icon: <Settings className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "User Management" },
       { label: "System Config" },
@@ -87,7 +87,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Rental Management",
-    icon: <FileText className="h-4 w-4" />,
+    icon: <FileText className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Rent" },
       { label: "Return" },
@@ -101,7 +101,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Res Processing",
-    icon: <ClipboardList className="h-4 w-4" />,
+    icon: <ClipboardList className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "New Reservation" },
       { label: "Modify Reservation" },
@@ -110,7 +110,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Car Control",
-    icon: <Car className="h-4 w-4" />,
+    icon: <Car className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Check In" },
       { label: "Check Out" },
@@ -119,7 +119,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Reports",
-    icon: <BarChart3 className="h-4 w-4" />,
+    icon: <BarChart3 className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Daily Summary" },
       { label: "Revenue Report" },
@@ -128,7 +128,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "System Admin",
-    icon: <Wrench className="h-4 w-4" />,
+    icon: <Wrench className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Settings" },
       { label: "Permissions" },
@@ -137,7 +137,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Security Menu",
-    icon: <Shield className="h-4 w-4" />,
+    icon: <Shield className="h-4 w-4" aria-hidden="true" />,
     children: [
       { label: "Change Password" },
       { label: "Session Management" },
@@ -147,16 +147,22 @@ const menuItems: MenuItem[] = [
 ]
 
 const quickLinks = [
-  { label: "Res/Rental Research", icon: <Search className="h-4 w-4" /> },
-  { label: "#1 Club Update", icon: <Users className="h-4 w-4" /> },
+  { label: "Res/Rental Research", icon: <Search className="h-4 w-4" aria-hidden="true" /> },
+  { label: "#1 Club Update", icon: <Users className="h-4 w-4" aria-hidden="true" /> },
 ]
 
 function SidebarMenuItem({ item, onItemClick }: { item: MenuItem; onItemClick?: () => void }) {
   const [isOpen, setIsOpen] = useState(false)
+  const menuId = `menu-${item.label.replace(/\s+/g, '-').toLowerCase()}`
 
   if (!item.children) {
     return (
-      <Button variant="sidebar" size="sidebar" onClick={onItemClick}>
+      <Button
+        variant="sidebar"
+        size="sidebar"
+        onClick={onItemClick}
+        className="min-h-[44px] touch-manipulation"
+      >
         {item.icon}
         <span>{item.label}</span>
       </Button>
@@ -166,7 +172,13 @@ function SidebarMenuItem({ item, onItemClick }: { item: MenuItem; onItemClick?: 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger asChild>
-        <Button variant="sidebar" size="sidebar" className="w-full justify-between">
+        <Button
+          variant="sidebar"
+          size="sidebar"
+          className="w-full justify-between min-h-[44px] touch-manipulation"
+          aria-expanded={isOpen}
+          aria-controls={menuId}
+        >
           <span className="flex items-center gap-3">
             {item.icon}
             <span>{item.label}</span>
@@ -176,24 +188,30 @@ function SidebarMenuItem({ item, onItemClick }: { item: MenuItem; onItemClick?: 
               "h-4 w-4 text-sidebar-muted transition-transform duration-200",
               isOpen && "rotate-180"
             )}
+            aria-hidden="true"
           />
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-up data-[state=open]:slide-down">
-        <div className="ml-4 mt-1 space-y-0.5 border-l border-sidebar-border pl-3">
+      <CollapsibleContent
+        id={menuId}
+        className="overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-up data-[state=open]:slide-down"
+      >
+        <ul className="ml-4 mt-1 space-y-0.5 border-l border-sidebar-border pl-3" role="menu">
           {item.children.map((child, index) => (
-            <Button
-              key={index}
-              variant="ghost"
-              size="sidebar"
-              onClick={onItemClick}
-              className="w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-            >
-              {child.icon && <span className="mr-2">{child.icon}</span>}
-              {child.label}
-            </Button>
+            <li key={index} role="none">
+              <Button
+                variant="ghost"
+                size="sidebar"
+                onClick={onItemClick}
+                className="w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation"
+                role="menuitem"
+              >
+                {child.icon && <span className="mr-2" aria-hidden="true">{child.icon}</span>}
+                {child.label}
+              </Button>
+            </li>
           ))}
-        </div>
+        </ul>
       </CollapsibleContent>
     </Collapsible>
   )
@@ -205,13 +223,21 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden touch-manipulation"
           onClick={onClose}
+          onKeyDown={(e) => e.key === 'Escape' && onClose()}
+          role="button"
+          tabIndex={0}
+          aria-label="Close navigation menu"
         />
       )}
 
       {/* Sidebar */}
       <aside
+        id="main-sidebar"
+        role="navigation"
+        aria-label="Main navigation"
+        aria-hidden={!isOpen && typeof window !== 'undefined' && window.innerWidth < 1024}
         className={cn(
           "fixed lg:static inset-y-0 left-0 z-50 w-64 bg-sidebar flex flex-col shadow-xl transition-transform duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -231,17 +257,18 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden text-sidebar-foreground hover:bg-sidebar-accent"
+            className="lg:hidden text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] min-w-[44px] touch-manipulation"
             onClick={onClose}
+            aria-label="Close navigation menu"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </Button>
         </div>
 
         {/* User Info */}
-        <div className="px-4 py-3 border-b border-sidebar-border">
+        <div className="px-4 py-3 border-b border-sidebar-border" role="region" aria-label="User information">
           <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/50 p-2.5">
-            <div className="h-9 w-9 rounded-full bg-sidebar-primary/20 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-sidebar-primary/20 flex items-center justify-center" aria-hidden="true">
               <UserCircle className="h-5 w-5 text-sidebar-primary" />
             </div>
             <div className="flex-1 min-w-0">
@@ -258,7 +285,13 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           </p>
           <div className="space-y-0.5">
             {quickLinks.map((link, index) => (
-              <Button key={index} variant="sidebar" size="sidebar" onClick={onClose}>
+              <Button
+                key={index}
+                variant="sidebar"
+                size="sidebar"
+                onClick={onClose}
+                className="min-h-[44px] touch-manipulation"
+              >
                 {link.icon}
                 <span>{link.label}</span>
               </Button>
@@ -284,9 +317,10 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             variant="sidebar"
             size="sidebar"
             onClick={onLogout}
-            className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10"
+            className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] touch-manipulation"
+            aria-label="Sign out of your account"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-4 w-4" aria-hidden="true" />
             <span>Sign Out</span>
           </Button>
         </div>

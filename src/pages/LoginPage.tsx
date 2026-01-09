@@ -25,7 +25,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       {/* Left Panel - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-lavender-deep to-sidebar relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0" aria-hidden="true">
           <div className="absolute top-20 left-20 w-72 h-72 bg-sidebar-primary/20 rounded-full blur-3xl" />
           <div className="absolute bottom-32 right-20 w-96 h-96 bg-sidebar-primary/10 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-lavender/5 rounded-full blur-2xl" />
@@ -58,18 +58,19 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4" role="list" aria-label="Key features">
               {[
-                { icon: <Car className="h-5 w-5" />, label: "Fleet Management" },
-                { icon: <User className="h-5 w-5" />, label: "Customer Portal" },
-                { icon: <Building2 className="h-5 w-5" />, label: "Multi-Location" },
-                { icon: <Lock className="h-5 w-5" />, label: "Secure Access" },
+                { icon: <Car className="h-5 w-5" aria-hidden="true" />, label: "Fleet Management" },
+                { icon: <User className="h-5 w-5" aria-hidden="true" />, label: "Customer Portal" },
+                { icon: <Building2 className="h-5 w-5" aria-hidden="true" />, label: "Multi-Location" },
+                { icon: <Lock className="h-5 w-5" aria-hidden="true" />, label: "Secure Access" },
               ].map((feature, i) => (
                 <div
                   key={i}
+                  role="listitem"
                   className="flex items-center gap-3 p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
                 >
-                  <div className="h-10 w-10 rounded-lg bg-sidebar-primary/20 flex items-center justify-center text-sidebar-primary">
+                  <div className="h-10 w-10 rounded-lg bg-sidebar-primary/20 flex items-center justify-center text-sidebar-primary" aria-hidden="true">
                     {feature.icon}
                   </div>
                   <span className="text-sm font-medium text-white/90">{feature.label}</span>
@@ -113,7 +114,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                     User ID
                   </Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                     <Input
                       id="userId"
                       type="text"
@@ -121,6 +122,10 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       value={userId}
                       onChange={(e) => setUserId(e.target.value)}
                       className="pl-10"
+                      autoComplete="username"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      spellCheck={false}
                     />
                   </div>
                 </div>
@@ -131,7 +136,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                     Password
                   </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                     <Input
                       id="password"
                       type="password"
@@ -139,6 +144,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="pl-10"
+                      autoComplete="current-password"
                     />
                   </div>
                 </div>
@@ -150,7 +156,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       User Location
                     </Label>
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                       <Input
                         id="userIdLocation"
                         type="text"
@@ -158,6 +164,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                         value={userIdLocation}
                         onChange={(e) => setUserIdLocation(e.target.value)}
                         className="pl-10"
+                        autoComplete="off"
                       />
                     </div>
                   </div>
@@ -167,7 +174,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       Login Location
                     </Label>
                     <div className="relative">
-                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                       <Input
                         id="loginLocation"
                         type="text"
@@ -175,12 +182,13 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                         value={loginLocation}
                         onChange={(e) => setLoginLocation(e.target.value)}
                         className="pl-10"
+                        autoComplete="off"
                       />
                     </div>
                   </div>
                 </div>
 
-                <Button type="submit" size="lg" className="w-full mt-6">
+                <Button type="submit" size="lg" className="w-full mt-6 min-h-[48px] touch-manipulation">
                   Sign In
                 </Button>
 
