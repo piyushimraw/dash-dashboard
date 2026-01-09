@@ -6,7 +6,7 @@ function App() {
   const { isLoggedIn, logout } = useAuthStore();
   const login = useAuthStore((state) => state.login);
 
-  const handleLogin = (userId:string) => {
+  const handleLogin = (userId: string) => {
     login(userId);
   }
 
