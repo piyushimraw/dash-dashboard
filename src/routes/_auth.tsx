@@ -13,6 +13,8 @@ import {
   Menu,
 } from "lucide-react";
 import { useState } from "react";
+import { Card, CardContent  } from "@/components/ui/card";
+
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -43,7 +45,7 @@ function AuthLayout() {
 
   return (
     <>
-      <div className="min-h-screen bg-background flex">
+      <div className="min-h-screen  bg-background flex">
         <Sidebar
           onLogout={handleLogout}
           isOpen={sidebarOpen}
@@ -88,7 +90,7 @@ function AuthLayout() {
                 className="relative min-h-[44px] min-w-[44px]"
                 aria-label="Notifications, 1 unread"
               >
-                <Bell className="h-5 w-5" aria-hidden="true" />
+                {/* <Bell className="h-5 w-5" aria-hidden="true" />
                 <span
                   className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"
                   aria-hidden="true"
@@ -104,6 +106,18 @@ function AuthLayout() {
           </header>
 
           <Outlet />
+          
+          <Card className="static bottom-0 w-full bg-tan/30 border-tan-dark/30">
+            <CardContent className="p-4 text-center">
+              <p className="text-xs sm:text-sm font-medium text-foreground">
+                Copyright (c) 2003 The Hertz Corporation - All Rights Reserved
+              </p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-2xl mx-auto">
+                The information contained herein is confidential and proprietary.
+                Unauthorized use, duplication or disclosure is prohibited by law.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>
