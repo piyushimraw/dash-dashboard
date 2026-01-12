@@ -79,11 +79,11 @@ function AuthLayout() {
                 className="relative min-h-[44px] min-w-[44px]"
                 aria-label="Notifications, 1 unread"
               >
-                <Bell className="h-5 w-5" aria-hidden="true" />
+                {/* <Bell className="h-5 w-5" aria-hidden="true" />
                 <span
                   className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"
                   aria-hidden="true"
-                />
+                /> */}
               </Button>
               <div className="hidden sm:flex items-center gap-3 pl-4 border-l">
                 <div className="text-right">
