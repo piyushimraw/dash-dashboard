@@ -104,7 +104,7 @@ export function DashboardPage() {
       </Card>
 
       {/* Legal Notice */}
-      <Card className="bg-tan/30 border-tan-dark/30">
+      {/* <Card className="bg-tan/30 border-tan-dark/30">
         <CardContent className="p-4 text-center">
           <p className="text-xs sm:text-sm font-medium text-foreground">
             Copyright (c) 2003 The Hertz Corporation - All Rights Reserved
@@ -114,7 +114,7 @@ export function DashboardPage() {
             Unauthorized use, duplication or disclosure is prohibited by law.
           </p>
         </CardContent>
-      </Card>
+      </Card> */}
     </main>
   );
 }
