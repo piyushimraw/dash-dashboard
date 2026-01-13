@@ -4,6 +4,9 @@ import { RouterProvider } from "@tanstack/react-router";
 import useAuthStore from "./store/useAuthStore";
 import "./index.css";
 import { router } from "./router";
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true })
 
 
 function AppRouter() {
