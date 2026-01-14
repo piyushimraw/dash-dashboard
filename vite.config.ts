@@ -18,6 +18,12 @@ export default defineConfig({
     routerPlugin(),
     VitePWA({
       registerType: "autoUpdate",
+      // `beforeinstallprompt` won't fire unless the app is "installable",
+      // which requires a controlling service worker. Enable SW during `vite dev`.
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
       includeAssets: ["favicon.svg"],
       manifest: {
         name: "Hertz",
