@@ -1,21 +1,22 @@
 // import { defineConfig } from "vite";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-import routerPlugin from "@tanstack/router-plugin/vite";
+// import tailwindcss from "@tailwindcss/vite";
+// import routerPlugin from "@tanstack/router-plugin/vite";
 import path from "path";
 import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
-    tailwindcss(),
-    routerPlugin(),
+    react(),
+    // react({
+    //   babel: {
+    //     plugins: [["babel-plugin-react-compiler"]],
+    //   },
+    // }),
+    // tailwindcss(),
+    // routerPlugin(),
     VitePWA({
       registerType: "autoUpdate",
       // `beforeinstallprompt` won't fire unless the app is "installable",

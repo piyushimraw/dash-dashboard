@@ -1,13 +1,13 @@
 import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import useAuthStore from "@/store/useAuthStore";
-import {
-  createFileRoute,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "@tanstack/react-router";
-import { redirect } from "@tanstack/react-router";
+// import {
+//   createFileRoute,
+//   Outlet,
+//   useLocation,
+//   useNavigate,
+// } from "@tanstack/react-router";
+// import { redirect } from "@tanstack/react-router";
 import {
   // Bell,
   Menu,
@@ -16,28 +16,28 @@ import { useState } from "react";
 import { Card, CardContent  } from "@/components/ui/card";
 
 
-export const Route = createFileRoute("/_auth")({
-  beforeLoad: ({ context, location }) => {
-    if (!context.auth.isLoggedIn) {
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
-  component: AuthLayout,
-});
+// export const Route = createFileRoute("/_auth")({
+//   beforeLoad: ({ context, location }) => {
+//     if (!context.auth.isLoggedIn) {
+//       throw redirect({
+//         to: "/login",
+//         search: {
+//           redirect: location.href,
+//         },
+//       });
+//     }
+//   },
+//   component: AuthLayout,
+// });
 
 function AuthLayout() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
   const { logout } = useAuthStore();
   const handleLogout = () => {
     logout();
-    navigate({ to: "/login" });
+    // navigate({ to: "/login" });
   };
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -105,7 +105,7 @@ function AuthLayout() {
             </div>
           </header>
 
-          <Outlet />
+          {/* <Outlet /> */}
           
           <Card className="static bottom-0 w-full bg-tan/30 border-tan-dark/30">
             <CardContent className="p-4 text-center">

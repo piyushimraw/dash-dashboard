@@ -9,7 +9,7 @@ import {
   // AlertCircle,
   ChevronRight,
 } from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
+// import { useNavigate } from "@tanstack/react-router";
 
 const quickActions = [
   {
@@ -35,7 +35,7 @@ const quickActions = [
 ];
 
 export function DashboardPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Welcome Banner */}
@@ -93,7 +93,7 @@ export function DashboardPage() {
               variant="outline"
               className="w-full justify-between min-h-[48px] hover:bg-accent touch-manipulation"
               aria-label={action.label}
-              onClick={() => navigate({ to: action.path })}
+              // onClick={() => navigate({ to: action.path })}
             >
               <span className="flex items-center gap-3">
                 <span

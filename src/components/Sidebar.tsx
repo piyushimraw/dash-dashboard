@@ -23,7 +23,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+// import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 
 interface SidebarProps {
   onLogout: () => void;
@@ -173,8 +173,8 @@ function SidebarMenuItem({
   item: MenuItem;
   onItemClick?: () => void;
 }) {
-  const location = useLocation();
-  const navigate = useNavigate();
+  // const location = useLocation();
+  // const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const menuId = `menu-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
 
@@ -237,7 +237,7 @@ function SidebarMenuItem({
                 variant="ghost"
                 size="sidebar"
                 onClick={() => {
-                  if (child?.pathname) navigate({ to: child.pathname });
+                  // if (child?.pathname) navigate({ to: child.pathname });
                   if (onItemClick) onItemClick();
                 }}
                 className={cn(
@@ -298,11 +298,11 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
               </span>
             </div>
             <div>
-              <Link to="/dashboard">
+              {/* <Link to="/dashboard">
                 <h1 className="font-bold text-lg text-sidebar-foreground tracking-tight">
                   Hertz DASH
                 </h1>
-              </Link>
+              </Link> */}
               <p className="text-xs text-sidebar-muted">v3.21.0-14.11</p>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Car, Lock, User, MapPin, Building2 } from "lucide-react";
 import useAuthStore from "@/store/useAuthStore";
-import { useNavigate } from "@tanstack/react-router";
+// import { useNavigate } from "@tanstack/react-router";
 import { Button , TextField } from "@revlab/highlander-ui";
 
 
@@ -15,7 +15,7 @@ import { Button , TextField } from "@revlab/highlander-ui";
 
 
 export function LoginPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const login = useAuthStore((state) => state.login);
   const [userId, setUserId] = useState("");
@@ -28,7 +28,7 @@ export function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login(userId);
-    navigate({ to: "/dashboard" });
+    // navigate({ to: "/dashboard" });
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-lavender via-lavender-dark/30 to-lavender flex">
@@ -179,7 +179,7 @@ export function LoginPage() {
                       }
                     /> */}
 
-                    <TextField 
+                    {/* <TextField 
                       id="userId"
                       label= "Enter your user ID"
                       type="text"
@@ -200,7 +200,7 @@ export function LoginPage() {
                               aria-hidden="true"
                             />
                       }
-                    />
+                    /> */}
                   </div>
                 </div>
 
@@ -211,7 +211,7 @@ export function LoginPage() {
                   </Label>
                   <div className="relative">
 
-                      <TextField 
+                      {/* <TextField 
                       id="password"
                       label='Enter your password'
                       type="password"
@@ -232,7 +232,7 @@ export function LoginPage() {
                             aria-hidden="true"
                           />
                       }
-                    />
+                    /> */}
                   </div>
                 </div>
 
@@ -251,7 +251,7 @@ export function LoginPage() {
                         aria-hidden="true"
                       />
 
-                      <TextField 
+                      {/* <TextField 
                         id="userIdLocation"
                         type="text"
                         label="Location"
@@ -267,7 +267,7 @@ export function LoginPage() {
                           borderRadius: '12px',
                         },
                       }}
-                      />
+                      /> */}
                     </div>
                   </div>
 
@@ -284,7 +284,7 @@ export function LoginPage() {
                         aria-hidden="true"
                       />
 
-                        <TextField 
+                        {/* <TextField 
                         id="loginLocation"
                         type="text"
                         label="CASFO15"
@@ -298,19 +298,19 @@ export function LoginPage() {
                           borderRadius: '12px',
                         },
                       }}
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
 
-                  <Button 
+                  {/* <Button 
                     color="primary" 
                     disabled={isDisabled}
                     type="submit"
                     size="medium"
                     fullWidth={true}>
                     Sign In
-                  </Button>
+                  </Button> */}
 
                 <p className="text-center text-xs text-muted-foreground mt-4">
                   By signing in, you agree to the terms of use and privacy
