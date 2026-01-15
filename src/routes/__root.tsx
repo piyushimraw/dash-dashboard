@@ -1,12 +1,7 @@
-import type { RouterContext } from "@/routerContext";
-import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { Outlet } from "react-router-dom";
 import { PWAInstallBanner } from "@/components/PWAInstallBanner";
 
-export const Route = createRootRouteWithContext<RouterContext>()({
-  component: RootComponent,
-});
-
-function RootComponent() {
+export function RootLayout() {
   return (
     <>
       <Outlet />

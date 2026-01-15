@@ -9,7 +9,7 @@ import {
   // AlertCircle,
   ChevronRight,
 } from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
 
 const quickActions = [
   {
@@ -93,7 +93,7 @@ export function DashboardPage() {
               variant="outline"
               className="w-full justify-between min-h-[48px] hover:bg-accent touch-manipulation"
               aria-label={action.label}
-              onClick={() => navigate({ to: action.path })}
+              onClick={() => navigate(action.path)}
             >
               <span className="flex items-center gap-3">
                 <span
