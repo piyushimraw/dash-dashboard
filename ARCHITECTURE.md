@@ -82,6 +82,14 @@ The primary goals of the current architecture are:
 - **lucide-react**
   - Consistent icon set used across pages and navigation (see usage in [`src/components/Sidebar.tsx`](src/components/Sidebar.tsx:1)).
 
+### Forms & Validation
+
+- **React Hook Form** for performant form state management and submission handling.
+- **Zod** for schema-driven validation and TypeScript type inference.
+- Integrated using `@hookform/resolvers/zod`, keeping validation logic outside UI components.
+
+**Rationale:** This approach enforces separation of concerns, strong type safety, and consistent validation across forms.
+
 ### Quality / correctness
 
 - **ESLint**
