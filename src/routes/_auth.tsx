@@ -12,9 +12,8 @@ import {
   // Bell,
   Menu,
 } from "lucide-react";
-import { useState } from "react";
-import { Card, CardContent  } from "@/components/ui/card";
-
+import { useMemo, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -42,10 +41,14 @@ function AuthLayout() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { userId } = useAuthStore();
-
+  const pageName = useMemo(() => {
+    const pathname = location.pathname;
+    const page_title = pathname.replace("/", "").toUpperCase();
+    return page_title;
+  }, [location.pathname]);
   return (
     <>
-      <div className="min-h-screen  bg-background flex">
+      <div className="h-screen w-full bg-background flex overflow-hidden">
         <Sidebar
           onLogout={handleLogout}
           isOpen={sidebarOpen}
@@ -53,7 +56,7 @@ function AuthLayout() {
         />
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <div className="flex-1 overflow-auto">
           {/* Header */}
           <header className="h-14 sm:h-16 border-b bg-white/80 backdrop-blur-sm flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10">
             <div className="flex items-center gap-3">
@@ -68,20 +71,18 @@ function AuthLayout() {
               >
                 <Menu className="h-5 w-5" aria-hidden="true" />
               </Button>
-              {location.pathname === "/dashboard" && (
-                <div>
-                  <h1 className="text-lg sm:text-xl font-bold text-foreground">
-                    Dashboard
-                  </h1>
-                  <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                    Welcome back{" "}
-                    <span className="text-yellow-500 font-medium px-1">
-                      {userId}
-                    </span>
-                    ! Here's your overview.
-                  </p>
-                </div>
-              )}
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold text-foreground">
+                  {pageName}
+                </h1>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+                  Welcome back{" "}
+                  <span className="text-yellow-500 font-medium px-1">
+                    {userId}
+                  </span>
+                  ! Here's your overview.
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               {/* <Button
@@ -106,15 +107,16 @@ function AuthLayout() {
           </header>
 
           <Outlet />
-          
+
           <Card className="static bottom-0 w-full bg-tan/30 border-tan-dark/30">
             <CardContent className="p-4 text-center">
               <p className="text-xs sm:text-sm font-medium text-foreground">
                 Copyright (c) 2003 The Hertz Corporation - All Rights Reserved
               </p>
               <p className="text-xs text-muted-foreground mt-1 max-w-2xl mx-auto">
-                The information contained herein is confidential and proprietary.
-                Unauthorized use, duplication or disclosure is prohibited by law.
+                The information contained herein is confidential and
+                proprietary. Unauthorized use, duplication or disclosure is
+                prohibited by law.
               </p>
             </CardContent>
           </Card>

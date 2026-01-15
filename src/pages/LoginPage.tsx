@@ -1,28 +1,8 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Car, Lock, User, MapPin, Building2 } from "lucide-react";
-import useAuthStore from "@/store/useAuthStore";
-import { useNavigate } from "@tanstack/react-router";
+import LoginForm from "@/forms/login/LoginForm";
+import { Car, Lock, User, Building2 } from "lucide-react";
 
 export function LoginPage() {
-  const navigate = useNavigate();
-
-  const login = useAuthStore((state) => state.login);
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [userIdLocation, setUserIdLocation] = useState("");
-  const [loginLocation, setLoginLocation] = useState("");
-
-  const isDisabled = !userId || !password;
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    login(userId);
-    navigate({ to: "/dashboard" });
-  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-lavender via-lavender-dark/30 to-lavender flex">
       {/* Left Panel - Branding */}
@@ -147,119 +127,7 @@ export function LoginPage() {
               </p>
             </CardHeader>
             <CardContent className="pt-4">
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* User ID */}
-                <div className="space-y-2">
-                  <Label htmlFor="userId" className="text-sm font-medium">
-                    User ID
-                  </Label>
-                  <div className="relative">
-                    <User
-                      className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                    <Input
-                      id="userId"
-                      type="text"
-                      placeholder="Enter your user ID"
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                      className="pl-10"
-                      autoComplete="username"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      spellCheck={false}
-                    />
-                  </div>
-                </div>
-
-                {/* Password */}
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Lock
-                      className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10"
-                      autoComplete="current-password"
-                    />
-                  </div>
-                </div>
-
-                {/* Location Fields */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="userIdLocation"
-                      className="text-sm font-medium"
-                    >
-                      User Location
-                    </Label>
-                    <div className="relative">
-                      <MapPin
-                        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-                        aria-hidden="true"
-                      />
-                      <Input
-                        id="userIdLocation"
-                        type="text"
-                        placeholder="Location"
-                        value={userIdLocation}
-                        onChange={(e) => setUserIdLocation(e.target.value)}
-                        className="pl-10"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="loginLocation"
-                      className="text-sm font-medium"
-                    >
-                      Login Location
-                    </Label>
-                    <div className="relative">
-                      <Building2
-                        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-                        aria-hidden="true"
-                      />
-                      <Input
-                        id="loginLocation"
-                        type="text"
-                        placeholder="CASFO15"
-                        value={loginLocation}
-                        onChange={(e) => setLoginLocation(e.target.value)}
-                        className="pl-10"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  disabled={isDisabled}
-                  type="submit"
-                  size="lg"
-                  className="w-full mt-6 min-h-[48px] touch-manipulation"
-                >
-                  Sign In
-                </Button>
-
-                <p className="text-center text-xs text-muted-foreground mt-4">
-                  By signing in, you agree to the terms of use and privacy
-                  policy.
-                </p>
-              </form>
+              <LoginForm />
             </CardContent>
           </Card>
 
