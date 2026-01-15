@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 import {
   BrowserRouter,
   Navigate,
@@ -59,8 +59,9 @@ function AppRouter() {
   );
 }
 
-createRoot(document.getElementById("root")!).render(
+ReactDOM.render(
   <StrictMode>
     <AppRouter />
-  </StrictMode>
+  </StrictMode>,
+  document.getElementById("root")
 );
