@@ -41,7 +41,7 @@ export default function RentVehicleForm() {
           label="Customer ID"
           icon={<User size={16} className="text-muted-foreground" />}
         />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 ">
           <FormInput
             name="rentDate"
             label="Rent Date"
