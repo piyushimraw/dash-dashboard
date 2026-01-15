@@ -23,7 +23,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 interface SidebarProps {
   onLogout: () => void;
@@ -237,7 +237,7 @@ function SidebarMenuItem({
                 variant="ghost"
                 size="sidebar"
                 onClick={() => {
-                  if (child?.pathname) navigate({ to: child.pathname });
+                  if (child?.pathname) navigate(child.pathname);
                   if (onItemClick) onItemClick();
                 }}
                 className={cn(

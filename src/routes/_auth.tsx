@@ -1,43 +1,33 @@
 import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import useAuthStore from "@/store/useAuthStore";
-import {
-  createFileRoute,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "@tanstack/react-router";
-import { redirect } from "@tanstack/react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   // Bell,
   Menu,
 } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent  } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
-
-export const Route = createFileRoute("/_auth")({
-  beforeLoad: ({ context, location }) => {
-    if (!context.auth.isLoggedIn) {
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
-  component: AuthLayout,
-});
-
-function AuthLayout() {
+export function AuthLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  if (!isLoggedIn) {
+    const redirectTarget = `${location.pathname}${location.search}`;
+    return (
+      <Navigate
+        to={`/login?redirect=${encodeURIComponent(redirectTarget)}`}
+        replace
+      />
+    );
+  }
 
   const { logout } = useAuthStore();
   const handleLogout = () => {
     logout();
-    navigate({ to: "/login" });
+    navigate("/login");
   };
 
   const [sidebarOpen, setSidebarOpen] = useState(false);

@@ -5,10 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Car, Lock, User, MapPin, Building2 } from "lucide-react";
 import useAuthStore from "@/store/useAuthStore";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const login = useAuthStore((state) => state.login);
   const [userId, setUserId] = useState("");
@@ -21,7 +22,10 @@ export function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login(userId);
-    navigate({ to: "/dashboard" });
+    const redirectParam = searchParams.get("redirect");
+    const redirectTarget =
+      redirectParam && redirectParam.startsWith("/") ? redirectParam : null;
+    navigate(redirectTarget || "/dashboard");
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-lavender via-lavender-dark/30 to-lavender flex">
