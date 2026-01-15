@@ -4,7 +4,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import useAuthStore from "./store/useAuthStore";
 import "./index.css";
 import { router } from "./router";
-
+import { hertzTheme, ThemeProvider , getTheme } from "@revlab/highlander-ui";
 
 function AppRouter() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -24,7 +24,9 @@ function AppRouter() {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <AppRouter />
-  </StrictMode>
+    <ThemeProvider theme={hertzTheme}>
+      <StrictMode>
+        <AppRouter />
+      </StrictMode>
+    </ThemeProvider>
 );

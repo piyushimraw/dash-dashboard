@@ -1,11 +1,18 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Car, Lock, User, MapPin, Building2 } from "lucide-react";
 import useAuthStore from "@/store/useAuthStore";
 import { useNavigate } from "@tanstack/react-router";
+import { Button , TextField } from "@revlab/highlander-ui";
+
+
+//without passing these props the textField component will throw error
+// onPointerEnterCapture={() => {}}
+// onPointerLeaveCapture={() => {}}
+
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -154,21 +161,45 @@ export function LoginPage() {
                     User ID
                   </Label>
                   <div className="relative">
-                    <User
-                      className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                    <Input
-                      id="userId"
+
+                   {/* <StyledTextField
+                       id="userId"
+                      label= "Enter your user ID"
                       type="text"
-                      placeholder="Enter your user ID"
                       value={userId}
+                      size="default"
                       onChange={(e) => setUserId(e.target.value)}
-                      className="pl-10"
-                      autoComplete="username"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      spellCheck={false}
+                      onPointerEnterCapture={() => {}}
+                      onPointerLeaveCapture={() => {}}
+                      endAdornment={
+                           <User
+                              className="h-4 w-4 text-muted-foreground"
+                              aria-hidden="true"
+                            />
+                      }
+                    /> */}
+
+                    <TextField 
+                      id="userId"
+                      label= "Enter your user ID"
+                      type="text"
+                      value={userId}
+                      size="small"
+                      // margin="dense"
+                      onChange={(e) => setUserId(e.target.value)}
+                      onPointerEnterCapture={() => {}}
+                      onPointerLeaveCapture={() => {}}
+                      InputProps={{
+                        style: {
+                          borderRadius: '12px',
+                        },
+                      }}
+                      endAdornment={
+                           <User
+                              className="h-4 w-4 text-muted-foreground"
+                              aria-hidden="true"
+                            />
+                      }
                     />
                   </div>
                 </div>
@@ -179,18 +210,28 @@ export function LoginPage() {
                     Password
                   </Label>
                   <div className="relative">
-                    <Lock
-                      className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                    <Input
+
+                      <TextField 
                       id="password"
+                      label='Enter your password'
                       type="password"
-                      placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10"
                       autoComplete="current-password"
+                      size="small"
+                      onPointerEnterCapture={() => {}}
+                      onPointerLeaveCapture={() => {}}
+                      InputProps={{
+                        style: {
+                          borderRadius: '12px',
+                        },
+                      }}
+                      endAdornment={
+                          <Lock
+                            className="h-4 w-4 text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                      }
                     />
                   </div>
                 </div>
@@ -209,14 +250,23 @@ export function LoginPage() {
                         className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
                         aria-hidden="true"
                       />
-                      <Input
+
+                      <TextField 
                         id="userIdLocation"
                         type="text"
-                        placeholder="Location"
+                        label="Location"
                         value={userIdLocation}
                         onChange={(e) => setUserIdLocation(e.target.value)}
-                        className="pl-10"
+                        className=""
                         autoComplete="off"
+                        size="small"
+                        onPointerEnterCapture={() => {}}
+                        onPointerLeaveCapture={() => {}}
+                        InputProps={{
+                        style: {
+                          borderRadius: '12px',
+                        },
+                      }}
                       />
                     </div>
                   </div>
@@ -233,27 +283,34 @@ export function LoginPage() {
                         className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
                         aria-hidden="true"
                       />
-                      <Input
+
+                        <TextField 
                         id="loginLocation"
                         type="text"
-                        placeholder="CASFO15"
+                        label="CASFO15"
                         value={loginLocation}
                         onChange={(e) => setLoginLocation(e.target.value)}
-                        className="pl-10"
-                        autoComplete="off"
+                        size="small"
+                        onPointerEnterCapture={() => {}}
+                        onPointerLeaveCapture={() => {}}
+                        InputProps={{
+                        style: {
+                          borderRadius: '12px',
+                        },
+                      }}
                       />
                     </div>
                   </div>
                 </div>
 
-                <Button
-                  disabled={isDisabled}
-                  type="submit"
-                  size="lg"
-                  className="w-full mt-6 min-h-[48px] touch-manipulation"
-                >
-                  Sign In
-                </Button>
+                  <Button 
+                    color="primary" 
+                    disabled={isDisabled}
+                    type="submit"
+                    size="medium"
+                    fullWidth={true}>
+                    Sign In
+                  </Button>
 
                 <p className="text-center text-xs text-muted-foreground mt-4">
                   By signing in, you agree to the terms of use and privacy
