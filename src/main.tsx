@@ -5,6 +5,10 @@ import useAuthStore from "./store/useAuthStore";
 import "./index.css";
 import { router } from "./router";
 import { hertzTheme, ThemeProvider , getTheme } from "@revlab/highlander-ui";
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true })
+
 
 function AppRouter() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

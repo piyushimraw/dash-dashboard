@@ -32,6 +32,12 @@ The primary goals of the current architecture are:
   - Modern dev server and bundler with fast HMR and a minimal config surface.
   - See scripts in [`package.json`](package.json:1) and config in [`vite.config.ts`](vite.config.ts:1).
 
+- **Progressive Web App (PWA) via `vite-plugin-pwa`**
+  - Generates and registers a service worker + web app manifest for installability and offline-friendly behavior.
+  - Service worker registration is done in [`src/main.tsx`](src/main.tsx:1) via `virtual:pwa-register`.
+  - Install UX is handled in-app via [`src/hooks/usePWAInstall.ts`](src/hooks/usePWAInstall.ts:1) + [`src/components/PWAInstallBanner.tsx`](src/components/PWAInstallBanner.tsx:1).
+  - Configured in [`vite.config.ts`](vite.config.ts:1) (manifest, assets, `registerType`, dev options).
+
 - **React Compiler (Babel plugin)**
   - Enabled through `babel-plugin-react-compiler` to allow compilation-time optimization of React components.
   - Configured through Vite’s React plugin (see [`vite.config.ts`](vite.config.ts:10)).
@@ -170,6 +176,28 @@ Auth is passed into router context from the store:
 - Design tokens and global styles live in [`src/index.css`](src/index.css:1).
 - Components use Tailwind utility classes and variant patterns.
 
+#### PWA layer (service worker + install UX)
+
+- **Service worker generation**
+  - Driven by `vite-plugin-pwa` (see [`vite.config.ts`](vite.config.ts:1)).
+  - Uses `registerType: "autoUpdate"` to keep the installed app up-to-date with new deployments.
+  - Dev mode enables the service worker so the app can become “installable” while running `vite dev` (see `devOptions.enabled` in [`vite.config.ts`](vite.config.ts:1)).
+  - Generated artifacts are emitted by the build tooling (e.g. `dist/sw.js` in production builds; dev output can appear under `dev-dist/` such as [`dev-dist/sw.js`](dev-dist/sw.js:1)).
+
+- **Service worker registration**
+  - Registered at startup in [`src/main.tsx`](src/main.tsx:1) via:
+    - `registerSW({ immediate: true })` which registers as early as possible to let installability criteria be met.
+
+- **Install prompt + banner**
+  - [`src/hooks/usePWAInstall.ts`](src/hooks/usePWAInstall.ts:1) captures `beforeinstallprompt`, defers the native prompt, and tracks install state.
+  - Dismissal is persisted in localStorage under `pwa-install-dismissed`.
+  - [`src/components/PWAInstallBanner.tsx`](src/components/PWAInstallBanner.tsx:1) renders a bottom banner and calls `install()` to show the native install prompt.
+  - The banner is mounted globally from the root route so it can appear on any page (see [`src/routes/__root.tsx`](src/routes/__root.tsx:1)).
+
+- **Manifest / icons**
+  - The web app manifest is defined inline in [`vite.config.ts`](vite.config.ts:1) (name, colors, `display: "standalone"`, icons).
+  - The configured icon paths (e.g. `/pwa-192x192.png`, `/pwa-512x512.png`) must exist at the app’s public root at build time.
+
 ---
 
 ## 4) High-level diagram
@@ -181,6 +209,8 @@ flowchart TB
   Browser[Browser]
   IndexHTML[index.html]
   Main[src/main.tsx\ncreateRouter + RouterProvider]
+  SW[(Service Worker\nvite-plugin-pwa / Workbox)]
+  Cache[(Cache Storage\n(precache/runtime caching))]
   RouteTree[src/routeTree.gen.ts\nGenerated route tree]
   Routes[src/routes/*\nRoute modules + guards]
   Pages[src/pages/*\nScreen-level components]
@@ -191,6 +221,8 @@ flowchart TB
   LocalStorage[(localStorage\nauth-storage)]
 
   Browser --> IndexHTML --> Main
+  Browser <--> SW
+  SW <--> Cache
   Main --> RouteTree
   RouteTree --> Routes
   Routes --> Pages
