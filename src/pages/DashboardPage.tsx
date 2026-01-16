@@ -37,7 +37,7 @@ const quickActions = [
 export function DashboardPage() {
   const navigate = useNavigate();
   return (
-    <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <div>
       {/* Welcome Banner */}
       {/* <Card
         className="bg-gradient-to-r from-sidebar to-lavender-deep border-0 text-white overflow-hidden relative"
@@ -125,6 +125,6 @@ export function DashboardPage() {
           </p>
         </CardContent>
       </Card> */}
-    </main>
+    </div>
   );
 }

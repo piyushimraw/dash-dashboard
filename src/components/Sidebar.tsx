@@ -285,7 +285,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           !isOpen && typeof window !== "undefined" && window.innerWidth < 1024
         }
         className={cn(
-          "h-dvh no-scrollbar fixed lg:static inset-y-0 left-0 z-50 w-64 bg-sidebar flex flex-col shadow-xl transition-transform duration-300 lg:translate-x-0",
+          "h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 w-64 bg-sidebar flex flex-col shadow-xl transition-transform duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
