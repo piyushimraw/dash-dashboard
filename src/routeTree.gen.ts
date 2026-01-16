@@ -12,11 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthVehicle_exchangeRouteImport } from './routes/_auth.vehicle_exchange'
-import { Route as AuthReturnRouteImport } from './routes/_auth.return'
-import { Route as AuthRentRouteImport } from './routes/_auth.rent'
-import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
-import { Route as AuthAaoRouteImport } from './routes/_auth.aao'
+import { Route as AuthScanPaymentIntegrationRouteImport } from './routes/_auth.scan-payment-integration'
+import { Route as AuthReturnsRouteImport } from './routes/_auth.returns'
+import { Route as AuthReservationLookupRouteImport } from './routes/_auth.reservation-lookup'
+import { Route as AuthRentalAgreementGenerationRouteImport } from './routes/_auth.rental-agreement-generation'
+import { Route as AuthGateVerificationRouteImport } from './routes/_auth.gate-verification'
+import { Route as AuthDriversLicenseValidationRouteImport } from './routes/_auth.drivers-license-validation'
+import { Route as AuthCarAvailabilityAssignmentRouteImport } from './routes/_auth.car-availability-assignment'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -32,90 +34,116 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthVehicle_exchangeRoute = AuthVehicle_exchangeRouteImport.update({
-  id: '/vehicle_exchange',
-  path: '/vehicle_exchange',
+const AuthScanPaymentIntegrationRoute =
+  AuthScanPaymentIntegrationRouteImport.update({
+    id: '/scan-payment-integration',
+    path: '/scan-payment-integration',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthReturnsRoute = AuthReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthReturnRoute = AuthReturnRouteImport.update({
-  id: '/return',
-  path: '/return',
+const AuthReservationLookupRoute = AuthReservationLookupRouteImport.update({
+  id: '/reservation-lookup',
+  path: '/reservation-lookup',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthRentRoute = AuthRentRouteImport.update({
-  id: '/rent',
-  path: '/rent',
+const AuthRentalAgreementGenerationRoute =
+  AuthRentalAgreementGenerationRouteImport.update({
+    id: '/rental-agreement-generation',
+    path: '/rental-agreement-generation',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthGateVerificationRoute = AuthGateVerificationRouteImport.update({
+  id: '/gate-verification',
+  path: '/gate-verification',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthDashboardRoute = AuthDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthAaoRoute = AuthAaoRouteImport.update({
-  id: '/aao',
-  path: '/aao',
-  getParentRoute: () => AuthRoute,
-} as any)
+const AuthDriversLicenseValidationRoute =
+  AuthDriversLicenseValidationRouteImport.update({
+    id: '/drivers-license-validation',
+    path: '/drivers-license-validation',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthCarAvailabilityAssignmentRoute =
+  AuthCarAvailabilityAssignmentRouteImport.update({
+    id: '/car-availability-assignment',
+    path: '/car-availability-assignment',
+    getParentRoute: () => AuthRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/aao': typeof AuthAaoRoute
-  '/dashboard': typeof AuthDashboardRoute
-  '/rent': typeof AuthRentRoute
-  '/return': typeof AuthReturnRoute
-  '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
+  '/car-availability-assignment': typeof AuthCarAvailabilityAssignmentRoute
+  '/drivers-license-validation': typeof AuthDriversLicenseValidationRoute
+  '/gate-verification': typeof AuthGateVerificationRoute
+  '/rental-agreement-generation': typeof AuthRentalAgreementGenerationRoute
+  '/reservation-lookup': typeof AuthReservationLookupRoute
+  '/returns': typeof AuthReturnsRoute
+  '/scan-payment-integration': typeof AuthScanPaymentIntegrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/aao': typeof AuthAaoRoute
-  '/dashboard': typeof AuthDashboardRoute
-  '/rent': typeof AuthRentRoute
-  '/return': typeof AuthReturnRoute
-  '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
+  '/car-availability-assignment': typeof AuthCarAvailabilityAssignmentRoute
+  '/drivers-license-validation': typeof AuthDriversLicenseValidationRoute
+  '/gate-verification': typeof AuthGateVerificationRoute
+  '/rental-agreement-generation': typeof AuthRentalAgreementGenerationRoute
+  '/reservation-lookup': typeof AuthReservationLookupRoute
+  '/returns': typeof AuthReturnsRoute
+  '/scan-payment-integration': typeof AuthScanPaymentIntegrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
-  '/_auth/aao': typeof AuthAaoRoute
-  '/_auth/dashboard': typeof AuthDashboardRoute
-  '/_auth/rent': typeof AuthRentRoute
-  '/_auth/return': typeof AuthReturnRoute
-  '/_auth/vehicle_exchange': typeof AuthVehicle_exchangeRoute
+  '/_auth/car-availability-assignment': typeof AuthCarAvailabilityAssignmentRoute
+  '/_auth/drivers-license-validation': typeof AuthDriversLicenseValidationRoute
+  '/_auth/gate-verification': typeof AuthGateVerificationRoute
+  '/_auth/rental-agreement-generation': typeof AuthRentalAgreementGenerationRoute
+  '/_auth/reservation-lookup': typeof AuthReservationLookupRoute
+  '/_auth/returns': typeof AuthReturnsRoute
+  '/_auth/scan-payment-integration': typeof AuthScanPaymentIntegrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/login'
-    | '/aao'
-    | '/dashboard'
-    | '/rent'
-    | '/return'
-    | '/vehicle_exchange'
+    | '/car-availability-assignment'
+    | '/drivers-license-validation'
+    | '/gate-verification'
+    | '/rental-agreement-generation'
+    | '/reservation-lookup'
+    | '/returns'
+    | '/scan-payment-integration'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
-    | '/aao'
-    | '/dashboard'
-    | '/rent'
-    | '/return'
-    | '/vehicle_exchange'
+    | '/car-availability-assignment'
+    | '/drivers-license-validation'
+    | '/gate-verification'
+    | '/rental-agreement-generation'
+    | '/reservation-lookup'
+    | '/returns'
+    | '/scan-payment-integration'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/login'
-    | '/_auth/aao'
-    | '/_auth/dashboard'
-    | '/_auth/rent'
-    | '/_auth/return'
-    | '/_auth/vehicle_exchange'
+    | '/_auth/car-availability-assignment'
+    | '/_auth/drivers-license-validation'
+    | '/_auth/gate-verification'
+    | '/_auth/rental-agreement-generation'
+    | '/_auth/reservation-lookup'
+    | '/_auth/returns'
+    | '/_auth/scan-payment-integration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -147,58 +175,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/vehicle_exchange': {
-      id: '/_auth/vehicle_exchange'
-      path: '/vehicle_exchange'
-      fullPath: '/vehicle_exchange'
-      preLoaderRoute: typeof AuthVehicle_exchangeRouteImport
+    '/_auth/scan-payment-integration': {
+      id: '/_auth/scan-payment-integration'
+      path: '/scan-payment-integration'
+      fullPath: '/scan-payment-integration'
+      preLoaderRoute: typeof AuthScanPaymentIntegrationRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/return': {
-      id: '/_auth/return'
-      path: '/return'
-      fullPath: '/return'
-      preLoaderRoute: typeof AuthReturnRouteImport
+    '/_auth/returns': {
+      id: '/_auth/returns'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof AuthReturnsRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/rent': {
-      id: '/_auth/rent'
-      path: '/rent'
-      fullPath: '/rent'
-      preLoaderRoute: typeof AuthRentRouteImport
+    '/_auth/reservation-lookup': {
+      id: '/_auth/reservation-lookup'
+      path: '/reservation-lookup'
+      fullPath: '/reservation-lookup'
+      preLoaderRoute: typeof AuthReservationLookupRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardRouteImport
+    '/_auth/rental-agreement-generation': {
+      id: '/_auth/rental-agreement-generation'
+      path: '/rental-agreement-generation'
+      fullPath: '/rental-agreement-generation'
+      preLoaderRoute: typeof AuthRentalAgreementGenerationRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/aao': {
-      id: '/_auth/aao'
-      path: '/aao'
-      fullPath: '/aao'
-      preLoaderRoute: typeof AuthAaoRouteImport
+    '/_auth/gate-verification': {
+      id: '/_auth/gate-verification'
+      path: '/gate-verification'
+      fullPath: '/gate-verification'
+      preLoaderRoute: typeof AuthGateVerificationRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/drivers-license-validation': {
+      id: '/_auth/drivers-license-validation'
+      path: '/drivers-license-validation'
+      fullPath: '/drivers-license-validation'
+      preLoaderRoute: typeof AuthDriversLicenseValidationRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/car-availability-assignment': {
+      id: '/_auth/car-availability-assignment'
+      path: '/car-availability-assignment'
+      fullPath: '/car-availability-assignment'
+      preLoaderRoute: typeof AuthCarAvailabilityAssignmentRouteImport
       parentRoute: typeof AuthRoute
     }
   }
 }
 
 interface AuthRouteChildren {
-  AuthAaoRoute: typeof AuthAaoRoute
-  AuthDashboardRoute: typeof AuthDashboardRoute
-  AuthRentRoute: typeof AuthRentRoute
-  AuthReturnRoute: typeof AuthReturnRoute
-  AuthVehicle_exchangeRoute: typeof AuthVehicle_exchangeRoute
+  AuthCarAvailabilityAssignmentRoute: typeof AuthCarAvailabilityAssignmentRoute
+  AuthDriversLicenseValidationRoute: typeof AuthDriversLicenseValidationRoute
+  AuthGateVerificationRoute: typeof AuthGateVerificationRoute
+  AuthRentalAgreementGenerationRoute: typeof AuthRentalAgreementGenerationRoute
+  AuthReservationLookupRoute: typeof AuthReservationLookupRoute
+  AuthReturnsRoute: typeof AuthReturnsRoute
+  AuthScanPaymentIntegrationRoute: typeof AuthScanPaymentIntegrationRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthAaoRoute: AuthAaoRoute,
-  AuthDashboardRoute: AuthDashboardRoute,
-  AuthRentRoute: AuthRentRoute,
-  AuthReturnRoute: AuthReturnRoute,
-  AuthVehicle_exchangeRoute: AuthVehicle_exchangeRoute,
+  AuthCarAvailabilityAssignmentRoute: AuthCarAvailabilityAssignmentRoute,
+  AuthDriversLicenseValidationRoute: AuthDriversLicenseValidationRoute,
+  AuthGateVerificationRoute: AuthGateVerificationRoute,
+  AuthRentalAgreementGenerationRoute: AuthRentalAgreementGenerationRoute,
+  AuthReservationLookupRoute: AuthReservationLookupRoute,
+  AuthReturnsRoute: AuthReturnsRoute,
+  AuthScanPaymentIntegrationRoute: AuthScanPaymentIntegrationRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

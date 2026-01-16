@@ -21,7 +21,7 @@ export function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login(userId);
-    navigate({ to: "/dashboard" });
+    navigate({ to: "/reservation-lookup" });
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-lavender via-lavender-dark/30 to-lavender flex">

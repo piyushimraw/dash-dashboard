@@ -8,18 +8,13 @@ import {
 import {
   ChevronDown,
   LogOut,
-  LayoutDashboard,
   Search,
   FileText,
   Car,
-  Users,
+  UserCircle,
   Settings,
   Shield,
   ClipboardList,
-  Package,
-  UserCircle,
-  BarChart3,
-  Wrench,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -34,137 +29,49 @@ interface SidebarProps {
 interface MenuItem {
   label: string;
   icon: React.ReactNode;
+  pathname?: string;
   children?: { label: string; icon?: React.ReactNode; pathname?: string }[];
 }
 
 const menuItems: MenuItem[] = [
   {
-    label: "Counter Functions",
-    icon: <LayoutDashboard className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      {
-        label: "Rent",
-        icon: <Car className="h-4 w-4" aria-hidden="true" />,
-        pathname: "/rent",
-      },
-      {
-        label: "Return",
-        icon: <ClipboardList className="h-4 w-4" aria-hidden="true" />,
-        pathname: "/return",
-      },
-      { label: "GS Start Rent" },
-      { label: "Select GS Res List" },
-      { label: "Post Rent" },
-      { label: "Post Return" },
-      { label: "Select Res Manifest" },
-      { label: "Non-Move Exchange" },
-      { label: "Vehicle Exchange", pathname: "/vehicle_exchange" },
-      { label: "AAO", pathname: "/aao" },
-      { label: "Update Opt Services" },
-      { label: "Platinum Pre-Print" },
-      { label: "Platinum Complete" },
-      { label: "Incomplete RR List" },
-      { label: "Complete Rental" },
-    ],
-  },
-  {
-    label: "Inventory Mgmt",
-    icon: <Package className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Vehicle Status" },
-      { label: "Fleet Report" },
-      { label: "Vehicle Search" },
-    ],
-  },
-  {
-    label: "Information Search",
+    label: "Reservation Lookup",
     icon: <Search className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Customer Lookup" },
-      { label: "Reservation Search" },
-      { label: "Rate Inquiry" },
-    ],
+    pathname: "/reservation-lookup",
   },
   {
-    label: "Admin",
+    label: "Scan & Payment Integration",
     icon: <Settings className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "User Management" },
-      { label: "System Config" },
-      { label: "Audit Logs" },
-    ],
+    pathname: "/scan-payment-integration",
   },
   {
-    label: "Rental Management",
-    icon: <FileText className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Rent" },
-      { label: "Return" },
-      { label: "RA Enquiry" },
-      { label: "Post Rent" },
-      { label: "Post Return" },
-      { label: "Continuous Rental" },
-      { label: "Cont.Rental Hist." },
-      { label: "Gold Service" },
-    ],
+    label: "Driver's License Scan & Validation",
+    icon: <UserCircle className="h-4 w-4" aria-hidden="true" />,
+    pathname: "/drivers-license-validation",
   },
   {
-    label: "Res Processing",
-    icon: <ClipboardList className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "New Reservation" },
-      { label: "Modify Reservation" },
-      { label: "Cancel Reservation" },
-    ],
-  },
-  {
-    label: "Car Control",
+    label: "Car Availability and Assignment",
     icon: <Car className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Check In" },
-      { label: "Check Out" },
-      { label: "Vehicle Transfer" },
-    ],
+    pathname: "/car-availability-assignment",
   },
   {
-    label: "Reports",
-    icon: <BarChart3 className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Daily Summary" },
-      { label: "Revenue Report" },
-      { label: "Fleet Utilization" },
-    ],
+    label: "Rental Agreement Generation",
+    icon: <FileText className="h-4 w-4" aria-hidden="true" />,
+    pathname: "/rental-agreement-generation",
   },
   {
-    label: "System Admin",
-    icon: <Wrench className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Settings" },
-      { label: "Permissions" },
-      { label: "Backup" },
-    ],
-  },
-  {
-    label: "Security Menu",
+    label: "Gate Verification",
     icon: <Shield className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Change Password" },
-      { label: "Session Management" },
-      { label: "Access Control" },
-    ],
+    pathname: "/gate-verification",
+  },
+  {
+    label: "Returns",
+    icon: <ClipboardList className="h-4 w-4" aria-hidden="true" />,
+    pathname: "/returns",
   },
 ];
 
-const quickLinks = [
-  {
-    label: "Res/Rental Research",
-    icon: <Search className="h-4 w-4" aria-hidden="true" />,
-  },
-  {
-    label: "#1 Club Update",
-    icon: <Users className="h-4 w-4" aria-hidden="true" />,
-  },
-];
+const quickLinks: MenuItem[] = [];
 
 function SidebarMenuItem({
   item,
@@ -185,16 +92,20 @@ function SidebarMenuItem({
   }, [location, item]);
 
   if (!item.children) {
+    const isActive = !!item.pathname && location.pathname === item.pathname;
     return (
-      <div className=" bg-gray-200">
+      <div>
         <Button
-          variant="sidebar"
+          variant={isActive ? "sidebarActive" : "sidebar"}
           size="sidebar"
-          onClick={onItemClick}
-          className="min-h-[44px] touch-manipulation"
+          onClick={() => {
+            if (item.pathname) navigate({ to: item.pathname });
+            if (onItemClick) onItemClick();
+          }}
+          className="min-h-[44px] touch-manipulation items-start whitespace-normal text-left leading-snug"
         >
           {item.icon}
-          <span>{item.label}</span>
+          <span className="break-words">{item.label}</span>
         </Button>
       </div>
     );
@@ -242,7 +153,7 @@ function SidebarMenuItem({
                 }}
                 className={cn(
                   location.pathname === child.pathname && "bg-sidebar-accent",
-                  "w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3"
+                  "w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3 items-start whitespace-normal text-left leading-snug"
                 )}
                 role="menuitem"
               >
@@ -251,7 +162,7 @@ function SidebarMenuItem({
                     {child.icon}
                   </span>
                 )}
-                {child.label}
+                <span className="break-words">{child.label}</span>
               </Button>
             </li>
           ))}
@@ -262,6 +173,9 @@ function SidebarMenuItem({
 }
 
 export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -298,7 +212,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
               </span>
             </div>
             <div>
-              <Link to="/dashboard">
+              <Link to="/reservation-lookup">
                 <h1 className="font-bold text-lg text-sidebar-foreground tracking-tight">
                   Hertz DASH
                 </h1>
@@ -340,25 +254,33 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
         </div>
 
         {/* Quick Links */}
-        <div className="px-3 py-3 border-b border-sidebar-border">
-          <p className="px-3 mb-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider">
-            Quick Access
-          </p>
-          <div className="space-y-0.5">
-            {quickLinks.map((link, index) => (
-              <Button
-                key={index}
-                variant="sidebar"
-                size="sidebar"
-                onClick={onClose}
-                className="min-h-[44px] touch-manipulation"
-              >
-                {link.icon}
-                <span>{link.label}</span>
-              </Button>
-            ))}
+        {quickLinks.length > 0 && (
+          <div className="px-3 py-3 border-b border-sidebar-border">
+            <p className="px-3 mb-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider">
+              Quick Access
+            </p>
+            <div className="space-y-0.5">
+              {quickLinks.map((link, index) => (
+                <Button
+                  key={index}
+                  variant="sidebar"
+                  size="sidebar"
+                  onClick={() => {
+                    if (link.pathname) navigate({ to: link.pathname });
+                    onClose();
+                  }}
+                  className={cn(
+                    link.pathname && location.pathname === link.pathname && "bg-sidebar-accent",
+                    "min-h-[44px] touch-manipulation items-start whitespace-normal text-left leading-snug"
+                  )}
+                >
+                  {link.icon}
+                  <span className="break-words">{link.label}</span>
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main Navigation */}
         <div className="flex-1 overflow-y-auto px-3 py-3">

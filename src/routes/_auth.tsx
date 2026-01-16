@@ -34,6 +34,37 @@ function AuthLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const pageMeta: Record<string, { title: string; subtitle?: string }> = {
+    "/reservation-lookup": {
+      title: "Reservation Lookup",
+      subtitle: "Search and review reservations quickly.",
+    },
+    "/scan-payment-integration": {
+      title: "Scan & Payment Integration",
+      subtitle: "Manage scans and Stripe payment status.",
+    },
+    "/drivers-license-validation": {
+      title: "Driver's License Scan & Validation",
+      subtitle: "Verify license details before checkout.",
+    },
+    "/car-availability-assignment": {
+      title: "Car Availability and Assignment",
+      subtitle: "Assign the right vehicle for each reservation.",
+    },
+    "/rental-agreement-generation": {
+      title: "Rental Agreement Generation",
+      subtitle: "Generate agreements after payment and validation.",
+    },
+    "/gate-verification": {
+      title: "Gate Verification",
+      subtitle: "Confirm clearance for customer exits.",
+    },
+    "/returns": {
+      title: "Returns",
+      subtitle: "Process limited return workflows.",
+    },
+  };
+
   const { logout } = useAuthStore();
   const handleLogout = () => {
     logout();
@@ -41,7 +72,6 @@ function AuthLayout() {
   };
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { userId } = useAuthStore();
 
   return (
     <>
@@ -68,18 +98,16 @@ function AuthLayout() {
               >
                 <Menu className="h-5 w-5" aria-hidden="true" />
               </Button>
-              {location.pathname === "/dashboard" && (
+              {pageMeta[location.pathname] && (
                 <div>
                   <h1 className="text-lg sm:text-xl font-bold text-foreground">
-                    Dashboard
+                    {pageMeta[location.pathname].title}
                   </h1>
-                  <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                    Welcome back{" "}
-                    <span className="text-yellow-500 font-medium px-1">
-                      {userId}
-                    </span>
-                    ! Here's your overview.
-                  </p>
+                  {pageMeta[location.pathname].subtitle && (
+                    <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+                      {pageMeta[location.pathname].subtitle}
+                    </p>
+                  )}
                 </div>
               )}
             </div>

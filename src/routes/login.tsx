@@ -1,7 +1,7 @@
 import { LoginPage } from "@/pages/LoginPage";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const fallback = "/dashboard" as const;
+const fallback = "/reservation-lookup" as const;
 type LoginSearch = {
   redirect?: string;
 };
