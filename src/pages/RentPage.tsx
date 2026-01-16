@@ -3,6 +3,7 @@ import { useGlobalDialogStore } from "@/components/dialogs/useGlobalDialogStore"
 import { DataTable } from "@/components/ui/table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
+import { useGetRentedVehicleList } from "@/features/rent-vehicle/query";
 
 export type TableType = {
   vehicleId: string;
@@ -13,35 +14,9 @@ export type TableType = {
   status: "Approved" | "Pending" | "Rejected";
 };
 
-export const rentVehicleTableData: TableType[] = [
-  {
-    vehicleId: "VEH-1023",
-    customerId: "CUST-9081",
-    rentDate: "2025-01-10",
-    expectedReturnDate: "2025-01-15",
-    pickupLocation: "Bangalore Airport",
-    status: "Approved",
-  },
-  {
-    vehicleId: "VEH-1047",
-    customerId: "CUST-7742",
-    rentDate: "2025-01-05",
-    expectedReturnDate: "2025-01-09",
-    pickupLocation: "MG Road",
-    status: "Pending",
-  },
-  {
-    vehicleId: "VEH-1109",
-    customerId: "CUST-6620",
-    rentDate: "2025-01-02",
-    expectedReturnDate: "2025-01-06",
-    pickupLocation: "Electronic City",
-    status: "Rejected",
-  },
-];
-
 export default function RentPage() {
   const { openDialog } = useGlobalDialogStore();
+  const { data, isLoading } = useGetRentedVehicleList();
   // Define table columns based on the performance context
   const tableColumn: ColumnDef<TableType>[] = useMemo(() => {
     return [
@@ -136,8 +111,8 @@ export default function RentPage() {
       <div className="bg-white shadow-sm">
         <DataTable
           columns={tableColumn as ColumnDef<unknown, unknown>[]}
-          data={rentVehicleTableData}
-          isLoading={false}
+          data={data as TableType[]}
+          isLoading={isLoading}
         />
       </div>
     </div>
