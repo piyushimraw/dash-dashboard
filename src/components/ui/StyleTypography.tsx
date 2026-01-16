@@ -6,18 +6,18 @@ export const StyleWhiteTypography = styled(Typography)(({ theme }) => ({
 }));
 
 
-// export const StylePrimaryTypography = styled(Typography)(({ theme }) => ({
-//   color: theme.palette.primary.dark
-// }));
+export const StylePrimaryTypography = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.dark
+}));
 
 
-export const StylePrimaryTypography = styled(Typography)(({ theme }) => {
-  console.log("MUIThemeobject:", typeof theme); // 👈 log the theme
+// export const StylePrimaryTypography = styled(Typography)(({ theme }) => {
+//   console.log("MUIThemeobject:", typeof theme); // 👈 log the theme
 
-  return {
-    color: theme.palette.primary.dark,
-  };
-});
+//   return {
+//     color: theme.palette.primary.dark,
+//   };
+// });
 
 
 export const StyleGrayTypography = styled(Typography)(({ theme }) => ({
