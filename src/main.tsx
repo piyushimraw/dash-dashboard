@@ -18,6 +18,7 @@ import RentPage from "./pages/RentPage";
 import ReturnPage from "./pages/ReturnPage";
 import VehicleExchangePage from "./pages/VehicleExchangePage";
 import AaoPage from "./pages/AaoPage";
+import { hertzTheme, ThemeProvider } from "@revlab/highlander-ui";
 
 registerSW({ immediate: true });
 
@@ -60,8 +61,10 @@ function AppRouter() {
 }
 
 ReactDOM.render(
-  <StrictMode>
-    <AppRouter />
-  </StrictMode>,
+  <ThemeProvider theme={hertzTheme}>
+      <StrictMode>
+        <AppRouter />
+      </StrictMode>
+  </ThemeProvider>,
   document.getElementById("root")
 );
