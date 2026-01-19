@@ -1,22 +1,26 @@
-import { Button } from "@/components/ui/button";
-import { useGlobalDialogStore } from "@/components/dialogs/useGlobalDialogStore";
 import { DataTable } from "@/components/ui/table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useGetRentedVehicleList } from "@/features/rent-vehicle/query";
-
-export type TableType = {
-  vehicleId: string;
-  customerId: string;
-  rentDate: string;
-  expectedReturnDate: string;
-  pickupLocation: string;
-  status: "Approved" | "Pending" | "Rejected";
-};
+import FiltersComponent from "@/components/rent-vehicle-components/FiltersComponent";
+import SearchComponent from "@/components/rent-vehicle-components/SearchComponent";
+import HeaderComponent from "@/components/rent-vehicle-components/HeaderComponent";
+import { useRentVehicleFilters } from "@/hooks/useRentVehicleFilters";
+import type { TableType } from "@/types/rent-vehicles/type";
 
 export default function RentPage() {
-  const { openDialog } = useGlobalDialogStore();
   const { data, isLoading } = useGetRentedVehicleList();
+  const {
+    filters,
+    search,
+    setSearch,
+    filteredData,
+    hasActiveFilters,
+    submitFilters,
+    handleResetFilters,
+    handleFilterChange,
+  } = useRentVehicleFilters(data);
+
   // Define table columns based on the performance context
   const tableColumn: ColumnDef<TableType>[] = useMemo(() => {
     return [
@@ -85,29 +89,25 @@ export default function RentPage() {
   return (
     <div className="w-full max-w-[1200px] mx-auto flex flex-col gap-6 px-4 py-6">
       {/* Header / Action bar */}
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h2 className="text-xl font-semibold tracking-tight">
-            Rent Vehicles
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Manage and track all rented vehicles
-          </p>
-        </div>
-
-        <Button
-          onClick={() => openDialog("RENT_VEHICLE")}
-          className="flex items-center gap-2"
-        >
-          + Add New Vehicle
-        </Button>
+      <HeaderComponent />
+      <div className=" flex flex-col sm:flex-row gap-3">
+        {/* Search Input */}
+        <SearchComponent search={search} setSearch={setSearch} />
+        {/* other filters */}
+        <FiltersComponent
+          filters={filters}
+          handleFilterChange={handleFilterChange}
+          handleResetFilters={handleResetFilters}
+          hasActiveFilters={hasActiveFilters}
+          submitFilters={submitFilters}
+        />
       </div>
-
       {/* Table container */}
       <DataTable
         columns={tableColumn as ColumnDef<unknown, unknown>[]}
-        data={data as TableType[]}
+        data={filteredData as TableType[]}
         isLoading={isLoading}
+        globalSearch={search}
       />
     </div>
   );

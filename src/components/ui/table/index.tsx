@@ -5,6 +5,7 @@ import {
   getSortedRowModel,
   type SortingState,
   useReactTable,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -15,7 +16,10 @@ import {
   TableCell,
 } from "./table";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import clsx from "clsx";
 import { type Row } from "@tanstack/react-table";
 
@@ -24,6 +28,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   defaultSort?: SortingState;
   isLoading?: boolean;
+  globalSearch?: string;
 }
 
 export function customSortDataTable<TData>(field: keyof TData) {
@@ -40,71 +45,30 @@ export function DataTable<TData, TValue>({
   data = [],
   defaultSort,
   isLoading,
+  globalSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
   const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
+
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      globalFilter: globalSearch,
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   if (isLoading) {
-    return (
-      <>
-        {/* Desktop skeleton */}
-        <div className="hidden md:block overflow-hidden border border-neutrals-10">
-          <table className="w-full border-collapse">
-            <thead className="bg-neutrals-5">
-              <tr>
-                {[...Array(6)].map((_, idx) => (
-                  <th key={idx} className="px-4 py-3">
-                    <div className="h-4 w-24 rounded skeleton-shimmer" />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {[...Array(5)].map((_, rowIdx) => (
-                <tr key={rowIdx} className="border-t border-neutrals-10">
-                  {[...Array(6)].map((_, colIdx) => (
-                    <td key={colIdx} className="px-4 py-3">
-                      <div className="h-4 w-full rounded skeleton-shimmer" />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Mobile skeleton */}
-        <div className="md:hidden space-y-4">
-          {[...Array(4)].map((_, idx) => (
-            <div
-              key={idx}
-              className="border border-neutrals-10 rounded-lg p-4 space-y-3"
-            >
-              {[...Array(5)].map((_, rowIdx) => (
-                <div className="flex justify-between" key={rowIdx}>
-                  <div className="h-4 w-1/3 rounded skeleton-shimmer" />
-                  <div className="h-4 w-1/3 rounded skeleton-shimmer" />
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </>
-    );
+    return <Loader />;
   }
 
   return (
-    <>
+    <div className="relative">
       {/* Desktop Table View */}
       <div className="bg-white shadow-sm">
         <Table className="hidden lg:table w-full table-auto">
@@ -161,7 +125,7 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {data.length === 0 ? (
+            {table.getRowModel().rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center p-4">
                   No Data Found
@@ -205,7 +169,7 @@ export function DataTable<TData, TValue>({
 
       {/* Mobile Card View */}
       <div className="lg:hidden space-y-4">
-        {data.length === 0 ? (
+        {table.getRowModel().rows.length === 0 ? (
           <div className="text-center p-8 border border-neutrals-10 rounded-lg">
             No Data Found
           </div>
@@ -252,6 +216,55 @@ export function DataTable<TData, TValue>({
           ))
         )}
       </div>
-    </>
+    </div>
   );
 }
+
+const Loader = () => {
+  return (
+    <>
+      {/* Desktop skeleton */}
+      <div className="hidden md:block overflow-hidden border border-neutrals-10">
+        <table className="w-full border-collapse">
+          <thead className="bg-neutrals-5">
+            <tr>
+              {[...Array(6)].map((_, idx) => (
+                <th key={idx} className="px-4 py-3">
+                  <div className="h-4 w-24 rounded skeleton-shimmer" />
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {[...Array(5)].map((_, rowIdx) => (
+              <tr key={rowIdx} className="border-t border-neutrals-10">
+                {[...Array(6)].map((_, colIdx) => (
+                  <td key={colIdx} className="px-4 py-3">
+                    <div className="h-4 w-full rounded skeleton-shimmer" />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile skeleton */}
+      <div className="md:hidden space-y-4">
+        {[...Array(4)].map((_, idx) => (
+          <div
+            key={idx}
+            className="border border-neutrals-10 rounded-lg p-4 space-y-3"
+          >
+            {[...Array(5)].map((_, rowIdx) => (
+              <div className="flex justify-between" key={rowIdx}>
+                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
+                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
