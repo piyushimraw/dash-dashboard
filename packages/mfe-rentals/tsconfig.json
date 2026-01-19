@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": {
+      "@dash/shared-ui": ["../shared-ui/src"],
+      "@dash/shared-utils": ["../shared-utils/src"],
+      "@dash/shared-state": ["../shared-state/src"],
+      "@dash/mfe-types": ["../mfe-types/src"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../shared-ui" },
+    { "path": "../shared-utils" },
+    { "path": "../shared-state" },
+    { "path": "../mfe-types" }
+  ]
+}

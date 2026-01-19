@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@dash/shared-ui": ["../../packages/shared-ui/src"],
+      "@dash/shared-utils": ["../../packages/shared-utils/src"],
+      "@dash/shared-state": ["../../packages/shared-state/src"],
+      "@dash/mfe-types": ["../../packages/mfe-types/src"],
+      "@dash/mfe-rentals": ["../../packages/mfe-rentals/src"],
+      "@dash/mfe-returns": ["../../packages/mfe-returns/src"],
+      "@dash/mfe-aao": ["../../packages/mfe-aao/src"]
+    },
+    "types": ["vite/client"],
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["src/**/*", "../../packages/*/src/**/*"]
+}

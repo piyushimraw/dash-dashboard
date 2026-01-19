@@ -1,0 +1,10 @@
+import { AaoPage } from "@dash/mfe-aao";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/aao")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  return <AaoPage />;
+}

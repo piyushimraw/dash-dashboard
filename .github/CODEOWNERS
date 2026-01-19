@@ -1,0 +1,80 @@
+# CODEOWNERS - Defines code ownership for the DASH Portal micro-frontend architecture
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything not explicitly listed
+* @dash/platform-team
+
+# =============================================================================
+# SHELL APPLICATION
+# =============================================================================
+# Platform team owns the shell and all core application infrastructure
+/apps/shell/ @dash/platform-team
+
+# =============================================================================
+# SHARED PACKAGES
+# =============================================================================
+# Platform team owns all shared packages
+# Changes here may affect all MFEs, so platform team reviews
+
+# MFE Type Contracts - breaking changes require all team approval
+/packages/mfe-types/ @dash/platform-team
+
+# Shared UI Components - design system and component library
+/packages/shared-ui/ @dash/platform-team
+
+# Shared Utilities - common helper functions
+/packages/shared-utils/ @dash/platform-team
+
+# Shared State - auth, query client, global state
+/packages/shared-state/ @dash/platform-team
+
+# =============================================================================
+# MICRO-FRONTEND PACKAGES
+# =============================================================================
+# Each MFE is owned by its respective feature team
+
+# Rentals MFE - vehicle checkout, rental agreements, counter operations
+/packages/mfe-rentals/ @dash/rentals-team
+
+# Returns MFE - vehicle check-in, damage assessment, billing
+/packages/mfe-returns/ @dash/returns-team
+
+# AAO MFE - authorization and administrative operations
+/packages/mfe-aao/ @dash/aao-team
+
+# =============================================================================
+# CRITICAL SHARED CONTRACTS
+# =============================================================================
+# Breaking changes to these files require approval from ALL teams
+# These define the integration contracts between shell and MFEs
+
+/packages/mfe-types/src/navigation.ts @dash/platform-team @dash/rentals-team @dash/returns-team @dash/aao-team
+/packages/mfe-types/src/dialog.ts @dash/platform-team @dash/rentals-team @dash/returns-team @dash/aao-team
+/packages/mfe-types/src/routes.ts @dash/platform-team @dash/rentals-team @dash/returns-team @dash/aao-team
+
+# =============================================================================
+# BUILD & CI/CD INFRASTRUCTURE
+# =============================================================================
+# Platform team owns all build and deployment configuration
+
+# GitHub workflows and actions
+/.github/ @dash/platform-team
+
+# Monorepo configuration
+/pnpm-workspace.yaml @dash/platform-team
+/turbo.json @dash/platform-team
+/tsconfig.base.json @dash/platform-team
+/package.json @dash/platform-team
+
+# =============================================================================
+# DOCUMENTATION
+# =============================================================================
+# Platform team owns architecture docs, teams can contribute to their own READMEs
+
+/ARCHITECTURE.md @dash/platform-team
+/README.md @dash/platform-team
+
+# MFE-specific documentation can be owned by respective teams
+/packages/mfe-rentals/README.md @dash/rentals-team
+/packages/mfe-returns/README.md @dash/returns-team
+/packages/mfe-aao/README.md @dash/aao-team
