@@ -82,6 +82,21 @@ The primary goals of the current architecture are:
 - **lucide-react**
   - Consistent icon set used across pages and navigation (see usage in [`src/components/Sidebar.tsx`](src/components/Sidebar.tsx:1)).
 
+### Forms & Validation
+
+- **React Hook Form** for performant form state management and submission handling.
+- **Zod** for schema-driven validation and TypeScript type inference.
+- Integrated using `@hookform/resolvers/zod`, keeping validation logic outside UI components.
+
+**Rationale:** This approach enforces separation of concerns, strong type safety, and consistent validation across forms.
+
+### Server State & Data Fetching
+
+- **TanStack Query** (React Query) for server-state management, caching, and background synchronization.
+- Feature-based query and mutation hooks to keep data-fetching logic out of UI components.
+- Centralized QueryClient for global defaults such as retries, stale time, and refetch behavior.
+- Shared query key definitions to ensure consistent caching and safe invalidation.
+
 ### Quality / correctness
 
 - **ESLint**
@@ -101,21 +116,21 @@ The primary goals of the current architecture are:
 
 **Recommended layered test strategy (when tests are introduced):**
 
-1) **Unit tests (pure functions, utilities)**
+1. **Unit tests (pure functions, utilities)**
    - Target: helpers like [`cn()`](src/lib/utils.ts:4) and any future domain logic.
    - Suggested tooling: **Vitest** (fits naturally with Vite).
 
-2) **Component tests (render + behavior)**
+2. **Component tests (render + behavior)**
    - Target: reusable UI components under [`src/components/ui/`](src/components/ui/button.tsx:1) and composed components like [`Sidebar`](src/components/Sidebar.tsx:220).
    - Suggested tooling: **React Testing Library** + **@testing-library/jest-dom** assertions.
    - Guideline: test user-observable behavior and accessibility roles/labels rather than implementation details.
 
-3) **Route/auth flow tests (integration-level)**
+3. **Route/auth flow tests (integration-level)**
    - Target: route guards and redirects defined via `beforeLoad` (e.g. unauthenticated access to the authenticated layout in [`src/routes/_auth.tsx`](src/routes/_auth.tsx:9)).
    - Suggested approach: render the app router and simulate navigation with a controlled auth store state.
    - Mocking: if/when API calls exist, prefer **MSW** for request mocking.
 
-4) **End-to-end tests (critical user journeys)**
+4. **End-to-end tests (critical user journeys)**
    - Target: login → dashboard navigation, sidebar interactions, and critical task flows.
    - Suggested tooling: **Playwright** (fast, reliable cross-browser automation).
    - Guideline: keep E2E small and focused on high-value scenarios.
