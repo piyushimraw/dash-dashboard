@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#PWA
+
+sw.js
+workbox-*.js
