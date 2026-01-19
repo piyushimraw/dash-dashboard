@@ -55,11 +55,7 @@ export default function RentPage() {
       {
         accessorKey: "pickupLocation",
         header: "Pickup Location",
-        cell: ({ row }) => (
-          <span className="truncate max-w-[180px] block">
-            {row.original.pickupLocation}
-          </span>
-        ),
+        cell: ({ row }) => <span>{row.original.pickupLocation}</span>,
       },
       {
         accessorKey: "status",
@@ -108,13 +104,11 @@ export default function RentPage() {
       </div>
 
       {/* Table container */}
-      <div className="bg-white shadow-sm">
-        <DataTable
-          columns={tableColumn as ColumnDef<unknown, unknown>[]}
-          data={data as TableType[]}
-          isLoading={isLoading}
-        />
-      </div>
+      <DataTable
+        columns={tableColumn as ColumnDef<unknown, unknown>[]}
+        data={data as TableType[]}
+        isLoading={isLoading}
+      />
     </div>
   );
 }
