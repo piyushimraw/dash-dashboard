@@ -36,7 +36,7 @@ export default function LoginForm() {
     if (areCorrectCredentials) {
       navigate({ to: "/dashboard" });
        setLoginError(false)
-    }else {
+    } else {
         console.log('Wrong credentials....');
         setLoginError(true)
     }
