@@ -11,14 +11,14 @@ import type { TableType } from "@/types/rent-vehicles/type";
 export default function RentPage() {
   const { data, isLoading } = useGetRentedVehicleList();
   const {
+    initialFilters,
     filters,
     search,
     setSearch,
     filteredData,
     hasActiveFilters,
     submitFilters,
-    handleResetFilters,
-    handleFilterChange,
+    resetFilters,
   } = useRentVehicleFilters(data);
 
   // Define table columns based on the performance context
@@ -95,9 +95,9 @@ export default function RentPage() {
         <SearchComponent search={search} setSearch={setSearch} />
         {/* other filters */}
         <FiltersComponent
+          initialFilters={initialFilters}
           filters={filters}
-          handleFilterChange={handleFilterChange}
-          handleResetFilters={handleResetFilters}
+          resetFilters={resetFilters}
           hasActiveFilters={hasActiveFilters}
           submitFilters={submitFilters}
         />

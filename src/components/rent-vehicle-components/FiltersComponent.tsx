@@ -12,30 +12,50 @@ import { Input } from "@/components/ui/input";
 import { Filter, RotateCcw } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FilterState } from "@/types/rent-vehicles/type";
 
 interface Props {
+  initialFilters: FilterState;
   filters: FilterState;
-  handleFilterChange: (key: any, value: string) => void;
-  handleResetFilters: () => void;
-  hasActiveFilters: string;
-  submitFilters: () => void;
+  resetFilters: () => void;
+  hasActiveFilters: boolean;
+  submitFilters: (v: FilterState) => void;
 }
 
 export default function FiltersComponent({
+  initialFilters,
   filters,
-  handleFilterChange,
-  handleResetFilters,
+  resetFilters,
   hasActiveFilters,
   submitFilters,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [tempFilters, setTempFilters] = useState(initialFilters);
+  //update global filters from temporary filters
   const handleApplyFilters = () => {
-    submitFilters();
+    submitFilters(tempFilters);
     setOpen(false);
   };
+  //clear temp state of filters
+  const resetTempFilters = () => setTempFilters(initialFilters);
+  //clear temp and global state of filters
+  const handleResetGlobalFilters = () => {
+    resetFilters();
+    resetTempFilters();
+  };
 
+  const handleFilterChange = (key: keyof FilterState, value: string) => {
+    setTempFilters((prev) => ({ ...prev, [key]: value }));
+  };
+  //set filters to initial state or initialize with existing global filters
+  useEffect(() => {
+    if (!open) {
+      resetTempFilters();
+    } else {
+      setTempFilters(filters);
+    }
+  }, [open]);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       {/* Filter and Reset Buttons */}
@@ -63,7 +83,7 @@ export default function FiltersComponent({
         {hasActiveFilters && (
           <Button
             variant="ghost"
-            onClick={handleResetFilters}
+            onClick={resetFilters}
             className="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
           >
             <RotateCcw size={20} />
@@ -91,7 +111,7 @@ export default function FiltersComponent({
               <Input
                 id="startDate"
                 type="date"
-                value={filters.startDate}
+                value={tempFilters.startDate}
                 onChange={(e) => {
                   handleFilterChange("startDate", e.target.value);
                 }}
@@ -105,7 +125,7 @@ export default function FiltersComponent({
               <Input
                 id="endDate"
                 type="date"
-                value={filters.endDate}
+                value={tempFilters.endDate}
                 onChange={(e) => handleFilterChange("endDate", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -117,7 +137,7 @@ export default function FiltersComponent({
                 Status
               </label>
               <select
-                value={filters.status}
+                value={tempFilters.status}
                 onChange={(e) => handleFilterChange("status", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
               >
@@ -136,7 +156,7 @@ export default function FiltersComponent({
             <div className="flex gap-3">
               <Button
                 variant="ghost"
-                onClick={handleResetFilters}
+                onClick={handleResetGlobalFilters}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Reset All

@@ -1,17 +1,18 @@
 import type { FilterState, TableType } from "@/types/rent-vehicles/type";
 import { useEffect, useState } from "react";
 
+const initialFilters = {
+  startDate: "",
+  endDate: "",
+  status: "",
+};
 export const useRentVehicleFilters = (data?: TableType[]) => {
   // Data shown in table
   const [filteredData, setFilteredData] = useState<TableType[]>([]);
 
   // UI state
   const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState<FilterState>({
-    startDate: "",
-    endDate: "",
-    status: "",
-  });
+  const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   // Sync initial / real data
   useEffect(() => {
@@ -20,17 +21,14 @@ export const useRentVehicleFilters = (data?: TableType[]) => {
     }
   }, [data]);
 
-  const handleFilterChange = (key: keyof FilterState, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
   const hasActiveFilters =
-    filters.startDate || filters.endDate || filters.status || search;
+    !!filters.startDate || !!filters.endDate || !!filters.status || !!search;
 
-  const submitFilters = () => {
+  //extract temp filters received from sidebar and initialize it to global state once clicked on submit
+  const submitFilters = (filtersTemp: FilterState) => {
     if (!data) return;
-
-    const { startDate, endDate, status } = filters;
+    setFilters(filtersTemp);
+    const { startDate, endDate, status } = filtersTemp;
 
     const result = data.filter((item) => {
       const rentDate = new Date(item.rentDate).getTime();
@@ -62,20 +60,20 @@ export const useRentVehicleFilters = (data?: TableType[]) => {
     setFilteredData(result);
   };
 
-  const handleResetFilters = () => {
-    setFilters({ startDate: "", endDate: "", status: "" });
+  const resetFilters = () => {
+    setFilters(initialFilters);
     setSearch("");
     setFilteredData(data ?? []);
   };
 
   return {
+    initialFilters,
     filters,
     search,
     setSearch,
     filteredData,
     hasActiveFilters,
     submitFilters,
-    handleResetFilters,
-    handleFilterChange,
+    resetFilters
   };
 };
