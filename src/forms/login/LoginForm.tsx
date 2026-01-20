@@ -2,17 +2,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormProvider from "@/components/form/FormProvider";
 import FormInput from "@/components/form/FormInput";
-import { loginSchema } from "./login.schema";
+import { LOCATION_OPTIONS, loginSchema } from "./login.schema";
 import type { LoginFormValues } from "./login.types";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/store/useAuthStore";
 import { Building2, Lock, MapPin, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import FormSelect from "@/components/form/FormSelect";
+import { useState } from "react";
+
 
 export default function LoginForm() {
   const navigate = useNavigate();
 
   const login = useAuthStore((state) => state.login);
+  const [loginError, setLoginError] = useState(false);
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -22,13 +26,20 @@ export default function LoginForm() {
       userId: "",
       password: "",
       userLocation: "",
-      loginLocation: "",
+      loginLocation: '',
     },
   });
 
   const onSubmit = (data: LoginFormValues) => {
-    login(data.userId);
-    navigate({ to: "/dashboard" });
+    console.log('dataonSubmit>>>>', data);
+    const areCorrectCredentials = login(data.userId, data.password);
+    if(areCorrectCredentials){
+      navigate({ to: "/dashboard" });
+       setLoginError(false)
+    }else {
+        console.log('Wrong credentials....');
+        setLoginError(true)
+    }
   };
 
   return (
@@ -65,12 +76,28 @@ export default function LoginForm() {
               placeholder="Location"
               icon={<MapPin size={20} />}
             />
-            <FormInput
+            
+            {/* <FormInput
               name="loginLocation"
               label="Login Location"
               placeholder="CASFO15"
               icon={<Building2 size={20} />}
+            /> */}
+
+            <FormSelect
+              name="loginLocation"
+              label="Login Location"
+              icon={<Building2 size={20} />}
+              options={LOCATION_OPTIONS}
             />
+          </div>
+
+          <div>
+              {loginError && (
+                  <p className="text-sm text-red-600">
+                    User ID or password is incorrect
+                  </p>
+              )}
           </div>
 
           <Button

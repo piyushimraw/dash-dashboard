@@ -1,28 +1,75 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { DUMMY_USERS } from "../config/users";
+import type { Role } from "../config/roles";
+
+// interface AuthState {
+//   userId: string;
+//   isLoggedIn: boolean;
+//   login: (userId: string) => void;
+//   logout: () => void;
+// }
+
+// const useAuthStore = create<AuthState>()(
+//   persist(
+//     (set) => ({
+//       userId: "",
+//       isLoggedIn: false,
+
+//       login: (userId) =>
+//         set({
+//           userId,
+//           isLoggedIn: true,
+//         }),
+
+//       logout: () =>
+//         set({
+//           userId: "",
+//           isLoggedIn: false,
+//         }),
+//     }),
+//     {
+//       name: "auth-storage",
+//     }
+//   )
+// );
 
 interface AuthState {
   userId: string;
+  role: Role | null;
   isLoggedIn: boolean;
-  login: (userId: string) => void;
+  login: (username: string, password: string) => boolean;
   logout: () => void;
 }
 
+//todo -> if id password does not match show a msg that wrong id password
 const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       userId: "",
+      role: null,
       isLoggedIn: false,
 
-      login: (userId) =>
+      login: (username, password) => {
+        const user = DUMMY_USERS.find(
+          (u) => u.username === username && u.password === password
+        );
+
+        if (!user) return false;
+
         set({
-          userId,
+          userId: user.username,
+          role: user.role,
           isLoggedIn: true,
-        }),
+        });
+
+        return true;
+      },
 
       logout: () =>
         set({
           userId: "",
+          role: null,
           isLoggedIn: false,
         }),
     }),
