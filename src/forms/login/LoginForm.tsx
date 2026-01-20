@@ -76,13 +76,6 @@ export default function LoginForm() {
               placeholder="Location"
               icon={<MapPin size={20} />}
             />
-            
-            {/* <FormInput
-              name="loginLocation"
-              label="Login Location"
-              placeholder="CASFO15"
-              icon={<Building2 size={20} />}
-            /> */}
 
             <FormSelect
               name="loginLocation"
