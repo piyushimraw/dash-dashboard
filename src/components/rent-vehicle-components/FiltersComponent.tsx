@@ -47,7 +47,7 @@ export default function FiltersComponent({
               "px-4 py-2 border rounded-lg flex items-center gap-2 transition-colors",
               hasActiveFilters
                 ? "bg-blue-50 border-blue-500 text-blue-700"
-                : "border-gray-300 hover:bg-gray-50"
+                : "border-gray-300 hover:bg-gray-50",
             )}
           >
             <Filter size={20} />
@@ -84,15 +84,15 @@ export default function FiltersComponent({
         <div className="px-4">
           {/* Filter Fields */}
           <div className="space-y-6">
+            {/* ----- Filter rentals whose rent date falls within the selected start and end dates ---- */}
             {/* Start Date */}
             <div>
-              <Label htmlFor="startDate">Rent Date</Label>
+              <Label htmlFor="startDate">Start Date</Label>
               <Input
                 id="startDate"
                 type="date"
                 value={filters.startDate}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   handleFilterChange("startDate", e.target.value);
                 }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -101,7 +101,7 @@ export default function FiltersComponent({
 
             {/* End Date */}
             <div>
-              <Label htmlFor="endDate">Expected Return Date</Label>
+              <Label htmlFor="endDate">End Date</Label>
               <Input
                 id="endDate"
                 type="date"
