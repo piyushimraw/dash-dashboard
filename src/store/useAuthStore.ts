@@ -3,36 +3,6 @@ import { persist } from "zustand/middleware";
 import { DUMMY_USERS } from "../config/users";
 import type { Role } from "../config/roles";
 
-// interface AuthState {
-//   userId: string;
-//   isLoggedIn: boolean;
-//   login: (userId: string) => void;
-//   logout: () => void;
-// }
-
-// const useAuthStore = create<AuthState>()(
-//   persist(
-//     (set) => ({
-//       userId: "",
-//       isLoggedIn: false,
-
-//       login: (userId) =>
-//         set({
-//           userId,
-//           isLoggedIn: true,
-//         }),
-
-//       logout: () =>
-//         set({
-//           userId: "",
-//           isLoggedIn: false,
-//         }),
-//     }),
-//     {
-//       name: "auth-storage",
-//     }
-//   )
-// );
 
 interface AuthState {
   userId: string;
