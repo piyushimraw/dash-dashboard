@@ -5,7 +5,7 @@ import { ROLES } from "./roles";
 export interface MenuItemType {
   label: string;
   icon?: IconKey;
-  children?: { label: string; icon?: React.ReactNode; pathname?: string }[];
+  children?: { label: string; icon?: IconKey; pathname?: string }[];
   roles: string[];
 }
 
