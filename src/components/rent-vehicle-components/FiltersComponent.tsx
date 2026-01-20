@@ -86,7 +86,7 @@ export default function FiltersComponent({
           <div className="space-y-6">
             {/* Start Date */}
             <div>
-              <Label htmlFor="startDate">Start Date</Label>
+              <Label htmlFor="startDate">Rent Date</Label>
               <Input
                 id="startDate"
                 type="date"
@@ -101,7 +101,7 @@ export default function FiltersComponent({
 
             {/* End Date */}
             <div>
-              <Label htmlFor="endDate">End Date</Label>
+              <Label htmlFor="endDate">Expected Return Date</Label>
               <Input
                 id="endDate"
                 type="date"
