@@ -16,10 +16,7 @@ import {
   TableCell,
 } from "./table";
 import { useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import clsx from "clsx";
 import { type Row } from "@tanstack/react-table";
 
@@ -97,7 +94,7 @@ export function DataTable<TData, TValue>({
                           header.column.id === hoveredColumn &&
                           "bg-neutrals-10",
                         !header.column.columnDef.meta?.disableHighlight &&
-                          "border-b-2 border-b-secondary-black shadow-shallow z-10 bg-white"
+                          "border-b-2 border-b-secondary-black shadow-shallow z-10 bg-white",
                       )}
                       onMouseEnter={() => setHoveredColumn(header.column.id)}
                       onMouseLeave={() => setHoveredColumn(null)}
@@ -105,7 +102,7 @@ export function DataTable<TData, TValue>({
                       <div className="flex gap-2 self-stretch">
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                         {header.column.getCanSort() ? (
                           header.column.getIsSorted() === "asc" ? (
@@ -149,14 +146,14 @@ export function DataTable<TData, TValue>({
                         !cell.column.columnDef.meta?.disableHighlight &&
                           cell.column.getCanSort() &&
                           cell.column.id === hoveredColumn &&
-                          "bg-neutrals-5 cursor-pointer",
+                          "bg-neutrals-5",
                         cell.column.columnDef.meta?.hasLink &&
-                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-secondary-black hover:bg-neutrals-5"
+                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-secondary-black hover:bg-neutrals-5",
                       )}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -197,7 +194,7 @@ export function DataTable<TData, TValue>({
                     }}
                     className={clsx(
                       "flex justify-between items-start gap-4",
-                      cell.column.columnDef.meta?.hasLink && "cursor-pointer"
+                      cell.column.columnDef.meta?.hasLink && "cursor-pointer",
                     )}
                   >
                     <div className="font-medium text-sm text-gray-600 min-w-[100px]">
@@ -206,7 +203,7 @@ export function DataTable<TData, TValue>({
                     <div className="flex-1 text-right text-sm">
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </div>
                   </div>
