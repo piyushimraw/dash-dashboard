@@ -33,7 +33,7 @@ export default function LoginForm() {
   const onSubmit = (data: LoginFormValues) => {
     console.log('dataonSubmit>>>>', data);
     const areCorrectCredentials = login(data.userId, data.password);
-    if(areCorrectCredentials){
+    if (areCorrectCredentials) {
       navigate({ to: "/dashboard" });
        setLoginError(false)
     }else {
