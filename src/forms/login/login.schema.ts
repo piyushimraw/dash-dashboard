@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-// export const LOCATION_OPTIONS = [
-//   { label: "Delhi", value: "delhi" },
-//   { label: "Mumbai", value: "mumbai" },
-//   { label: "Bangalore", value: "bangalore" },
-// ];
-
 export const LOCATION_OPTIONS = [
   { label: "San Francisco, CA (Office 15)", value: "CASFO15" },
   { label: "Los Angeles, CA (Office 02)", value: "CALAX02" },
