@@ -12,7 +12,6 @@ interface AuthState {
   logout: () => void;
 }
 
-//todo -> if id password does not match show a msg that wrong id password
 const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
