@@ -5,6 +5,7 @@ import {
   getSortedRowModel,
   type SortingState,
   useReactTable,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -24,8 +25,9 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   defaultSort?: SortingState;
   isLoading?: boolean;
+  globalSearch?: string;
 }
-//function to sort data based on dynamic field
+
 export function customSortDataTable<TData>(field: keyof TData) {
   return (rowA: Row<TData>, rowB: Row<TData>) => {
     const a = rowA.original[field] as number | undefined;
@@ -34,28 +36,192 @@ export function customSortDataTable<TData>(field: keyof TData) {
     return (a ?? 0) - (b ?? 0);
   };
 }
+
 export function DataTable<TData, TValue>({
   columns,
   data = [],
-  defaultSort, //value should be passed like defaultSort={[{ id: "category", desc: false }]}
+  defaultSort,
   isLoading,
+  globalSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
   const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
+
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      globalFilter: globalSearch,
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   if (isLoading) {
-    return (
-      <div className="overflow-hidden border border-neutrals-10">
+    return <Loader />;
+  }
+
+  return (
+    <div className="relative">
+      {/* Desktop Table View */}
+      <div className="bg-white shadow-sm">
+        <Table className="hidden lg:table w-full table-auto">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="bg-neutrals-5 border-b-neutrals-10"
+              >
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      onClick={() => {
+                        if (data?.length === 0 || !header.column.getCanSort())
+                          return;
+                        header.column.columnDef.meta?.onClick?.();
+                        header.column.toggleSorting();
+                      }}
+                      className={clsx(
+                        "h-[44px] py-3 px-4 select-none",
+                        header.column.columnDef.meta?.className,
+                        header.column.getCanSort() && "cursor-pointer",
+                        !header.column.columnDef.meta?.disableHighlight &&
+                          header.column.getCanSort() &&
+                          header.column.id === hoveredColumn &&
+                          "bg-neutrals-10",
+                        !header.column.columnDef.meta?.disableHighlight &&
+                          "border-b-2 border-b-secondary-black shadow-shallow z-10 bg-white",
+                      )}
+                      onMouseEnter={() => setHoveredColumn(header.column.id)}
+                      onMouseLeave={() => setHoveredColumn(null)}
+                    >
+                      <div className="flex gap-2 self-stretch">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {header.column.getCanSort() ? (
+                          header.column.getIsSorted() === "asc" ? (
+                            <ChevronDown size={20} />
+                          ) : header.column.getIsSorted() === "desc" ? (
+                            <ChevronUp size={20} />
+                          ) : null
+                        ) : header.column.columnDef.meta?.forceArrow &&
+                          sorting.length === 0 ? (
+                          <ChevronUp size={20} />
+                        ) : null}
+                      </div>
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="text-center p-4">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} className="border-b-neutrals-10">
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      onClick={() => {
+                        if (cell.column.columnDef.meta?.disableHighlight)
+                          return;
+                        cell.column.columnDef.meta?.onClick?.();
+                      }}
+                      onMouseEnter={() => setHoveredColumn(cell.column.id)}
+                      onMouseLeave={() => setHoveredColumn(null)}
+                      className={clsx(
+                        "h-[55px] relative group p-4",
+                        !cell.column.columnDef.meta?.disableHighlight &&
+                          cell.column.getCanSort() &&
+                          cell.column.id === hoveredColumn &&
+                          "bg-neutrals-5",
+                        cell.column.columnDef.meta?.hasLink &&
+                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-secondary-black hover:bg-neutrals-5",
+                      )}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-4">
+        {table.getRowModel().rows.length === 0 ? (
+          <div className="text-center p-8 border border-neutrals-10 rounded-lg">
+            No Data Found
+          </div>
+        ) : (
+          table.getRowModel().rows.map((row) => (
+            <div
+              key={row.id}
+              className="border border-neutrals-10 rounded-lg p-4 bg-white shadow-sm space-y-3"
+            >
+              {row.getVisibleCells().map((cell) => {
+                const header = cell.column.columnDef.header;
+                const headerText =
+                  typeof header === "string"
+                    ? header
+                    : typeof header === "function"
+                      ? ""
+                      : "";
+
+                return (
+                  <div
+                    key={cell.id}
+                    onClick={() => {
+                      if (cell.column.columnDef.meta?.disableHighlight) return;
+                      cell.column.columnDef.meta?.onClick?.();
+                    }}
+                    className={clsx(
+                      "flex justify-between items-start gap-4",
+                      cell.column.columnDef.meta?.hasLink && "cursor-pointer",
+                    )}
+                  >
+                    <div className="font-medium text-sm text-gray-600 min-w-[100px]">
+                      {headerText}
+                    </div>
+                    <div className="flex-1 text-right text-sm">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+const Loader = () => {
+  return (
+    <>
+      {/* Desktop skeleton */}
+      <div className="hidden md:block overflow-hidden border border-neutrals-10">
         <table className="w-full border-collapse">
           <thead className="bg-neutrals-5">
             <tr>
@@ -66,7 +232,6 @@ export function DataTable<TData, TValue>({
               ))}
             </tr>
           </thead>
-
           <tbody>
             {[...Array(5)].map((_, rowIdx) => (
               <tr key={rowIdx} className="border-t border-neutrals-10">
@@ -80,105 +245,23 @@ export function DataTable<TData, TValue>({
           </tbody>
         </table>
       </div>
-    );
-  }
 
-  return (
-    <Table className="w-full table-auto">
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow
-            key={headerGroup.id}
-            className="bg-neutrals-5 border-b-neutrals-10"
+      {/* Mobile skeleton */}
+      <div className="md:hidden space-y-4">
+        {[...Array(4)].map((_, idx) => (
+          <div
+            key={idx}
+            className="border border-neutrals-10 rounded-lg p-4 space-y-3"
           >
-            {headerGroup.headers.map((header) => {
-              return (
-                <TableHead
-                  key={header.id}
-                  onClick={() => {
-                    if (data?.length === 0 || !header.column.getCanSort())
-                      return;
-                    header.column.columnDef.meta?.onClick?.();
-                    header.column.toggleSorting();
-                  }}
-                  className={clsx(
-                    "h-[44px] py-3 px-4 select-none",
-                    header.column.columnDef.meta?.className,
-                    //cursor for sortable column
-                    header.column.getCanSort() && "cursor-pointer",
-                    //column hover effect
-                    !header.column.columnDef.meta?.disableHighlight &&
-                      header.column.getCanSort() && //if enableSorting: false not passed in columns,
-                      header.column.id === hoveredColumn &&
-                      "bg-neutrals-10",
-                    //selected effect
-                    !header.column.columnDef.meta?.disableHighlight &&
-                      "border-b-2 border-b-secondary-black shadow-shallow z-10 bg-white"
-                  )}
-                  onMouseEnter={() => setHoveredColumn(header.column.id)}
-                  onMouseLeave={() => setHoveredColumn(null)}
-                >
-                  <div className="flex gap-2 self-stretch">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {header.column.getCanSort() ? (
-                      header.column.getIsSorted() === "asc" ? (
-                        <ChevronDown size={20} />
-                      ) : header.column.getIsSorted() === "desc" ? (
-                        <ChevronUp size={20} />
-                      ) : null
-                    ) : header.column.columnDef.meta?.forceArrow &&
-                      sorting.length === 0 ? ( //if other column not selected then show icon
-                      <ChevronUp size={20} />
-                    ) : null}
-                  </div>
-                </TableHead>
-              );
-            })}
-          </TableRow>
+            {[...Array(5)].map((_, rowIdx) => (
+              <div className="flex justify-between" key={rowIdx}>
+                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
+                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
+              </div>
+            ))}
+          </div>
         ))}
-      </TableHeader>
-      <TableBody>
-        {data.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="text-center p-4">
-              No Data Found
-            </TableCell>
-          </TableRow>
-        ) : (
-          table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} className="border-b-neutrals-10">
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  onClick={() => {
-                    if (cell.column.columnDef.meta?.disableHighlight) return;
-                    // If a click operation is defined for the column header, the same operation is applied to cell clicks within this column.
-                    cell.column.columnDef.meta?.onClick?.();
-                  }}
-                  onMouseEnter={() => setHoveredColumn(cell.column.id)}
-                  onMouseLeave={() => setHoveredColumn(null)}
-                  className={clsx(
-                    "h-[55px] relative group p-4",
-                    //column hover effect
-                    !cell.column.columnDef.meta?.disableHighlight &&
-                      cell.column.getCanSort() && //if enableSorting: false not passed in columns,
-                      cell.column.id === hoveredColumn &&
-                      "bg-neutrals-5 cursor-pointer",
-                    //cell link hover effect
-                    cell.column.columnDef.meta?.hasLink &&
-                      "cursor-pointer p-0 hover:border-b-2 hover:border-b-secondary-black hover:bg-neutrals-5"
-                  )}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
-        )}
-      </TableBody>
-    </Table>
+      </div>
+    </>
   );
-}
+};

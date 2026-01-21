@@ -43,7 +43,7 @@ export default function RentNewVehicleDialog({
             </h2>
 
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Fill in the details below to rent a vehicle quickly and easily.
+              Fill in the details to rent a vehicle quickly and easily.
             </p>
           </DialogHeader>
         </div>

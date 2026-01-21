@@ -1,6 +1,4 @@
-import { http } from "@/lib/api/http";
-
-export type RentedVehicleResponseType = {
+export interface TableType {
   id: number;
   customerName: string;
   serviceLevel: "Gold" | "Silver" | "Platinum";
@@ -16,13 +14,11 @@ export type RentedVehicleResponseType = {
   returnDate: string;
   email: string;
   phone: string;
-};
-//old api
-// ("https://dummyjson.com/c/fd99-532e-4733-83a3");
-export const getRentedVehicleList = () =>
-  http<RentedVehicleResponseType[]>(
-    "https://dummyjson.com/c/1394-326c-4220-88d7",
-  );
+}
 
-// export const getRentedVehicleById = (id: string) =>
-//   http<User>(`/api/test/${id}`);
+export interface FilterState {
+  startDate: string;
+  endDate: string;
+  status: string;
+  arrivalLocation: string;
+}

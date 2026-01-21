@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthVehicle_exchangeRouteImport } from './routes/_auth.vehicle_exchange'
 import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as AuthReturnRouteImport } from './routes/_auth.return'
+import { Route as AuthReservation_lookupRouteImport } from './routes/_auth.reservation_lookup'
 import { Route as AuthReportsRouteImport } from './routes/_auth.reports'
 import { Route as AuthRentRouteImport } from './routes/_auth.rent'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
@@ -56,6 +57,11 @@ const AuthReturnRoute = AuthReturnRouteImport.update({
   path: '/return',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthReservation_lookupRoute = AuthReservation_lookupRouteImport.update({
+  id: '/reservation_lookup',
+  path: '/reservation_lookup',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthReportsRoute = AuthReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
   '/reports': typeof AuthReportsRoute
+  '/reservation_lookup': typeof AuthReservation_lookupRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
   '/reports': typeof AuthReportsRoute
+  '/reservation_lookup': typeof AuthReservation_lookupRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/rent': typeof AuthRentRoute
   '/_auth/reports': typeof AuthReportsRoute
+  '/_auth/reservation_lookup': typeof AuthReservation_lookupRoute
   '/_auth/return': typeof AuthReturnRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/vehicle_exchange': typeof AuthVehicle_exchangeRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/rent'
     | '/reports'
+    | '/reservation_lookup'
     | '/return'
     | '/settings'
     | '/vehicle_exchange'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/rent'
     | '/reports'
+    | '/reservation_lookup'
     | '/return'
     | '/settings'
     | '/vehicle_exchange'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/rent'
     | '/_auth/reports'
+    | '/_auth/reservation_lookup'
     | '/_auth/return'
     | '/_auth/settings'
     | '/_auth/vehicle_exchange'
@@ -224,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthReturnRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/reservation_lookup': {
+      id: '/_auth/reservation_lookup'
+      path: '/reservation_lookup'
+      fullPath: '/reservation_lookup'
+      preLoaderRoute: typeof AuthReservation_lookupRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/reports': {
       id: '/_auth/reports'
       path: '/reports'
@@ -268,6 +287,7 @@ interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthRentRoute: typeof AuthRentRoute
   AuthReportsRoute: typeof AuthReportsRoute
+  AuthReservation_lookupRoute: typeof AuthReservation_lookupRoute
   AuthReturnRoute: typeof AuthReturnRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthVehicle_exchangeRoute: typeof AuthVehicle_exchangeRoute
@@ -279,6 +299,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
   AuthRentRoute: AuthRentRoute,
   AuthReportsRoute: AuthReportsRoute,
+  AuthReservation_lookupRoute: AuthReservation_lookupRoute,
   AuthReturnRoute: AuthReturnRoute,
   AuthSettingsRoute: AuthSettingsRoute,
   AuthVehicle_exchangeRoute: AuthVehicle_exchangeRoute,
