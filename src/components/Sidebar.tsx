@@ -29,12 +29,12 @@ const quickLinks = [
   {
     label: "Res/Rental Research",
     icon: <Search className="h-4 w-4" aria-hidden="true" />,
-    path: "/reservation_lookup",
+    pathname: "/reservation_lookup",
   },
   {
     label: "#1 Club Update",
     icon: <Users className="h-4 w-4" aria-hidden="true" />,
-    path: "#",
+    pathname: "",
   },
 ];
 
@@ -140,7 +140,7 @@ function SidebarMenuItem({
 
 export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
   const role = useAuthStore((state) => state.role);
-
+  const location = useLocation();
   const visibleItems = menuItems.filter((item) =>
     role ? item.roles.includes(role) : false,
   );
@@ -229,13 +229,16 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           </p>
           <div className="space-y-0.5">
             {quickLinks.map((link, index) => (
-              <Link to={link.path}>
+              <Link to={link?.pathname}>
                 <Button
                   key={index}
                   variant="sidebar"
                   size="sidebar"
                   onClick={onClose}
-                  className="min-h-[44px] touch-manipulation"
+                  className={cn(
+                    location.pathname === link.pathname && "bg-sidebar-accent",
+                    "min-h-[44px] touch-manipulation",
+                  )}
                 >
                   {link.icon}
                   <span>{link.label}</span>
