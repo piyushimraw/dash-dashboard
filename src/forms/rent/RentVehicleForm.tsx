@@ -8,14 +8,17 @@ import { Button } from "@/components/ui/button";
 
 import { rentVehicleSchema } from "./rent.schema";
 import type { RentVehicleFormValues } from "./rent.types";
+import FormSelect from "@/components/form/FormSelect";
 
 export default function RentVehicleForm() {
   const methods = useForm<RentVehicleFormValues>({
     resolver: zodResolver(rentVehicleSchema),
     mode: "onChange",
     defaultValues: {
-      vehicleId: "",
-      customerId: "",
+      custName: "",
+      custEmail: "",
+      custPhone: "",
+      vehicleType: "SUV",
       rentDate: "",
       expectedReturnDate: "",
       pickupLocation: "",
@@ -31,16 +34,35 @@ export default function RentVehicleForm() {
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
       <div className="space-y-5 max-w-md mx-auto">
         <FormInput
-          name="vehicleId"
-          label="Vehicle ID"
+          name="custName"
+          label="Customer Name"
+          placeholder="Enter full name"
           icon={<Car size={16} className="text-muted-foreground" />}
         />
 
         <FormInput
-          name="customerId"
-          label="Customer ID"
+          name="custEmail"
+          label="Customer Email"
+          placeholder="Enter email"
           icon={<User size={16} className="text-muted-foreground" />}
         />
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 ">
+          <FormInput
+            name="custPhone"
+            label="Customer Phone"
+            placeholder="Ex: +1 6234...."
+            icon={<User size={16} className="text-muted-foreground" />}
+          />
+          <FormSelect
+            name="vehicleType"
+            label="Vehicle Type"
+            options={[
+              { label: "SUV", value: "SUV" },
+              { label: "Sedan	", value: "Sedan" },
+              { label: "Hatchback	", value: "Hatchback" },
+            ]}
+          />
+        </div>
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4 ">
           <FormInput
             name="rentDate"

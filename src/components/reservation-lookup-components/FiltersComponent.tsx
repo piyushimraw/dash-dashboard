@@ -127,7 +127,6 @@ export default function FiltersComponent({
                 onChange={(e) => {
                   handleFilterChange("startDate", e.target.value);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -139,16 +138,14 @@ export default function FiltersComponent({
                 type="date"
                 value={tempFilters.endDate}
                 onChange={(e) => handleFilterChange("endDate", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             {/* Status Dropdown */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
+              <Label htmlFor="status">Status</Label>
               <select
+                id="status"
                 value={tempFilters.status}
                 onChange={(e) => handleFilterChange("status", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
@@ -163,23 +160,16 @@ export default function FiltersComponent({
             </div>
             {/* Location Dropdown */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Arrival Location
-              </label>
-              <select
-                value={tempFilters.status}
+              <Label htmlFor="arrivalLocation">Arrival Location</Label>
+              <Input
+                id="arrivalLocation"
+                type="text"
+                value={tempFilters.arrivalLocation}
                 onChange={(e) =>
                   handleFilterChange("arrivalLocation", e.target.value)
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-              >
-                <option value="">Select Location</option>
-                {arrivalLocations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
+                placeholder="Ex: CCUAIR"
+              />
             </div>
           </div>
 
