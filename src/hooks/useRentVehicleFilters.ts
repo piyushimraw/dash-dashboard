@@ -1,69 +1,70 @@
 import type { FilterState, TableType } from "@/types/rent-vehicles/type";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
-const initialFilters = {
+const initialFilters: FilterState = {
   startDate: "",
   endDate: "",
   status: "",
+  arrivalLocation:""
 };
-export const useRentVehicleFilters = (data?: TableType[]) => {
-  // Data shown in table
-  const [filteredData, setFilteredData] = useState<TableType[]>([]);
 
-  // UI state
+export const useRentVehicleFilters = (data: TableType[] = []) => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
-  // Sync initial / real data
-  useEffect(() => {
-    if (data) {
-      setFilteredData(data);
-    }
-  }, [data]);
-
   const hasActiveFilters =
-    !!filters.startDate || !!filters.endDate || !!filters.status || !!search;
+    !!filters.startDate || !!filters.endDate || !!filters.status || !!filters.arrivalLocation || !!search;
 
-  //extract temp filters received from sidebar and initialize it to global state once clicked on submit
-  const submitFilters = (filtersTemp: FilterState) => {
-    if (!data) return;
-    setFilters(filtersTemp);
-    const { startDate, endDate, status } = filtersTemp;
+  // Single source of filtering truth
+  const filteredData = useMemo(() => {
+    const searchValue = search.toLowerCase();
 
-    const result = data.filter((item) => {
+    return data.filter((item) => {
       const rentDate = new Date(item.rentDate).getTime();
 
-      if (startDate) {
-        const start = new Date(startDate).getTime();
+      // Start date
+      if (filters.startDate) {
+        const start = new Date(filters.startDate).getTime();
         if (rentDate < start) return false;
       }
 
-      if (endDate) {
-        const end = new Date(endDate).getTime();
+      // End date
+      if (filters.endDate) {
+        const end = new Date(filters.endDate).getTime();
         if (rentDate > end) return false;
       }
 
-      if (status && item.status !== status) {
+      // Status
+      if (filters.status && item.resStatus !== filters.status) {
         return false;
       }
 
-      if (search) {
-        return Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(search.toLowerCase());
+      // arrival location
+      if (filters.arrivalLocation && item.arrivalLocation !== filters.arrivalLocation) {
+        return false;
+      }
+
+      // Search
+      if (searchValue) {
+        return (
+          item.customerName?.toLowerCase().includes(searchValue) ||
+          item.email?.toLowerCase().includes(searchValue) ||
+          item.phone?.toLowerCase().includes(searchValue)
+        );
       }
 
       return true;
     });
+  }, [data, filters, search]);
 
-    setFilteredData(result);
+  // UI-only action
+  const submitFilters = (filtersTemp: FilterState) => {
+    setFilters(filtersTemp);
   };
 
   const resetFilters = () => {
     setFilters(initialFilters);
     setSearch("");
-    setFilteredData(data ?? []);
   };
 
   return {
@@ -74,6 +75,6 @@ export const useRentVehicleFilters = (data?: TableType[]) => {
     filteredData,
     hasActiveFilters,
     submitFilters,
-    resetFilters
+    resetFilters,
   };
 };

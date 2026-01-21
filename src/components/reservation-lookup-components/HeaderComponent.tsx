@@ -6,9 +6,9 @@ export default function HeaderComponent() {
   return (
     <div className="flex items-center justify-between">
       <div className="space-y-1">
-        <h2 className="text-xl font-semibold tracking-tight">Rent Vehicles</h2>
+        <h2 className="text-xl font-semibold tracking-tight">Reservation Search Results</h2>
         <p className="text-sm text-muted-foreground">
-          Manage and track all rented vehicles
+          track all rented vehicles
         </p>
       </div>
 

@@ -29,10 +29,12 @@ const quickLinks = [
   {
     label: "Res/Rental Research",
     icon: <Search className="h-4 w-4" aria-hidden="true" />,
+    path: "/reservation_lookup",
   },
   {
     label: "#1 Club Update",
     icon: <Users className="h-4 w-4" aria-hidden="true" />,
+    path: "#",
   },
 ];
 
@@ -89,7 +91,7 @@ function SidebarMenuItem({
           <ChevronDown
             className={cn(
               "h-4 w-4 text-sidebar-muted transition-transform duration-200",
-              isOpen && "rotate-180"
+              isOpen && "rotate-180",
             )}
             aria-hidden="true"
           />
@@ -104,29 +106,31 @@ function SidebarMenuItem({
           role="menu"
         >
           {item.children.map((child, index) => {
-              const Icon = iconMap[child.icon as keyof typeof iconMap];
-              return <li key={index} role="none">
-              <Button
-                variant="ghost"
-                size="sidebar"
-                onClick={() => {
-                  if (child?.pathname) navigate({ to: child.pathname });
-                  if (onItemClick) onItemClick();
-                }}
-                className={cn(
-                  location.pathname === child.pathname && "bg-sidebar-accent",
-                  "w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3"
-                )}
-                role="menuitem"
-              >
-                {child.icon && (
-                  <span className="mr-2" aria-hidden="true">
-                    <Icon />
-                  </span>
-                )}
-                {child.label}
-              </Button>
-            </li>
+            const Icon = iconMap[child.icon as keyof typeof iconMap];
+            return (
+              <li key={index} role="none">
+                <Button
+                  variant="ghost"
+                  size="sidebar"
+                  onClick={() => {
+                    if (child?.pathname) navigate({ to: child.pathname });
+                    if (onItemClick) onItemClick();
+                  }}
+                  className={cn(
+                    location.pathname === child.pathname && "bg-sidebar-accent",
+                    "w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3",
+                  )}
+                  role="menuitem"
+                >
+                  {child.icon && (
+                    <span className="mr-2" aria-hidden="true">
+                      <Icon />
+                    </span>
+                  )}
+                  {child.label}
+                </Button>
+              </li>
+            );
           })}
         </ul>
       </CollapsibleContent>
@@ -135,12 +139,11 @@ function SidebarMenuItem({
 }
 
 export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
+  const role = useAuthStore((state) => state.role);
 
-    const role = useAuthStore(state => state.role);
-
-    const visibleItems = menuItems.filter(item =>
-      role ? item.roles.includes(role) : false
-    );
+  const visibleItems = menuItems.filter((item) =>
+    role ? item.roles.includes(role) : false,
+  );
 
   return (
     <>
@@ -166,7 +169,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
         }
         className={cn(
           "h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 w-64 bg-sidebar flex flex-col shadow-xl transition-transform duration-300 lg:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         {/* Logo & Brand */}
@@ -226,16 +229,18 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           </p>
           <div className="space-y-0.5">
             {quickLinks.map((link, index) => (
-              <Button
-                key={index}
-                variant="sidebar"
-                size="sidebar"
-                onClick={onClose}
-                className="min-h-[44px] touch-manipulation"
-              >
-                {link.icon}
-                <span>{link.label}</span>
-              </Button>
+              <Link to={link.path}>
+                <Button
+                  key={index}
+                  variant="sidebar"
+                  size="sidebar"
+                  onClick={onClose}
+                  className="min-h-[44px] touch-manipulation"
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                </Button>
+              </Link>
             ))}
           </div>
         </div>
@@ -246,11 +251,9 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             Navigation
           </p>
           <nav className="space-y-0.5">
-
             {visibleItems.map((item, index) => (
               <SidebarMenuItem key={index} item={item} onItemClick={onClose} />
             ))}
-            
           </nav>
         </div>
 

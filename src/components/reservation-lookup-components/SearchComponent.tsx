@@ -2,10 +2,13 @@ import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 
 interface Props {
-  search: string;
+  search?: string;
   setSearch: (v: string) => void;
 }
-export default function SearchComponent({ search, setSearch }: Props) {
+export default function SearchComponent({ setSearch }: Props) {
+  const handleSearch = (value: string) => {
+    setSearch(value);
+  };
   return (
     <div className="relative flex-1">
       <Search
@@ -14,9 +17,8 @@ export default function SearchComponent({ search, setSearch }: Props) {
       />
       <Input
         type="text"
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Customer name / email / phone"
+        onChange={(e) => handleSearch(e.target.value)}
         className="pl-10"
       />
     </div>

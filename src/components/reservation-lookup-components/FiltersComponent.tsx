@@ -22,6 +22,18 @@ interface Props {
   hasActiveFilters: boolean;
   submitFilters: (v: FilterState) => void;
 }
+const arrivalLocations = [
+  "BLRAIR", // Bengaluru Airport
+  "DELCTR", // Delhi City Center
+  "MUMT1", // Mumbai Terminal 1
+  "MUMT2", // Mumbai Terminal 2
+  "HYDAIR", // Hyderabad Airport
+  "CHNAIR", // Chennai Airport
+  "PNQAIR", // Pune Airport
+  "CCUAIR", // Kolkata Airport
+  "AMDAIR", // Ahmedabad Airport
+  "GOIAPD", // Goa Airport
+];
 
 export default function FiltersComponent({
   initialFilters,
@@ -142,9 +154,29 @@ export default function FiltersComponent({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
               >
                 <option value="">All Statuses</option>
-                {["Approved", "Pending", "Rejected"].map((status) => (
+                {["Confirmed", "Completed", "Cancelled"].map((status) => (
                   <option key={status} value={status}>
                     {status}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* Location Dropdown */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Arrival Location
+              </label>
+              <select
+                value={tempFilters.status}
+                onChange={(e) =>
+                  handleFilterChange("arrivalLocation", e.target.value)
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+              >
+                <option value="">Select Location</option>
+                {arrivalLocations.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
                   </option>
                 ))}
               </select>
@@ -156,15 +188,12 @@ export default function FiltersComponent({
             <div className="flex gap-3">
               <Button
                 variant="ghost"
+                className="border flex-1"
                 onClick={handleResetGlobalFilters}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Reset All
               </Button>
-              <Button
-                onClick={handleApplyFilters}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
+              <Button className="flex-1" onClick={handleApplyFilters}>
                 Apply Filters
               </Button>
             </div>

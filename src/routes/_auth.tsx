@@ -145,7 +145,11 @@ function AuthLayout() {
   const { userId } = useAuthStore();
   const pageName = useMemo(() => {
     const pathname = location.pathname;
-    const page_title = pathname.replace("/", "").toUpperCase();
+    const page_title = pathname
+      .replace(/[^a-zA-Z0-9 ]/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
     return page_title;
   }, [location.pathname]);
   return (
@@ -207,7 +211,7 @@ function AuthLayout() {
               </div>
             </div>
           </header>
-          
+
           {/* Scrollable content area */}
           <div className="flex-1 overflow-y-auto flex flex-col">
             <main className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6">
