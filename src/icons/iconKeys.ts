@@ -1,0 +1,16 @@
+export type IconKey =
+  | "chevronDown"
+  | "logout"
+  | "dashboard"
+  | "search"
+  | "fileText"
+  | "car"
+  | "users"
+  | "settings"
+  | "shield"
+  | "clipboardList"
+  | "package"
+  | "userCircle"
+  | "barChart"
+  | "wrench"
+  | "close";

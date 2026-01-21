@@ -1,17 +1,17 @@
 import { requireRole } from '@/auth/requireRole'
 import { ROLES } from '@/config/roles'
-import RentPage from '@/pages/RentPage'
+import SettingPage from '@/pages/SettingPage'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_auth/rent')({
+export const Route = createFileRoute('/_auth/settings')({
   beforeLoad: () =>
     requireRole([
       ROLES.SUPER_ADMIN,
-      ROLES.COUNTER_AGENT
+      ROLES.SYSTEM_ADMIN
     ]),
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <RentPage/>
+  return <SettingPage/>
 }
