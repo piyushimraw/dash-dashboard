@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import {LoginPage} from "../pages/LoginPage";
 import { describe, it, expect } from "vitest";
-
+import userEvent from '@testing-library/user-event';
 
 const EmailPlaceHolder = "Enter your user ID";
 const PasswordPlaceHolder =  "Enter your password";
@@ -16,24 +16,21 @@ describe("LoginPage", () => {
   });
 });
 
-//checking if button is enabled after entering id and password
-describe("LoginPage Button behavior in UI", () => {
-  it("keeps Sign in button disabled until both fields are filled", () => {
+
+describe('LoginForm', () => {
+  it('shows error message when credentials are wrong', async () => {
+    const user = userEvent.setup();
     render(<LoginPage />);
 
-    const emailInput = screen.getByPlaceholderText(EmailPlaceHolder);
-    const passwordInput = screen.getByPlaceholderText(PasswordPlaceHolder);
-    const signInButton = screen.getByRole("button", { name: /sign in/i });
+    await user.type(screen.getByPlaceholderText(/Enter your user ID/i), 'wronguser');
+    await user.type(screen.getByPlaceholderText(/Enter your password/i), 'wrongpass');
+    await user.type(screen.getByPlaceholderText(/Location/i), 'Bangalore');
+    await user.selectOptions(screen.getByLabelText(/Login Location/i), 'CASFO15');
 
-    // initially disabled
-    expect(signInButton).toBeDisabled();
+    await user.click(screen.getByRole('button', { name: /sign in/i }));
 
-    // type email only
-    fireEvent.change(emailInput, { target: { value: "test@test.com" } });
-    expect(signInButton).toBeDisabled();
-
-    // type password too
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-    expect(signInButton).toBeEnabled();
+    expect(
+      await screen.findByText((text) => text.includes('User ID or password is incorrect'))
+    ).toBeInTheDocument();
   });
 });
