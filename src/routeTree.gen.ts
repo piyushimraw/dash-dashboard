@@ -9,15 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthVehicle_exchangeRouteImport } from './routes/_auth.vehicle_exchange'
+import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as AuthReturnRouteImport } from './routes/_auth.return'
+import { Route as AuthReportsRouteImport } from './routes/_auth.reports'
 import { Route as AuthRentRouteImport } from './routes/_auth.rent'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
+import { Route as AuthCarcontrolRouteImport } from './routes/_auth.carcontrol'
 import { Route as AuthAaoRouteImport } from './routes/_auth.aao'
 
+const UnauthorizedRoute = UnauthorizedRouteImport.update({
+  id: '/unauthorized',
+  path: '/unauthorized',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -37,9 +46,19 @@ const AuthVehicle_exchangeRoute = AuthVehicle_exchangeRouteImport.update({
   path: '/vehicle_exchange',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthSettingsRoute = AuthSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthReturnRoute = AuthReturnRouteImport.update({
   id: '/return',
   path: '/return',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthReportsRoute = AuthReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthRentRoute = AuthRentRouteImport.update({
@@ -52,6 +71,11 @@ const AuthDashboardRoute = AuthDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthCarcontrolRoute = AuthCarcontrolRouteImport.update({
+  id: '/carcontrol',
+  path: '/carcontrol',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthAaoRoute = AuthAaoRouteImport.update({
   id: '/aao',
   path: '/aao',
@@ -61,19 +85,27 @@ const AuthAaoRoute = AuthAaoRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
+  '/reports': typeof AuthReportsRoute
   '/return': typeof AuthReturnRoute
+  '/settings': typeof AuthSettingsRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
+  '/reports': typeof AuthReportsRoute
   '/return': typeof AuthReturnRoute
+  '/settings': typeof AuthSettingsRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRoutesById {
@@ -81,10 +113,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/unauthorized': typeof UnauthorizedRoute
   '/_auth/aao': typeof AuthAaoRoute
+  '/_auth/carcontrol': typeof AuthCarcontrolRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/rent': typeof AuthRentRoute
+  '/_auth/reports': typeof AuthReportsRoute
   '/_auth/return': typeof AuthReturnRoute
+  '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRouteTypes {
@@ -92,29 +128,41 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/unauthorized'
     | '/aao'
+    | '/carcontrol'
     | '/dashboard'
     | '/rent'
+    | '/reports'
     | '/return'
+    | '/settings'
     | '/vehicle_exchange'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
+    | '/unauthorized'
     | '/aao'
+    | '/carcontrol'
     | '/dashboard'
     | '/rent'
+    | '/reports'
     | '/return'
+    | '/settings'
     | '/vehicle_exchange'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/login'
+    | '/unauthorized'
     | '/_auth/aao'
+    | '/_auth/carcontrol'
     | '/_auth/dashboard'
     | '/_auth/rent'
+    | '/_auth/reports'
     | '/_auth/return'
+    | '/_auth/settings'
     | '/_auth/vehicle_exchange'
   fileRoutesById: FileRoutesById
 }
@@ -122,10 +170,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   LoginRoute: typeof LoginRoute
+  UnauthorizedRoute: typeof UnauthorizedRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unauthorized': {
+      id: '/unauthorized'
+      path: '/unauthorized'
+      fullPath: '/unauthorized'
+      preLoaderRoute: typeof UnauthorizedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -154,11 +210,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVehicle_exchangeRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/settings': {
+      id: '/_auth/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthSettingsRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/return': {
       id: '/_auth/return'
       path: '/return'
       fullPath: '/return'
       preLoaderRoute: typeof AuthReturnRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/reports': {
+      id: '/_auth/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthReportsRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/rent': {
@@ -175,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/carcontrol': {
+      id: '/_auth/carcontrol'
+      path: '/carcontrol'
+      fullPath: '/carcontrol'
+      preLoaderRoute: typeof AuthCarcontrolRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/aao': {
       id: '/_auth/aao'
       path: '/aao'
@@ -187,17 +264,23 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthAaoRoute: typeof AuthAaoRoute
+  AuthCarcontrolRoute: typeof AuthCarcontrolRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthRentRoute: typeof AuthRentRoute
+  AuthReportsRoute: typeof AuthReportsRoute
   AuthReturnRoute: typeof AuthReturnRoute
+  AuthSettingsRoute: typeof AuthSettingsRoute
   AuthVehicle_exchangeRoute: typeof AuthVehicle_exchangeRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAaoRoute: AuthAaoRoute,
+  AuthCarcontrolRoute: AuthCarcontrolRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthRentRoute: AuthRentRoute,
+  AuthReportsRoute: AuthReportsRoute,
   AuthReturnRoute: AuthReturnRoute,
+  AuthSettingsRoute: AuthSettingsRoute,
   AuthVehicle_exchangeRoute: AuthVehicle_exchangeRoute,
 }
 
@@ -207,6 +290,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   LoginRoute: LoginRoute,
+  UnauthorizedRoute: UnauthorizedRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

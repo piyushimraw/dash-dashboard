@@ -23,3 +23,8 @@ dev-dist/
 *.njsproj
 *.sln
 *.sw?
+
+#PWA
+
+sw.js
+workbox-*.js

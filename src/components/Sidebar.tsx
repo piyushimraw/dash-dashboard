@@ -8,152 +8,22 @@ import {
 import {
   ChevronDown,
   LogOut,
-  LayoutDashboard,
   Search,
-  FileText,
-  Car,
   Users,
-  Settings,
-  Shield,
-  ClipboardList,
-  Package,
   UserCircle,
-  BarChart3,
-  Wrench,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { menuItems, type MenuItemType } from "@/config/sidebar-menu.config";
+import { iconMap } from "@/icons/iconMap";
+import useAuthStore from "@/store/useAuthStore";
 
 interface SidebarProps {
   onLogout: () => void;
   isOpen: boolean;
   onClose: () => void;
 }
-
-interface MenuItem {
-  label: string;
-  icon: React.ReactNode;
-  children?: { label: string; icon?: React.ReactNode; pathname?: string }[];
-}
-
-const menuItems: MenuItem[] = [
-  {
-    label: "Counter Functions",
-    icon: <LayoutDashboard className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      {
-        label: "Rent",
-        icon: <Car className="h-4 w-4" aria-hidden="true" />,
-        pathname: "/rent",
-      },
-      {
-        label: "Return",
-        icon: <ClipboardList className="h-4 w-4" aria-hidden="true" />,
-        pathname: "/return",
-      },
-      { label: "GS Start Rent" },
-      { label: "Select GS Res List" },
-      { label: "Post Rent" },
-      { label: "Post Return" },
-      { label: "Select Res Manifest" },
-      { label: "Non-Move Exchange" },
-      { label: "Vehicle Exchange", pathname: "/vehicle_exchange" },
-      { label: "AAO", pathname: "/aao" },
-      { label: "Update Opt Services" },
-      { label: "Platinum Pre-Print" },
-      { label: "Platinum Complete" },
-      { label: "Incomplete RR List" },
-      { label: "Complete Rental" },
-    ],
-  },
-  {
-    label: "Inventory Mgmt",
-    icon: <Package className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Vehicle Status" },
-      { label: "Fleet Report" },
-      { label: "Vehicle Search" },
-    ],
-  },
-  {
-    label: "Information Search",
-    icon: <Search className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Customer Lookup" },
-      { label: "Reservation Search" },
-      { label: "Rate Inquiry" },
-    ],
-  },
-  {
-    label: "Admin",
-    icon: <Settings className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "User Management" },
-      { label: "System Config" },
-      { label: "Audit Logs" },
-    ],
-  },
-  {
-    label: "Rental Management",
-    icon: <FileText className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Rent" },
-      { label: "Return" },
-      { label: "RA Enquiry" },
-      { label: "Post Rent" },
-      { label: "Post Return" },
-      { label: "Continuous Rental" },
-      { label: "Cont.Rental Hist." },
-      { label: "Gold Service" },
-    ],
-  },
-  {
-    label: "Res Processing",
-    icon: <ClipboardList className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "New Reservation" },
-      { label: "Modify Reservation" },
-      { label: "Cancel Reservation" },
-    ],
-  },
-  {
-    label: "Car Control",
-    icon: <Car className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Check In" },
-      { label: "Check Out" },
-      { label: "Vehicle Transfer" },
-    ],
-  },
-  {
-    label: "Reports",
-    icon: <BarChart3 className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Daily Summary" },
-      { label: "Revenue Report" },
-      { label: "Fleet Utilization" },
-    ],
-  },
-  {
-    label: "System Admin",
-    icon: <Wrench className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Settings" },
-      { label: "Permissions" },
-      { label: "Backup" },
-    ],
-  },
-  {
-    label: "Security Menu",
-    icon: <Shield className="h-4 w-4" aria-hidden="true" />,
-    children: [
-      { label: "Change Password" },
-      { label: "Session Management" },
-      { label: "Access Control" },
-    ],
-  },
-];
 
 const quickLinks = [
   {
@@ -170,7 +40,7 @@ function SidebarMenuItem({
   item,
   onItemClick,
 }: {
-  item: MenuItem;
+  item: MenuItemType;
   onItemClick?: () => void;
 }) {
   const location = useLocation();
@@ -200,6 +70,8 @@ function SidebarMenuItem({
     );
   }
 
+  const Icon = iconMap[item.icon as keyof typeof iconMap];
+
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger asChild>
@@ -211,7 +83,7 @@ function SidebarMenuItem({
           aria-controls={menuId}
         >
           <span className="flex items-center gap-3">
-            {item.icon}
+            <Icon />
             <span>{item.label}</span>
           </span>
           <ChevronDown
@@ -231,8 +103,9 @@ function SidebarMenuItem({
           className="ml-4 mt-1 space-y-0.5 border-l border-sidebar-border pl-3"
           role="menu"
         >
-          {item.children.map((child, index) => (
-            <li key={index} role="none">
+          {item.children.map((child, index) => {
+              const Icon = iconMap[child.icon as keyof typeof iconMap];
+              return <li key={index} role="none">
               <Button
                 variant="ghost"
                 size="sidebar"
@@ -248,13 +121,13 @@ function SidebarMenuItem({
               >
                 {child.icon && (
                   <span className="mr-2" aria-hidden="true">
-                    {child.icon}
+                    <Icon />
                   </span>
                 )}
                 {child.label}
               </Button>
             </li>
-          ))}
+          })}
         </ul>
       </CollapsibleContent>
     </Collapsible>
@@ -262,6 +135,13 @@ function SidebarMenuItem({
 }
 
 export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
+
+    const role = useAuthStore(state => state.role);
+
+    const visibleItems = menuItems.filter(item =>
+      role ? item.roles.includes(role) : false
+    );
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -366,9 +246,11 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             Navigation
           </p>
           <nav className="space-y-0.5">
-            {menuItems.map((item, index) => (
+
+            {visibleItems.map((item, index) => (
               <SidebarMenuItem key={index} item={item} onItemClick={onClose} />
             ))}
+            
           </nav>
         </div>
 
