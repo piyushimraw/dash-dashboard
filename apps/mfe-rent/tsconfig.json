@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false
+  },
+  "references": [
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/event-bus" },
+    { "path": "../../packages/mfe-types" }
+  ],
+  "include": ["src"]
+}
