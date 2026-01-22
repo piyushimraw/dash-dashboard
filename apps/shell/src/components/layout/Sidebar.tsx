@@ -12,6 +12,8 @@ import {
   Users,
   UserCircle,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
@@ -41,9 +43,11 @@ const quickLinks = [
 function SidebarMenuItem({
   item,
   onItemClick,
+  collapsed,
 }: {
   item: MenuItemType;
   onItemClick?: () => void;
+  collapsed: boolean;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,13 +70,27 @@ function SidebarMenuItem({
           className="min-h-[44px] touch-manipulation"
         >
           {item.icon}
-          <span>{item.label}</span>
+          {!collapsed && <span>{item.label}</span>}
         </Button>
       </div>
     );
   }
 
   const Icon = iconMap[item.icon as keyof typeof iconMap];
+
+  // In collapsed mode, don't show expandable items
+  if (collapsed) {
+    return (
+      <Button
+        variant="sidebar"
+        size="sidebar"
+        className="w-full justify-center min-h-[44px] touch-manipulation"
+        title={item.label}
+      >
+        <Icon />
+      </Button>
+    );
+  }
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -143,6 +161,26 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
   const location = useLocation();
   const visibleItems = menuItems.filter((item) => hasAnyRole(item.roles));
 
+  // Desktop collapsed state with localStorage persistence
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("sidebar-collapsed");
+      return stored === "true";
+    }
+    return false;
+  });
+
+  // Persist collapsed state
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("sidebar-collapsed", collapsed.toString());
+    }
+  }, [collapsed]);
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => !prev);
+  };
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -166,27 +204,39 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           !isOpen && typeof window !== "undefined" && window.innerWidth < 1024
         }
         className={cn(
-          "h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 w-64 bg-sidebar flex flex-col shadow-xl transition-transform duration-300 lg:translate-x-0",
+          "h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 bg-sidebar flex flex-col shadow-xl transition-all duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full",
+          collapsed ? "lg:w-16" : "w-64",
         )}
       >
         {/* Logo & Brand */}
         <div className="p-5 border-b border-sidebar-border flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-lg">
-              <span className="font-bold text-lg text-sidebar-primary-foreground">
-                H
-              </span>
+          {!collapsed && (
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-lg">
+                <span className="font-bold text-lg text-sidebar-primary-foreground">
+                  H
+                </span>
+              </div>
+              <div>
+                <Link to="/dashboard">
+                  <h1 className="font-bold text-lg text-sidebar-foreground tracking-tight">
+                    Hertz DASH
+                  </h1>
+                </Link>
+                <p className="text-xs text-sidebar-muted">v3.21.0-14.11</p>
+              </div>
             </div>
-            <div>
-              <Link to="/dashboard">
-                <h1 className="font-bold text-lg text-sidebar-foreground tracking-tight">
-                  Hertz DASH
-                </h1>
-              </Link>
-              <p className="text-xs text-sidebar-muted">v3.21.0-14.11</p>
+          )}
+          {collapsed && (
+            <div className="mx-auto">
+              <div className="h-10 w-10 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-lg">
+                <span className="font-bold text-lg text-sidebar-primary-foreground">
+                  H
+                </span>
+              </div>
             </div>
-          </div>
+          )}
           <Button
             variant="ghost"
             size="icon"
@@ -198,62 +248,96 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           </Button>
         </div>
 
+        {/* Desktop Collapse Toggle */}
+        <div className="hidden lg:flex justify-end px-2 py-2 border-b border-sidebar-border">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleCollapsed}
+            className="h-8 w-8 text-sidebar-muted hover:bg-sidebar-accent"
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            )}
+          </Button>
+        </div>
+
         {/* User Info */}
         <div
           className="px-4 py-3 border-b border-sidebar-border"
           role="region"
           aria-label="User information"
         >
-          <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/50 p-2.5">
+          <div
+            className={cn(
+              "flex items-center rounded-lg bg-sidebar-accent/50 p-2.5",
+              collapsed ? "justify-center" : "gap-3",
+            )}
+          >
             <div
-              className="h-9 w-9 rounded-full bg-sidebar-primary/20 flex items-center justify-center"
+              className="h-9 w-9 rounded-full bg-sidebar-primary/20 flex items-center justify-center flex-shrink-0"
               aria-hidden="true"
             >
               <UserCircle className="h-5 w-5 text-sidebar-primary" />
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-sidebar-foreground truncate">
-                GEHDOFF
-              </p>
-              <p className="text-xs text-sidebar-muted">Location: 01</p>
-            </div>
+            {!collapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-sidebar-foreground truncate">
+                  GEHDOFF
+                </p>
+                <p className="text-xs text-sidebar-muted">Location: 01</p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Quick Links */}
-        <div className="px-3 py-3 border-b border-sidebar-border">
-          <p className="px-3 mb-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider">
-            Quick Access
-          </p>
-          <div className="space-y-0.5">
-            {quickLinks.map((link, index) => (
-              <Link to={link?.pathname}>
-                <Button
-                  key={index}
-                  variant="sidebar"
-                  size="sidebar"
-                  onClick={onClose}
-                  className={cn(
-                    location.pathname === link.pathname && "bg-sidebar-accent",
-                    "min-h-[44px] touch-manipulation",
-                  )}
-                >
-                  {link.icon}
-                  <span>{link.label}</span>
-                </Button>
-              </Link>
-            ))}
+        {!collapsed && (
+          <div className="px-3 py-3 border-b border-sidebar-border">
+            <p className="px-3 mb-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider">
+              Quick Access
+            </p>
+            <div className="space-y-0.5">
+              {quickLinks.map((link, index) => (
+                <Link key={index} to={link?.pathname}>
+                  <Button
+                    variant="sidebar"
+                    size="sidebar"
+                    onClick={onClose}
+                    className={cn(
+                      location.pathname === link.pathname &&
+                        "bg-sidebar-accent",
+                      "min-h-[44px] touch-manipulation",
+                    )}
+                  >
+                    {link.icon}
+                    <span>{link.label}</span>
+                  </Button>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main Navigation */}
         <div className="flex-1 overflow-y-auto px-3 py-3">
-          <p className="px-3 mb-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider">
-            Navigation
-          </p>
+          {!collapsed && (
+            <p className="px-3 mb-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider">
+              Navigation
+            </p>
+          )}
           <nav className="space-y-0.5">
             {visibleItems.map((item, index) => (
-              <SidebarMenuItem key={index} item={item} onItemClick={onClose} />
+              <SidebarMenuItem
+                key={index}
+                item={item}
+                onItemClick={onClose}
+                collapsed={collapsed}
+              />
             ))}
           </nav>
         </div>
@@ -264,11 +348,15 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             variant="sidebar"
             size="sidebar"
             onClick={onLogout}
-            className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] touch-manipulation"
+            className={cn(
+              "w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] touch-manipulation",
+              collapsed && "justify-center",
+            )}
             aria-label="Sign out of your account"
+            title="Sign Out"
           >
             <LogOut className="h-4 w-4" aria-hidden="true" />
-            <span>Sign Out</span>
+            {!collapsed && <span>Sign Out</span>}
           </Button>
         </div>
       </aside>
