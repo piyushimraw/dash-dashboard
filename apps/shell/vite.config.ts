@@ -8,15 +8,15 @@ import { VitePWA } from 'vite-plugin-pwa';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    routerPlugin({
+      autoCodeSplitting: true,
+    }),
     react({
       babel: {
         plugins: [["babel-plugin-react-compiler"]],
       },
     }),
     tailwindcss(),
-    routerPlugin({
-      autoCodeSplitting: true,
-    }),
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {

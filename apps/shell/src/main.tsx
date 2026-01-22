@@ -7,7 +7,7 @@ import { router } from "./router";
 import { registerSW } from "virtual:pwa-register";
 import GlobalDialog from "./components/dialogs/global-dialog";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/react-query/queryClient";
+import { queryClient } from "@packages/api-client";
 
 registerSW({ immediate: true });
 
