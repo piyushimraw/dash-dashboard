@@ -139,11 +139,9 @@ function SidebarMenuItem({
 }
 
 export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
-  const role = useAuthStore((state) => state.role);
+  const hasAnyRole = useAuthStore((state) => state.hasAnyRole);
   const location = useLocation();
-  const visibleItems = menuItems.filter((item) =>
-    role ? item.roles.includes(role) : false,
-  );
+  const visibleItems = menuItems.filter((item) => hasAnyRole(item.roles));
 
   return (
     <>

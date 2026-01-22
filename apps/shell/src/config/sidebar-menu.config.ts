@@ -1,12 +1,18 @@
-
+import type { Role } from '@packages/mfe-types';
 import type { IconKey } from "@/icons/iconKeys";
 import { ROLES } from "./roles";
+
+export interface MenuItemChild {
+  label: string;
+  icon?: IconKey;
+  pathname?: string;
+}
 
 export interface MenuItemType {
   label: string;
   icon?: IconKey;
-  children?: { label: string; icon?: IconKey; pathname?: string }[];
-  roles: string[];
+  children?: MenuItemChild[];
+  roles: Role[];
 }
 
 export const menuItems: MenuItemType[] = [
