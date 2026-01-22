@@ -1,10 +1,9 @@
-// import { defineConfig } from "vite";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import routerPlugin from "@tanstack/router-plugin/vite";
 import path from "path";
-import { VitePWA } from 'vite-plugin-pwa'
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,11 +14,11 @@ export default defineConfig({
       },
     }),
     tailwindcss(),
-    routerPlugin(),
+    routerPlugin({
+      autoCodeSplitting: true,
+    }),
     VitePWA({
       registerType: "autoUpdate",
-      // `beforeinstallprompt` won't fire unless the app is "installable",
-      // which requires a controlling service worker. Enable SW during `vite dev`.
       devOptions: {
         enabled: true,
         type: "module",
@@ -52,10 +51,5 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: "./src/setupTests.ts",
   },
 });
