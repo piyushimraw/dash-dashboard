@@ -10,6 +10,18 @@ import useAuthStore from "@/store/useAuthStore";
 import { Building2, ChevronDown, Lock, MapPin, User } from "lucide-react";
 import { useState } from "react";
 
+// Icon wrapper component for consistent vertical centering
+function InputIcon({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="absolute left-3 text-muted-foreground pointer-events-none"
+      style={{ top: '50%', transform: 'translateY(-50%)' }}
+    >
+      {children}
+    </span>
+  );
+}
+
 export default function LoginForm() {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
@@ -34,13 +46,11 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = (data: LoginFormValues) => {
-    console.log("dataonSubmit>>>>", data);
     const areCorrectCredentials = login(data.userId, data.password);
     if (areCorrectCredentials) {
       navigate({ to: "/dashboard" });
       setLoginError(false);
     } else {
-      console.log("Wrong credentials....");
       setLoginError(true);
     }
   };
@@ -49,10 +59,10 @@ export default function LoginForm() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* User ID */}
-        <div className="space-y-2">
-          <Label htmlFor="userId">User ID</Label>
+        <div className="space-y-1">
+          <Label htmlFor="userId" className="text-sm font-medium">User ID</Label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <InputIcon><User size={20} /></InputIcon>
             <Input
               id="userId"
               placeholder="Enter your user ID"
@@ -61,15 +71,15 @@ export default function LoginForm() {
             />
           </div>
           {errors.userId && (
-            <p className="text-sm text-destructive">{errors.userId.message}</p>
+            <p className="text-sm text-red-500">{errors.userId.message}</p>
           )}
         </div>
 
         {/* Password */}
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+        <div className="space-y-1">
+          <Label htmlFor="password" className="text-sm font-medium">Password</Label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <InputIcon><Lock size={20} /></InputIcon>
             <Input
               id="password"
               type="password"
@@ -79,18 +89,16 @@ export default function LoginForm() {
             />
           </div>
           {errors.password && (
-            <p className="text-sm text-destructive">
-              {errors.password.message}
-            </p>
+            <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
         </div>
 
         {/* Location Fields */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="userLocation">User Location</Label>
+          <div className="space-y-1">
+            <Label htmlFor="userLocation" className="text-sm font-medium">User Location</Label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <InputIcon><MapPin size={20} /></InputIcon>
               <Input
                 id="userLocation"
                 placeholder="Location"
@@ -100,14 +108,14 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="loginLocation">Login Location</Label>
+          <div className="space-y-1">
+            <Label htmlFor="loginLocation" className="text-sm font-medium">Login Location</Label>
             <div className="relative">
-              <Building2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <InputIcon><Building2 size={20} /></InputIcon>
               <select
                 id="loginLocation"
                 {...register("loginLocation")}
-                className="flex h-9 w-full rounded-md border border-input bg-transparent pl-10 pr-8 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none appearance-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm"
+                className="h-11 w-full rounded-lg border border-input bg-white pl-10 pr-10 text-base shadow-sm transition-all duration-200 appearance-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent"
               >
                 <option value="" disabled hidden>
                   Login Location
@@ -118,13 +126,18 @@ export default function LoginForm() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+              <span
+                className="absolute right-3 text-muted-foreground pointer-events-none"
+                style={{ top: '50%', transform: 'translateY(-50%)' }}
+              >
+                <ChevronDown size={16} />
+              </span>
             </div>
           </div>
         </div>
 
         {loginError && (
-          <p className="text-sm text-destructive">
+          <p className="text-sm text-red-500">
             User ID or password is incorrect
           </p>
         )}
