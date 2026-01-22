@@ -1,6 +1,6 @@
 import { DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { type DialogRegistry } from "../useGlobalDialogStore";
-import RentVehicleForm from "@/forms/rent/RentVehicleForm";
+import { RentVehicleForm } from "@apps/mfe-rent";
 import { Car } from "lucide-react";
 import { cn } from "@/lib/utils";
 
