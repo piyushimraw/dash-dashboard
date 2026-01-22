@@ -6,7 +6,6 @@
     "jsx": "react-jsx",
     "strict": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
