@@ -1,49 +1,90 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { Role, User, AuthState } from '@packages/mfe-types';
 import { DUMMY_USERS } from "../config/users";
-import type { Role } from "../config/roles";
+import { ROLE_HIERARCHY } from "../config/roles";
 
-
-interface AuthState {
+interface AuthStore extends AuthState {
+  // Actions
+  login: (username: string, password: string) => boolean;
+  logout: () => void;
+  // Role checks
+  hasRole: (role: Role) => boolean;
+  hasAnyRole: (roles: Role[]) => boolean;
+  // For router context (legacy compatibility)
   userId: string;
   role: Role | null;
   isLoggedIn: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
 }
 
-const useAuthStore = create<AuthState>()(
+const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
+      // State
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
       userId: "",
       role: null,
       isLoggedIn: false,
 
+      // Actions
       login: (username, password) => {
-        const user = DUMMY_USERS.find(
+        const dummyUser = DUMMY_USERS.find(
           (u) => u.username === username && u.password === password
         );
 
-        if (!user) return false;
+        if (!dummyUser) return false;
+
+        const user: User = {
+          id: dummyUser.username,
+          username: dummyUser.username,
+          role: dummyUser.role,
+        };
 
         set({
+          user,
+          isAuthenticated: true,
+          isLoggedIn: true,
           userId: user.username,
           role: user.role,
-          isLoggedIn: true,
         });
 
         return true;
       },
 
-      logout: () =>
+      logout: () => {
         set({
+          user: null,
+          isAuthenticated: false,
+          isLoggedIn: false,
           userId: "",
           role: null,
-          isLoggedIn: false,
-        }),
+        });
+      },
+
+      // Role checks
+      hasRole: (role) => {
+        const currentRole = get().role;
+        if (!currentRole) return false;
+        return ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[role];
+      },
+
+      hasAnyRole: (roles) => {
+        const currentRole = get().role;
+        if (!currentRole) return false;
+        return roles.some((role) => ROLE_HIERARCHY[currentRole] >= ROLE_HIERARCHY[role]);
+      },
     }),
     {
       name: "auth-storage",
+      partialize: (state) => ({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        isLoggedIn: state.isLoggedIn,
+        userId: state.userId,
+        role: state.role,
+      }),
     }
   )
 );
