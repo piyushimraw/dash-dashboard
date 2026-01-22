@@ -27,12 +27,12 @@ interface SidebarProps {
 
 const quickLinks = [
   {
-    label: "Res/Rental Research",
+    label: "Reservation Lookup:",
     icon: <Search className="h-4 w-4" aria-hidden="true" />,
     pathname: "/reservation_lookup",
   },
   {
-    label: "#1 Club Update",
+    label: "Scan & Payment Integration",
     icon: <Users className="h-4 w-4" aria-hidden="true" />,
     pathname: "",
   },

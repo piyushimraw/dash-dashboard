@@ -86,7 +86,7 @@ export const menuItems: MenuItemType[] = [
     roles: [ROLES.COUNTER_AGENT, ROLES.SUPER_ADMIN]
   },
   {
-    label: "Res Processing",
+    label: "Reservation Management",
     icon: 'clipboardList',
     children: [
       { label: "New Reservation" },
