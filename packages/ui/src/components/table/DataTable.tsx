@@ -45,6 +45,7 @@ export function DataTable<TData, TValue>({
   globalSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
+  const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
 
   const table = useReactTable({
     data,
@@ -64,10 +65,10 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="relative w-full">
-      {/* Table View */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200">
-        <Table className="w-full table-auto min-w-[600px]">
+    <div className="relative">
+      {/* Desktop Table View */}
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <Table className="hidden lg:table w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -85,10 +86,18 @@ export function DataTable<TData, TValue>({
                         header.column.toggleSorting();
                       }}
                       className={clsx(
-                        "h-[44px] py-3 px-4 select-none bg-gray-50",
+                        "h-[44px] py-3 px-4 select-none",
                         header.column.columnDef.meta?.className,
-                        header.column.getCanSort() && "cursor-pointer hover:bg-gray-100",
+                        header.column.getCanSort() && "cursor-pointer",
+                        !header.column.columnDef.meta?.disableHighlight &&
+                          header.column.getCanSort() &&
+                          header.column.id === hoveredColumn &&
+                          "bg-gray-100",
+                        !header.column.columnDef.meta?.disableHighlight &&
+                          "border-b-2 border-b-gray-800 bg-white",
                       )}
+                      onMouseEnter={() => setHoveredColumn(header.column.id)}
+                      onMouseLeave={() => setHoveredColumn(null)}
                     >
                       <div className="flex gap-2 self-stretch">
                         {flexRender(
@@ -121,16 +130,25 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="border-b border-gray-100 hover:bg-gray-50">
+                <TableRow key={row.id} className="border-b border-gray-100">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
                       onClick={() => {
+                        if (cell.column.columnDef.meta?.disableHighlight)
+                          return;
                         cell.column.columnDef.meta?.onClick?.();
                       }}
+                      onMouseEnter={() => setHoveredColumn(cell.column.id)}
+                      onMouseLeave={() => setHoveredColumn(null)}
                       className={clsx(
                         "h-[55px] relative group p-4",
-                        cell.column.columnDef.meta?.hasLink && "cursor-pointer",
+                        !cell.column.columnDef.meta?.disableHighlight &&
+                          cell.column.getCanSort() &&
+                          cell.column.id === hoveredColumn &&
+                          "bg-gray-50",
+                        cell.column.columnDef.meta?.hasLink &&
+                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-gray-800 hover:bg-gray-50",
                       )}
                     >
                       {flexRender(
@@ -146,35 +164,104 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-4">
+        {table.getRowModel().rows.length === 0 ? (
+          <div className="text-center p-8 border border-gray-200 rounded-lg bg-white">
+            No Data Found
+          </div>
+        ) : (
+          table.getRowModel().rows.map((row) => (
+            <div
+              key={row.id}
+              className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm space-y-3"
+            >
+              {row.getVisibleCells().map((cell) => {
+                const header = cell.column.columnDef.header;
+                const headerText =
+                  typeof header === "string"
+                    ? header
+                    : typeof header === "function"
+                      ? ""
+                      : "";
+
+                return (
+                  <div
+                    key={cell.id}
+                    onClick={() => {
+                      if (cell.column.columnDef.meta?.disableHighlight) return;
+                      cell.column.columnDef.meta?.onClick?.();
+                    }}
+                    className={clsx(
+                      "flex justify-between items-start gap-4",
+                      cell.column.columnDef.meta?.hasLink && "cursor-pointer",
+                    )}
+                  >
+                    <div className="font-medium text-sm text-gray-600 min-w-[100px]">
+                      {headerText}
+                    </div>
+                    <div className="flex-1 text-right text-sm">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
 
 const Loader = () => {
   return (
-    <div className="overflow-hidden border border-gray-200 rounded-lg">
-      <table className="w-full border-collapse">
-        <thead className="bg-gray-50">
-          <tr>
-            {[...Array(6)].map((_, idx) => (
-              <th key={idx} className="px-4 py-3">
-                <div className="h-4 w-24 rounded skeleton-shimmer" />
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(5)].map((_, rowIdx) => (
-            <tr key={rowIdx} className="border-t border-gray-200">
-              {[...Array(6)].map((_, colIdx) => (
-                <td key={colIdx} className="px-4 py-3">
-                  <div className="h-4 w-full rounded skeleton-shimmer" />
-                </td>
+    <>
+      {/* Desktop skeleton */}
+      <div className="hidden lg:block overflow-hidden border border-gray-200 rounded-lg">
+        <table className="w-full border-collapse">
+          <thead className="bg-gray-50">
+            <tr>
+              {[...Array(6)].map((_, idx) => (
+                <th key={idx} className="px-4 py-3">
+                  <div className="h-4 w-24 rounded skeleton-shimmer" />
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {[...Array(5)].map((_, rowIdx) => (
+              <tr key={rowIdx} className="border-t border-gray-200">
+                {[...Array(6)].map((_, colIdx) => (
+                  <td key={colIdx} className="px-4 py-3">
+                    <div className="h-4 w-full rounded skeleton-shimmer" />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile skeleton */}
+      <div className="lg:hidden space-y-4">
+        {[...Array(4)].map((_, idx) => (
+          <div
+            key={idx}
+            className="border border-gray-200 rounded-lg p-4 space-y-3"
+          >
+            {[...Array(5)].map((_, rowIdx) => (
+              <div className="flex justify-between" key={rowIdx}>
+                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
+                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
