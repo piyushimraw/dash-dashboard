@@ -1,13 +1,10 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+    { "path": "./packages/ui" },
+    { "path": "./packages/api-client" },
+    { "path": "./packages/event-bus" },
+    { "path": "./packages/mfe-types" },
+    { "path": "./apps/shell" }
+  ]
 }
