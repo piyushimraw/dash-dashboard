@@ -8,6 +8,20 @@ export * from "./components/collapsible";
 export * from "./components/separator";
 export * from "./components/sheet";
 
+// Table Components
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "./components/table/table";
+
+export { DataTable, customSortDataTable } from "./components/table/DataTable";
+
 // Form Components
 export { FormProvider } from "./components/form/FormProvider";
 export { FormInput } from "./components/form/FormInput";

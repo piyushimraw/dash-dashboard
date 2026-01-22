@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/ui/table";
+import { DataTable } from "@packages/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useGetRentedVehicleList } from "@/features/rent-vehicle/query";
