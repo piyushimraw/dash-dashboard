@@ -15,10 +15,24 @@ import {
   TableHead,
   TableCell,
 } from "./table";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import clsx from "clsx";
 import { type Row } from "@tanstack/react-table";
+
+// Hook to detect if screen is desktop (lg breakpoint = 1024px)
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    const checkWidth = () => setIsDesktop(window.innerWidth >= 1024);
+    checkWidth();
+    window.addEventListener("resize", checkWidth);
+    return () => window.removeEventListener("resize", checkWidth);
+  }, []);
+
+  return isDesktop;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -46,6 +60,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
   const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
+  const isDesktop = useIsDesktop();
 
   const table = useReactTable({
     data,
@@ -67,7 +82,8 @@ export function DataTable<TData, TValue>({
   return (
     <div className="relative">
       {/* Desktop Table View */}
-      <div className="hidden lg:block bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+      {isDesktop && (
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
         <Table className="w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -163,9 +179,11 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      )}
 
       {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
+      {!isDesktop && (
+      <div className="space-y-4">
         {table.getRowModel().rows.length === 0 ? (
           <div className="text-center p-8 border border-gray-200 rounded-lg bg-white">
             No Data Found
@@ -213,6 +231,7 @@ export function DataTable<TData, TValue>({
           ))
         )}
       </div>
+      )}
     </div>
   );
 }
