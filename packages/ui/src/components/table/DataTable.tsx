@@ -64,10 +64,10 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {/* Table View */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-        <Table className="w-full table-auto">
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+        <Table className="w-full table-auto min-w-[600px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
