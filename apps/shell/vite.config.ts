@@ -51,9 +51,26 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        navigateFallback: '/offline.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        // Use index.html as the SPA shell for navigation requests
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api\//, /^\/offline\.html$/],
         runtimeCaching: [
+          // Serve offline.html when navigation fails (network error)
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages',
+              networkTimeoutSeconds: 3,
+              plugins: [
+                {
+                  handlerDidError: async () => {
+                    return caches.match('/offline.html');
+                  },
+                },
+              ],
+            },
+          },
           {
             urlPattern: /^https:\/\/dummyjson\.com\/.*$/i,
             handler: 'NetworkFirst',
