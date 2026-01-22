@@ -1,4 +1,5 @@
 import { requireRole } from '@/auth/requireRole'
+import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
 import { ROLES } from '@/config/roles'
 import ReportsPage from '@/pages/ReportsPage'
 import { createFileRoute } from '@tanstack/react-router'
@@ -13,5 +14,9 @@ export const Route = createFileRoute('/_auth/reports')({
 })
 
 function RouteComponent() {
-  return <ReportsPage/>
+  return (
+    <MfeErrorBoundary mfeName="Reports">
+      <ReportsPage />
+    </MfeErrorBoundary>
+  )
 }
