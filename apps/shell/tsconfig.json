@@ -16,7 +16,8 @@
     { "path": "../mfe-reports" },
     { "path": "../mfe-aao" },
     { "path": "../mfe-car-control" },
-    { "path": "../mfe-vehicle-exchange" }
+    { "path": "../mfe-vehicle-exchange" },
+    { "path": "../mfe-dashboard" }
   ],
   "include": ["src"]
 }

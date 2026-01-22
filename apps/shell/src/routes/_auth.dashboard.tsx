@@ -1,5 +1,5 @@
 import { MfeErrorBoundary } from "@/components/MfeErrorBoundary";
-import { DashboardPage } from "@/pages/DashboardPage";
+import { DashboardPage } from "@apps/mfe-dashboard";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/dashboard")({

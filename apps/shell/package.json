@@ -12,6 +12,7 @@
     "@packages/ui": "workspace:*",
     "@packages/api-client": "workspace:*",
     "@packages/mfe-types": "workspace:*",
+    "@apps/mfe-dashboard": "workspace:*",
     "@apps/mfe-settings": "workspace:*",
     "@apps/mfe-reports": "workspace:*",
     "@apps/mfe-aao": "workspace:*",

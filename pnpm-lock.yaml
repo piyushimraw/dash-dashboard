@@ -180,6 +180,60 @@ importers:
         specifier: ^19.0.0
         version: 19.2.3(react@19.2.3)
 
+  apps/mfe-dashboard:
+    dependencies:
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@tanstack/react-router':
+        specifier: ^1.146.0
+        version: 1.154.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      lucide-react:
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
+  apps/mfe-rent:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: ^5.2.0
+        version: 5.2.2(react-hook-form@7.71.1(react@19.2.3))
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      lucide-react:
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+      react-hook-form:
+        specifier: ^7.71.0
+        version: 7.71.1(react@19.2.3)
+      zod:
+        specifier: ^4.0.0
+        version: 4.3.5
+
   apps/mfe-reports:
     dependencies:
       '@packages/event-bus':
@@ -197,6 +251,36 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.3(react@19.2.3)
+
+  apps/mfe-return:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: ^5.2.0
+        version: 5.2.2(react-hook-form@7.71.1(react@19.2.3))
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      lucide-react:
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+      react-hook-form:
+        specifier: ^7.71.0
+        version: 7.71.1(react@19.2.3)
+      zod:
+        specifier: ^4.0.0
+        version: 4.3.5
 
   apps/mfe-settings:
     dependencies:
@@ -242,6 +326,9 @@ importers:
       '@apps/mfe-car-control':
         specifier: workspace:*
         version: link:../mfe-car-control
+      '@apps/mfe-dashboard':
+        specifier: workspace:*
+        version: link:../mfe-dashboard
       '@apps/mfe-reports':
         specifier: workspace:*
         version: link:../mfe-reports
