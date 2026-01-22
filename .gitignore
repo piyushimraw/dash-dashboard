@@ -28,3 +28,7 @@ dev-dist/
 
 sw.js
 workbox-*.js
+
+
+#Docs
+.planning
