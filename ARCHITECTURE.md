@@ -2,295 +2,479 @@
 
 ## 1) Purpose / scope
 
-This repository is a **single-page application (SPA)** for a dashboard-style UI.
-It is currently a **frontend-only** project (no backend API client layer has been introduced yet).
+This repository is a **micro-frontend (MFE) dashboard application** built as a pnpm monorepo. It uses **build-time federation** where the shell application bundles all MFEs at build time, producing a single deployable artifact.
 
-The primary goals of the current architecture are:
+The primary goals of the architecture are:
 
-- fast local development & builds
-- type-safe routing and navigation
-- consistent, accessible UI primitives with a design system approach
-- a small, explicit state layer for cross-cutting concerns (auth)
+- **Team ownership boundaries** - Each MFE can be developed independently
+- **Type-safe contracts** - Shared types ensure compile-time verification
+- **Unified deployment** - Single Docker image simplifies operations
+- **Lazy loading** - MFEs load on-demand for optimal performance
 
 ---
 
-## 2) Technologies / language / framework used (and rationale)
+## 2) Project Structure
+
+```
+new-dash-ui/
+├── apps/
+│   ├── shell/                 # Host application (orchestrator)
+│   │   ├── src/
+│   │   │   ├── routes/        # TanStack Router routes (lazy load MFEs)
+│   │   │   ├── services/      # Auth service, MFE registry
+│   │   │   ├── store/         # Zustand state (auth, MFE loading)
+│   │   │   ├── components/    # Shell-specific components
+│   │   │   ├── layout/        # Sidebar, header, footer
+│   │   │   └── pages/         # MFE page wrappers
+│   │   ├── Dockerfile         # Multi-stage production build
+│   │   └── vite.config.ts     # Bundle optimization, chunk splitting
+│   ├── mfe-dashboard/         # Dashboard MFE (counter_agent, fleet_manager)
+│   ├── mfe-rent/              # Rent workflow MFE (counter_agent)
+│   ├── mfe-return/            # Return workflow MFE (counter_agent)
+│   ├── mfe-reservation-lookup/# Reservation lookup MFE (counter_agent)
+│   ├── mfe-vehicle-exchange/  # Vehicle exchange MFE (counter_agent)
+│   ├── mfe-car-control/       # Car control MFE (fleet_manager)
+│   ├── mfe-aao/               # AAO MFE (fleet_manager)
+│   ├── mfe-reports/           # Reports MFE (system_admin)
+│   └── mfe-settings/          # Settings MFE (system_admin)
+├── packages/
+│   ├── ui/                    # Shared UI components (shadcn/ui style)
+│   ├── api-client/            # React Query setup, API hooks
+│   ├── event-bus/             # Cross-MFE communication (mitt-based)
+│   └── mfe-types/             # Type contracts (auth, navigation, etc.)
+├── docker/
+│   └── nginx.conf             # Production server config (SPA routing)
+└── docker-compose.yml         # Local production demo
+```
+
+---
+
+## 3) Technologies / language / framework used (and rationale)
 
 ### Runtime / language
 
 - **TypeScript**
   - Used across the app for end-to-end type safety and refactorability.
-  - Configured in strict mode (see [`tsconfig.app.json`](tsconfig.app.json:1)).
+  - Project references enable cross-package type checking.
 
 - **React 19**
   - Component-based UI architecture with a broad ecosystem.
-  - The project enables the React Compiler via Babel for performance-oriented optimizations (see [`vite.config.ts`](vite.config.ts:1)).
+  - React Compiler enabled for automatic optimizations.
 
 ### Tooling: build, dev server, bundling
 
 - **Vite**
-  - Modern dev server and bundler with fast HMR and a minimal config surface.
-  - See scripts in [`package.json`](package.json:1) and config in [`vite.config.ts`](vite.config.ts:1).
+  - Modern dev server and bundler with fast HMR.
+  - TanStack Router plugin enables file-based routing with auto code-splitting.
+
+- **pnpm workspaces**
+  - Efficient monorepo package management.
+  - Strict dependency isolation (`shamefully-hoist=false`).
 
 - **Progressive Web App (PWA) via `vite-plugin-pwa`**
-  - Generates and registers a service worker + web app manifest for installability and offline-friendly behavior.
-  - Service worker registration is done in [`src/main.tsx`](src/main.tsx:1) via `virtual:pwa-register`.
-  - Install UX is handled in-app via [`src/hooks/usePWAInstall.ts`](src/hooks/usePWAInstall.ts:1) + [`src/components/PWAInstallBanner.tsx`](src/components/PWAInstallBanner.tsx:1).
-  - Configured in [`vite.config.ts`](vite.config.ts:1) (manifest, assets, `registerType`, dev options).
-
-- **React Compiler (Babel plugin)**
-  - Enabled through `babel-plugin-react-compiler` to allow compilation-time optimization of React components.
-  - Configured through Vite’s React plugin (see [`vite.config.ts`](vite.config.ts:10)).
+  - Generates and registers a service worker + web app manifest.
+  - `registerType: "autoUpdate"` keeps the app up-to-date.
+  - Install UX via `usePWAInstall` hook + `PWAInstallBanner` component.
 
 ### Routing
 
 - **TanStack Router**
-  - Strong TypeScript support, route-level data loading hooks, and explicit control via `beforeLoad` guards.
-  - The project uses **file-based routing** through the Vite plugin, which generates [`src/routeTree.gen.ts`](src/routeTree.gen.ts:1) from route modules in [`src/routes/`](src/routes/__root.tsx:1).
-  - Router created in [`src/main.tsx`](src/main.tsx:8).
-
-**Rationale:** type-safe routes and route guards are especially useful for authenticated layouts, redirects, and scalable route trees.
+  - Strong TypeScript support, route-level code splitting.
+  - `autoCodeSplitting: true` creates separate chunks per route.
+  - Route guards via `beforeLoad` for auth checks.
 
 ### State management
 
 - **Zustand** (+ `persist` middleware)
-  - Lightweight global state for cross-cutting concerns without heavy ceremony.
-  - Used for auth state persistence in localStorage under the key `auth-storage` (see [`src/store/useAuthStore.ts`](src/store/useAuthStore.ts:1)).
-
-**Rationale:** the current app needs only a small global store (login state + user id), making Zustand a good fit.
+  - Lightweight global state for auth and MFE loading states.
+  - Auth state persisted in localStorage.
 
 ### Styling / UI system
 
-- **Tailwind CSS v4**
-  - Utility-first styling enabling rapid iteration and consistent spacing/typography.
-  - Tailwind is integrated via the Vite plugin (see [`vite.config.ts`](vite.config.ts:3)) and imported in [`src/index.css`](src/index.css:1).
-  - The app defines design tokens (colors/radii) using Tailwind v4’s `@theme` (see [`src/index.css`](src/index.css:3)).
-
-- **Radix UI primitives**
-  - Accessible unstyled components used as building blocks (e.g., collapsible, dropdown menu, separator).
-  - Dependencies are listed in [`package.json`](package.json:12).
-
-- **“shadcn/ui-style” component approach** (local UI components)
-  - The codebase contains reusable UI wrappers in [`src/components/ui/`](src/components/ui/button.tsx:1).
-  - Uses `class-variance-authority` (CVA) + `clsx` + `tailwind-merge` to build variant-based components.
-  - The `cn()` helper lives in [`src/lib/utils.ts`](src/lib/utils.ts:4).
-
-**Rationale:** Tailwind + Radix + local wrapper components provide an efficient design system pattern with strong accessibility and consistent styling.
-
-### Icons
-
-- **lucide-react**
-  - Consistent icon set used across pages and navigation (see usage in [`src/components/Sidebar.tsx`](src/components/Sidebar.tsx:1)).
+- **Tailwind CSS v4** - Utility-first styling with CSS-based theme tokens.
+- **Radix UI primitives** - Accessible unstyled components.
+- **shadcn/ui-style components** - Variant-based reusable UI in `packages/ui`.
+- **lucide-react** - Consistent icon set.
 
 ### Forms & Validation
 
-- **React Hook Form** for performant form state management and submission handling.
-- **Zod** for schema-driven validation and TypeScript type inference.
-- Integrated using `@hookform/resolvers/zod`, keeping validation logic outside UI components.
-
-**Rationale:** This approach enforces separation of concerns, strong type safety, and consistent validation across forms.
+- **React Hook Form** for performant form state management.
+- **Zod** for schema-driven validation and TypeScript inference.
+- Integrated using `@hookform/resolvers/zod`.
 
 ### Server State & Data Fetching
 
-- **TanStack Query** (React Query) for server-state management, caching, and background synchronization.
-- Feature-based query and mutation hooks to keep data-fetching logic out of UI components.
-- Centralized QueryClient for global defaults such as retries, stale time, and refetch behavior.
-- Shared query key definitions to ensure consistent caching and safe invalidation.
+- **TanStack Query** (React Query) for server-state management, caching, and background sync.
+- Centralized QueryClient in `packages/api-client`.
 
-### Quality / correctness
+### Cross-MFE Communication
 
-- **ESLint**
-  - Base linting for TypeScript/React hooks and React Refresh expectations (see [`eslint.config.js`](eslint.config.js:1)).
+- **Event Bus** (`packages/event-bus`)
+  - Typed events via mitt for loose coupling between MFEs.
+  - Events: navigation, data refresh, notifications, auth state changes.
 
-- **TypeScript project references**
-  - Split app vs node (Vite config) compiler options (see [`tsconfig.json`](tsconfig.json:1), [`tsconfig.app.json`](tsconfig.app.json:1), [`tsconfig.node.json`](tsconfig.node.json:1)).
+### Quality / testing
 
-### Testing (current state + recommended approach)
-
-**Current state:** the repo includes unit/component testing dependencies (Vitest + jsdom + React Testing Library) and provides npm scripts for running them (see [`package.json`](package.json:1)).
-
-- Unit/component tests: `npm run test`, `npm run test:watch`, `npm run test:ui`, `npm run test:coverage`
-- E2E tests: `npm run test:e2e`, `npm run test:e2e:ui` (Playwright)
-
-> Note: Playwright typically requires a one-time browser install step (`npx playwright install`) in CI/dev environments.
-
-**Recommended layered test strategy (when tests are introduced):**
-
-1. **Unit tests (pure functions, utilities)**
-   - Target: helpers like [`cn()`](src/lib/utils.ts:4) and any future domain logic.
-   - Suggested tooling: **Vitest** (fits naturally with Vite).
-
-2. **Component tests (render + behavior)**
-   - Target: reusable UI components under [`src/components/ui/`](src/components/ui/button.tsx:1) and composed components like [`Sidebar`](src/components/Sidebar.tsx:220).
-   - Suggested tooling: **React Testing Library** + **@testing-library/jest-dom** assertions.
-   - Guideline: test user-observable behavior and accessibility roles/labels rather than implementation details.
-
-3. **Route/auth flow tests (integration-level)**
-   - Target: route guards and redirects defined via `beforeLoad` (e.g. unauthenticated access to the authenticated layout in [`src/routes/_auth.tsx`](src/routes/_auth.tsx:9)).
-   - Suggested approach: render the app router and simulate navigation with a controlled auth store state.
-   - Mocking: if/when API calls exist, prefer **MSW** for request mocking.
-
-4. **End-to-end tests (critical user journeys)**
-   - Target: login → dashboard navigation, sidebar interactions, and critical task flows.
-   - Suggested tooling: **Playwright** (fast, reliable cross-browser automation).
-   - Guideline: keep E2E small and focused on high-value scenarios.
-
-**Proposed conventions (when added):**
-
-- Place unit/component tests alongside code (e.g. `Button.test.tsx`) or under `src/__tests__/` (choose one and stay consistent).
-- Add scripts to [`package.json`](package.json:1), such as `test`, `test:watch`, `test:ui`, `test:e2e`.
+- **Vitest** - Unit and component testing.
+- **Playwright** - End-to-end testing.
+- **ESLint** - Code quality and React best practices.
 
 ---
 
-## 3) Overall architecture
+## 4) MFE Architecture
 
-### 3.1 High-level view
-
-At runtime, the system is a browser-delivered React SPA:
-
-- [`index.html`](index.html:1) loads the Vite-built bundle.
-- [`src/main.tsx`](src/main.tsx:1) creates the router, injects auth into router context, and mounts the React app.
-- TanStack Router matches routes defined in [`src/routes/`](src/routes/__root.tsx:1) and renders layouts/pages.
-- Global auth state lives in Zustand and is persisted to localStorage.
-- UI is composed from reusable components (`src/components/ui`) + domain components (e.g. [`src/components/Sidebar.tsx`](src/components/Sidebar.tsx:1)).
-
-### 3.2 Key architectural building blocks
-
-#### Routing layer (navigation + guards)
-
-- Router instance is created in [`src/main.tsx`](src/main.tsx:8) with `routeTree` from [`src/routeTree.gen.ts`](src/routeTree.gen.ts:116).
-- Route modules live under [`src/routes/`](src/routes/__root.tsx:1).
-- `/` redirects to `/dashboard` (see [`src/routes/index.tsx`](src/routes/index.tsx:1)).
-- `/login` prevents access when already authenticated via `beforeLoad` redirect (see [`src/routes/login.tsx`](src/routes/login.tsx:6)).
-- `/_auth` is the authenticated layout route and blocks unauthenticated access via `beforeLoad` (see [`src/routes/_auth.tsx`](src/routes/_auth.tsx:9)).
-- `/dashboard` is nested under the authenticated layout (see [`src/routes/_auth.dashboard.tsx`](src/routes/_auth.dashboard.tsx:4)).
-
-Auth is passed into router context from the store:
-
-- Zustand state → `context.auth.isLoggedIn` in [`src/main.tsx`](src/main.tsx:21)
-- Route guards check `context.auth.isLoggedIn` in `beforeLoad`.
-
-#### State layer (auth)
-
-- Auth state is stored in Zustand and persisted using `zustand/middleware` (see [`src/store/useAuthStore.ts`](src/store/useAuthStore.ts:1)).
-- Login flow (current behavior):
-  - user submits login form in [`src/pages/LoginPage.tsx`](src/pages/LoginPage.tsx:10)
-  - store `login(userId)` is called
-  - user is navigated to `/dashboard`
-
-> Note: The current login implementation is UI-only (no credential validation against a backend). This is a deliberate placeholder that keeps the routing/state architecture ready for a real auth integration.
-
-#### Presentation layer (pages + components)
-
-- Pages are in [`src/pages/`](src/pages/DashboardPage.tsx:1).
-- Reusable UI primitives are in [`src/components/ui/`](src/components/ui/button.tsx:1).
-- The authenticated layout composes navigation + header + routed content using `<Outlet />` (see [`src/routes/_auth.tsx`](src/routes/_auth.tsx:23)).
-
-#### Styling layer
-
-- Design tokens and global styles live in [`src/index.css`](src/index.css:1).
-- Components use Tailwind utility classes and variant patterns.
-
-#### PWA layer (service worker + install UX)
-
-- **Service worker generation**
-  - Driven by `vite-plugin-pwa` (see [`vite.config.ts`](vite.config.ts:1)).
-  - Uses `registerType: "autoUpdate"` to keep the installed app up-to-date with new deployments.
-  - Dev mode enables the service worker so the app can become “installable” while running `vite dev` (see `devOptions.enabled` in [`vite.config.ts`](vite.config.ts:1)).
-  - Generated artifacts are emitted by the build tooling (e.g. `dist/sw.js` in production builds; dev output can appear under `dev-dist/` such as [`dev-dist/sw.js`](dev-dist/sw.js:1)).
-
-- **Service worker registration**
-  - Registered at startup in [`src/main.tsx`](src/main.tsx:1) via:
-    - `registerSW({ immediate: true })` which registers as early as possible to let installability criteria be met.
-
-- **Install prompt + banner**
-  - [`src/hooks/usePWAInstall.ts`](src/hooks/usePWAInstall.ts:1) captures `beforeinstallprompt`, defers the native prompt, and tracks install state.
-  - Dismissal is persisted in localStorage under `pwa-install-dismissed`.
-  - [`src/components/PWAInstallBanner.tsx`](src/components/PWAInstallBanner.tsx:1) renders a bottom banner and calls `install()` to show the native install prompt.
-  - The banner is mounted globally from the root route so it can appear on any page (see [`src/routes/__root.tsx`](src/routes/__root.tsx:1)).
-
-- **Manifest / icons**
-  - The web app manifest is defined inline in [`vite.config.ts`](vite.config.ts:1) (name, colors, `display: "standalone"`, icons).
-  - The configured icon paths (e.g. `/pwa-192x192.png`, `/pwa-512x512.png`) must exist at the app’s public root at build time.
-
----
-
-## 4) High-level diagram
-
-### 4.1 Static/module architecture diagram
+### 4.1 High-level Architecture
 
 ```mermaid
 flowchart TB
-  Browser[Browser]
-  IndexHTML[index.html]
-  Main[src/main.tsx\ncreateRouter + RouterProvider]
-  SW[(Service Worker\nvite-plugin-pwa / Workbox)]
-  Cache[(Cache Storage - precache/runtime)]
-  RouteTree[src/routeTree.gen.ts\nGenerated route tree]
-  Routes[src/routes/*\nRoute modules + guards]
-  Pages[src/pages/*\nScreen-level components]
-  UI[src/components/ui/*\nReusable UI primitives]
-  Components[src/components/*\nDomain components (Sidebar)]
-  Store[src/store/useAuthStore.ts\nZustand + persist]
-  CSS[src/index.css\nTailwind v4 + theme]
-  LocalStorage[(localStorage\nauth-storage)]
+    subgraph Browser
+        Shell[Shell Application]
+    end
 
-  Browser --> IndexHTML --> Main
-  Browser <--> SW
-  SW <--> Cache
-  Main --> RouteTree
-  RouteTree --> Routes
-  Routes --> Pages
-  Pages --> UI
-  Pages --> Components
-  Components --> UI
+    subgraph "apps/ - Applications"
+        Shell --> MFE1[mfe-dashboard]
+        Shell --> MFE2[mfe-rent]
+        Shell --> MFE3[mfe-return]
+        Shell --> MFE4[mfe-reservation-lookup]
+        Shell --> MFE5[mfe-vehicle-exchange]
+        Shell --> MFE6[mfe-car-control]
+        Shell --> MFE7[mfe-aao]
+        Shell --> MFE8[mfe-reports]
+        Shell --> MFE9[mfe-settings]
+    end
 
-  Main --> Store
-  Store <--> LocalStorage
-  Pages --> Store
-  UI --> CSS
-  Pages --> CSS
-  Components --> CSS
+    subgraph "packages/ - Shared"
+        UI[ui - Components]
+        API[api-client - React Query]
+        EB[event-bus - Communication]
+        Types[mfe-types - Contracts]
+    end
+
+    Shell --> UI
+    Shell --> API
+    Shell --> EB
+    Shell --> Types
+
+    MFE1 --> UI
+    MFE1 --> API
+    MFE1 --> Types
+
+    MFE2 --> UI
+    MFE2 --> API
+    MFE2 --> Types
 ```
 
-### 4.2 Authenticated navigation flow (runtime)
+### 4.2 Shell Orchestration
+
+The shell application provides:
+
+1. **Authentication** - Login flow, session management, role-based access
+2. **Navigation** - Sidebar with role-filtered navigation items
+3. **Layout** - Header, sidebar, main content area
+4. **MFE Loading** - Lazy loading with loading states and error boundaries
+5. **Event Bus** - Centralized cross-MFE communication
+
+```mermaid
+flowchart LR
+    subgraph Shell["Shell (Orchestrator)"]
+        Router[TanStack Router]
+        Auth[Auth Service]
+        Registry[MFE Registry]
+        Layout[Layout Components]
+        ErrorBoundary[Error Boundaries]
+    end
+
+    Router --> Auth
+    Router --> Registry
+    Router --> Layout
+    Router --> ErrorBoundary
+
+    Auth --> |"Role check"| Registry
+    Registry --> |"MFE metadata"| Layout
+```
+
+### 4.3 Build Output (Code Splitting)
+
+The Vite build produces optimized chunks for caching efficiency:
+
+```mermaid
+flowchart TB
+    subgraph Build["Build Output (apps/shell/dist)"]
+        direction TB
+        Index[index.html]
+        Main[main chunk]
+
+        subgraph Routes["Route Chunks (lazy loaded)"]
+            R1[_auth.dashboard.js]
+            R2[_auth.rent.js]
+            R3[_auth.return.js]
+            R4[_auth.reservation_lookup.js]
+            R5[_auth.vehicle_exchange.js]
+            R6[_auth.carcontrol.js]
+            R7[_auth.aao.js]
+            R8[_auth.reports.js]
+            R9[_auth.settings.js]
+        end
+
+        subgraph Vendor["Vendor Chunks (cached long-term)"]
+            VR[vendor-react.js<br/>React, ReactDOM]
+            VX[vendor-radix.js<br/>Radix UI primitives]
+            VT[vendor-tanstack.js<br/>Router, Query, Table]
+            VZ[vendor-zustand.js<br/>State management]
+            VO[vendor-other.js<br/>Other deps]
+        end
+    end
+
+    Index --> Main
+    Main --> Routes
+    Main --> Vendor
+```
+
+### 4.4 Lazy Loading Flow
 
 ```mermaid
 sequenceDiagram
-  participant U as User
-  participant R as TanStack Router
-  participant S as Zustand Auth Store
-  participant LS as localStorage
+    participant U as User
+    participant R as TanStack Router
+    participant S as Shell Layout
+    participant L as Loading State
+    participant M as MFE Module
 
-  U->>R: Navigate to /dashboard
-  R->>S: Read isLoggedIn
-  S->>LS: (rehydrate persisted state if present)
-  alt not logged in
-    R-->>U: Redirect to /login (with ?redirect=...)
-  else logged in
-    R-->>U: Render Auth Layout + Dashboard
-  end
-
-  U->>R: Submit login form
-  R->>S: login(userId)
-  S->>LS: Persist auth-storage
-  R-->>U: Navigate to /dashboard
+    U->>R: Navigate to /rent
+    R->>S: Match _auth.rent route
+    S->>L: Show loading indicator
+    R->>M: import('./pages/RentPage')
+    Note over M: Dynamic import<br/>triggers chunk load
+    M-->>R: Module loaded
+    R->>S: Render MFE component
+    S->>L: Hide loading indicator
+    S-->>U: Display Rent MFE
 ```
 
 ---
 
-## 5) Current constraints / assumptions
+## 5) Package Architecture
 
-- No API layer yet (no `fetch`/axios service modules, no query caching library).
-- Auth is currently a client-side flag persisted to localStorage.
-- The architecture intentionally places auth checks in route guards (`beforeLoad`) to keep “page access rules” near routing.
-- No test framework is currently wired into the repo; the testing section above documents the intended direction.
+### 5.1 packages/mfe-types
+
+Shared TypeScript type definitions providing compile-time verification:
+
+| Type | Purpose |
+|------|---------|
+| `MfeMetadata`, `MfeRegistry` | MFE registration and lifecycle |
+| `AuthState`, `AuthService`, `User`, `Role` | Authentication contracts |
+| `NavigationItem`, `NavigationGroup` | Navigation structure |
+| `DialogDefinition`, `DialogState` | Cross-MFE modal system |
+
+### 5.2 packages/event-bus
+
+Typed event bus for cross-MFE communication using mitt:
+
+| Event | Payload | Purpose |
+|-------|---------|---------|
+| `navigation:change` | `{ path, state? }` | Request navigation |
+| `data:refresh` | `{ entity, id? }` | Trigger data refetch |
+| `notification:show` | `{ type, message, duration? }` | Show toast notification |
+| `auth:state-changed` | `{ isAuthenticated, user? }` | Auth state broadcast |
+
+### 5.3 packages/ui
+
+Shared UI component library (shadcn/ui style):
+
+- Form components: Button, Input, Label, Select, Checkbox
+- Layout: Card, Separator, Dialog, Sheet
+- Data display: DataTable, Badge, Avatar
+- Utilities: `cn()` helper for class merging
+
+### 5.4 packages/api-client
+
+React Query setup for server state:
+
+- Configured QueryClient with defaults
+- Query key factories for consistent caching
+- Reusable mutation hooks
 
 ---
 
-## 6) Extension points (expected evolution)
+## 6) Authentication & Authorization
 
-- Introduce an API client module under `src/lib/` (e.g., `src/lib/api/*`) and potentially add request-level auth handling.
-- Replace the placeholder login with a backend-driven auth flow (token storage, refresh, logout).
-- Add route-level loaders/actions in TanStack Router for data fetching, co-located with routes.
-- Add a server state library (e.g., TanStack Query) if/when the UI becomes data-heavy.
+### 6.1 Auth Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant R as TanStack Router
+    participant S as Zustand Store
+    participant LS as localStorage
+
+    U->>R: Navigate to /dashboard
+    R->>S: Read isAuthenticated
+    S->>LS: Rehydrate persisted state
+
+    alt Not authenticated
+        R-->>U: Redirect to /login
+        U->>R: Submit credentials
+        R->>S: login(username, password)
+        S->>LS: Persist auth state
+        R-->>U: Navigate to /dashboard
+    else Authenticated
+        R->>S: Check user role
+        alt Has permission
+            R-->>U: Render Dashboard MFE
+        else No permission
+            R-->>U: Redirect to /unauthorized
+        end
+    end
+```
+
+### 6.2 Role-Based Access
+
+| Role | Access |
+|------|--------|
+| `counter_agent` | Dashboard, Rent, Return, Reservation Lookup, Vehicle Exchange |
+| `fleet_manager` | Dashboard, Car Control, AAO |
+| `system_admin` | Reports, Settings |
+| `super_admin` | All MFEs |
+
+Route guards enforce role-based access via `beforeLoad`:
+
+```typescript
+// apps/shell/src/routes/_auth.rent.tsx
+beforeLoad: ({ context }) => {
+  const { auth } = context;
+  if (!auth.hasAnyRole(['counter_agent', 'super_admin'])) {
+    throw redirect({ to: '/unauthorized' });
+  }
+}
+```
+
+---
+
+## 7) Deployment Architecture
+
+### 7.1 Docker Production Build
+
+```mermaid
+flowchart LR
+    subgraph Build["Multi-stage Dockerfile"]
+        B1[Stage 1: Node.js<br/>pnpm install<br/>pnpm build]
+        B2[Stage 2: nginx:alpine<br/>Copy dist/<br/>Copy nginx.conf]
+    end
+
+    subgraph Runtime["Production"]
+        N[nginx]
+        D[dist/]
+        C[nginx.conf]
+    end
+
+    B1 --> B2
+    B2 --> N
+    N --> D
+    N --> C
+```
+
+### 7.2 nginx Configuration
+
+The nginx config handles SPA routing:
+
+- Serves static assets from `/dist`
+- Gzip compression for text assets
+- Falls back to `index.html` for client-side routing
+- Cache headers for vendor chunks (immutable)
+
+### 7.3 Commands
+
+```bash
+# Development
+pnpm dev                    # Start shell dev server (port 5173)
+
+# Production build
+pnpm build                  # Build all packages and shell
+
+# Docker
+docker-compose up --build   # Build and run on port 8080
+docker-compose down         # Stop containers
+```
+
+---
+
+## 8) Development Guide
+
+### 8.1 Adding a New MFE
+
+1. **Create MFE package:**
+   ```bash
+   mkdir -p apps/mfe-newfeature/src
+   ```
+
+2. **Add package.json:**
+   ```json
+   {
+     "name": "@apps/mfe-newfeature",
+     "private": true,
+     "dependencies": {
+       "@packages/ui": "workspace:*",
+       "@packages/mfe-types": "workspace:*"
+     }
+   }
+   ```
+
+3. **Create page component in shell:**
+   ```bash
+   # apps/shell/src/pages/NewFeaturePage.tsx
+   ```
+
+4. **Add route:**
+   ```bash
+   # apps/shell/src/routes/_auth.newfeature.tsx
+   ```
+
+5. **Update navigation in shell config**
+
+### 8.2 Shared Package Changes
+
+When modifying `packages/*`:
+
+1. Changes are immediately available in dev mode (pnpm workspace linking)
+2. Run `pnpm build` in the package to update compiled output
+3. TypeScript project references ensure cross-package type checking
+
+---
+
+## 9) Key Architectural Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Build-time federation | Simpler ops than runtime federation; single deployment artifact |
+| Each page = 1 MFE | Clear ownership boundaries; simple mental model |
+| Event bus for cross-MFE communication | Prevents tight coupling; typed events ensure correctness |
+| Shared types package | Compile-time verification of contracts between shell and MFEs |
+| Vendor chunk splitting | Separate cache lifetimes for React, UI libs, etc. |
+| TanStack Router auto code-splitting | Route-based lazy loading without manual configuration |
+
+---
+
+## 10) Testing Strategy
+
+### 10.1 Layers
+
+1. **Unit tests** - Pure functions, utilities (`cn()`, validators)
+2. **Component tests** - UI components with React Testing Library
+3. **Integration tests** - Route guards, auth flows with mocked stores
+4. **E2E tests** - Critical user journeys with Playwright
+
+### 10.2 Commands
+
+```bash
+pnpm test              # Run unit/component tests
+pnpm test:watch        # Watch mode
+pnpm test:coverage     # Coverage report
+pnpm test:e2e          # Playwright E2E tests
+```
+
+---
+
+## 11) Related Documentation
+
+- [CONTRACTS.md](docs/CONTRACTS.md) - Event bus events and type definitions
+- [README.md](README.md) - Quick start and project overview
