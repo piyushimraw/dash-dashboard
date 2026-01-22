@@ -206,7 +206,9 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
         className={cn(
           "h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 bg-sidebar flex flex-col shadow-xl transition-all duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full",
-          collapsed ? "lg:w-16" : "w-64",
+          // Mobile always full width, desktop respects collapsed state
+          "w-64",
+          collapsed && "lg:w-16",
         )}
       >
         {/* Logo & Brand */}
