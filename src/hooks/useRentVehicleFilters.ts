@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 const initialFilters: FilterState = {
   startDate: "",
   endDate: "",
-  status: "",
-  arrivalLocation:""
+  status: "All",
+  arrivalLocation: "",
 };
 
 export const useRentVehicleFilters = (data: TableType[] = []) => {
@@ -13,7 +13,11 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   const hasActiveFilters =
-    !!filters.startDate || !!filters.endDate || !!filters.status || !!filters.arrivalLocation || !!search;
+    !!filters.startDate ||
+    !!filters.endDate ||
+    (!!filters.status && filters.status !== "All") ||
+    !!filters.arrivalLocation ||
+    !!search;
 
   // Single source of filtering truth
   const filteredData = useMemo(() => {
@@ -35,12 +39,19 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
       }
 
       // Status
-      if (filters.status && item.resStatus !== filters.status) {
+      if (
+        filters.status &&
+        filters.status !== "All" &&
+        item.resStatus !== filters.status
+      ) {
         return false;
       }
 
       // arrival location
-      if (filters.arrivalLocation && item.arrivalLocation !== filters.arrivalLocation) {
+      if (
+        filters.arrivalLocation &&
+        item.arrivalLocation !== filters.arrivalLocation
+      ) {
         return false;
       }
 

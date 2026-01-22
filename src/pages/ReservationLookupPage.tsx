@@ -136,7 +136,7 @@ export default function ReservationLookupPage() {
   }, []);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto flex flex-col gap-6 px-4 py-6">
+    <div className="w-full mx-auto flex flex-col gap-6 px-4 py-6">
       {/* Header / Action bar */}
       <HeaderComponent />
       <div className=" flex flex-col sm:flex-row gap-3">
