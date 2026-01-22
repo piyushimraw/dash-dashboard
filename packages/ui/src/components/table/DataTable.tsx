@@ -66,9 +66,9 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="relative">
-      {/* Desktop Table View */}
-      <div className="bg-white shadow-sm">
-        <Table className="hidden md:table w-full table-auto">
+      {/* Table View */}
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <Table className="w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -164,104 +164,35 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
-        {table.getRowModel().rows.length === 0 ? (
-          <div className="text-center p-8 border border-neutrals-10 rounded-lg">
-            No Data Found
-          </div>
-        ) : (
-          table.getRowModel().rows.map((row) => (
-            <div
-              key={row.id}
-              className="border border-neutrals-10 rounded-lg p-4 bg-white shadow-sm space-y-3"
-            >
-              {row.getVisibleCells().map((cell) => {
-                const header = cell.column.columnDef.header;
-                const headerText =
-                  typeof header === "string"
-                    ? header
-                    : typeof header === "function"
-                      ? ""
-                      : "";
-
-                return (
-                  <div
-                    key={cell.id}
-                    onClick={() => {
-                      if (cell.column.columnDef.meta?.disableHighlight) return;
-                      cell.column.columnDef.meta?.onClick?.();
-                    }}
-                    className={clsx(
-                      "flex justify-between items-start gap-4",
-                      cell.column.columnDef.meta?.hasLink && "cursor-pointer",
-                    )}
-                  >
-                    <div className="font-medium text-sm text-gray-600 min-w-[100px]">
-                      {headerText}
-                    </div>
-                    <div className="flex-1 text-right text-sm">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))
-        )}
-      </div>
     </div>
   );
 }
 
 const Loader = () => {
   return (
-    <>
-      {/* Desktop skeleton */}
-      <div className="hidden md:block overflow-hidden border border-neutrals-10">
-        <table className="w-full border-collapse">
-          <thead className="bg-neutrals-5">
-            <tr>
-              {[...Array(6)].map((_, idx) => (
-                <th key={idx} className="px-4 py-3">
-                  <div className="h-4 w-24 rounded skeleton-shimmer" />
-                </th>
+    <div className="overflow-hidden border border-gray-200 rounded-lg">
+      <table className="w-full border-collapse">
+        <thead className="bg-gray-50">
+          <tr>
+            {[...Array(6)].map((_, idx) => (
+              <th key={idx} className="px-4 py-3">
+                <div className="h-4 w-24 rounded skeleton-shimmer" />
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {[...Array(5)].map((_, rowIdx) => (
+            <tr key={rowIdx} className="border-t border-gray-200">
+              {[...Array(6)].map((_, colIdx) => (
+                <td key={colIdx} className="px-4 py-3">
+                  <div className="h-4 w-full rounded skeleton-shimmer" />
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {[...Array(5)].map((_, rowIdx) => (
-              <tr key={rowIdx} className="border-t border-neutrals-10">
-                {[...Array(6)].map((_, colIdx) => (
-                  <td key={colIdx} className="px-4 py-3">
-                    <div className="h-4 w-full rounded skeleton-shimmer" />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Mobile skeleton */}
-      <div className="md:hidden space-y-4">
-        {[...Array(4)].map((_, idx) => (
-          <div
-            key={idx}
-            className="border border-neutrals-10 rounded-lg p-4 space-y-3"
-          >
-            {[...Array(5)].map((_, rowIdx) => (
-              <div className="flex justify-between" key={rowIdx}>
-                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
-                <div className="h-4 w-1/3 rounded skeleton-shimmer" />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
