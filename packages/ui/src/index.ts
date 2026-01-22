@@ -28,5 +28,8 @@ export { FormInput } from "./components/form/FormInput";
 export { FormSelect } from "./components/form/FormSelect";
 export { FormError } from "./components/form/FormError";
 
+// Offline Indicator
+export { OfflineIndicator } from "./components/OfflineIndicator";
+
 // Utilities
 export { cn } from "./lib/utils";
