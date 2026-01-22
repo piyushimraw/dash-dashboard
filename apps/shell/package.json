@@ -18,6 +18,7 @@
     "@apps/mfe-aao": "workspace:*",
     "@apps/mfe-car-control": "workspace:*",
     "@apps/mfe-vehicle-exchange": "workspace:*",
+    "@apps/mfe-rent": "workspace:*",
     "@tanstack/react-query": "^5.90.17",
     "@tanstack/react-router": "^1.146.2",
     "@tanstack/react-table": "^8.21.3",

@@ -1,7 +1,7 @@
 import { requireRole } from '@/auth/requireRole'
 import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
 import { ROLES } from '@/config/roles'
-import RentPage from '@/pages/RentPage'
+import { RentPage } from '@apps/mfe-rent'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/rent')({

@@ -329,6 +329,9 @@ importers:
       '@apps/mfe-dashboard':
         specifier: workspace:*
         version: link:../mfe-dashboard
+      '@apps/mfe-rent':
+        specifier: workspace:*
+        version: link:../mfe-rent
       '@apps/mfe-reports':
         specifier: workspace:*
         version: link:../mfe-reports
