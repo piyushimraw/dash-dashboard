@@ -144,8 +144,113 @@ importers:
         specifier: ^5.0.9
         version: 5.0.10(@types/react@19.2.9)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
 
+  apps/mfe-aao:
+    dependencies:
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
+  apps/mfe-car-control:
+    dependencies:
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
+  apps/mfe-reports:
+    dependencies:
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
+  apps/mfe-settings:
+    dependencies:
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
+  apps/mfe-vehicle-exchange:
+    dependencies:
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
   apps/shell:
     dependencies:
+      '@apps/mfe-aao':
+        specifier: workspace:*
+        version: link:../mfe-aao
+      '@apps/mfe-car-control':
+        specifier: workspace:*
+        version: link:../mfe-car-control
+      '@apps/mfe-reports':
+        specifier: workspace:*
+        version: link:../mfe-reports
+      '@apps/mfe-settings':
+        specifier: workspace:*
+        version: link:../mfe-settings
+      '@apps/mfe-vehicle-exchange':
+        specifier: workspace:*
+        version: link:../mfe-vehicle-exchange
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.71.1(react@19.2.3))
@@ -255,6 +360,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.4
         version: 1.2.4(@types/react@19.2.9)(react@19.2.3)
+      '@tanstack/react-table':
+        specifier: ^8.21.0
+        version: 8.21.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -270,6 +378,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.3(react@19.2.3)
+      react-hook-form:
+        specifier: ^7.71.0
+        version: 7.71.1(react@19.2.3)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0

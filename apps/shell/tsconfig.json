@@ -11,7 +11,12 @@
   "references": [
     { "path": "../../packages/ui" },
     { "path": "../../packages/api-client" },
-    { "path": "../../packages/mfe-types" }
+    { "path": "../../packages/mfe-types" },
+    { "path": "../mfe-settings" },
+    { "path": "../mfe-reports" },
+    { "path": "../mfe-aao" },
+    { "path": "../mfe-car-control" },
+    { "path": "../mfe-vehicle-exchange" }
   ],
   "include": ["src"]
 }
