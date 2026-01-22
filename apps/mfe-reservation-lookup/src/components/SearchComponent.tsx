@@ -1,6 +1,5 @@
 import { Search } from "lucide-react";
 import type { ChangeEvent } from "react";
-import { Input } from "@packages/ui";
 
 interface Props {
   search?: string;
@@ -14,15 +13,14 @@ export function SearchComponent({ setSearch }: Props) {
 
   return (
     <div className="relative flex-1">
-      <Search
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        size={20}
-      />
-      <Input
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+        <Search className="h-4 w-4" aria-hidden="true" />
+      </div>
+      <input
         type="text"
         placeholder="Customer name / email / phone"
         onChange={handleSearch}
-        className="pl-10"
+        className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
   );

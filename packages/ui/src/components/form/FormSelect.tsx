@@ -15,17 +15,6 @@ type Props = {
   options: Option[];
   icon?: React.ReactNode;
 };
-/*
-----------usage example------------
-    <FormSelect
-    name="role"
-    label="Role"
-    options={[
-        { label: "Admin", value: "admin" },
-        { label: "User", value: "user" },
-    ]}
-    />
-*/
 
 export function FormSelect({ name, label, options, icon }: Props) {
   const { register } = useFormContext();
@@ -34,43 +23,38 @@ export function FormSelect({ name, label, options, icon }: Props) {
   const error = errors?.[name];
 
   return (
-    <div className="space-y-1">
-      <Label htmlFor={name} className="text-sm font-medium">
-        {label}
-      </Label>
+    <div className="space-y-2">
+      <Label htmlFor={name}>{label}</Label>
 
       <div className="relative">
-        {/* Left icon */}
         {icon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
             {icon}
           </div>
         )}
-
-        {/* Select */}
         <select
           id={name}
           {...register(name)}
           className={cn(
-            "w-full h-11 min-h-[44px] rounded-lg border border-input bg-white px-4 pr-11 py-2 text-base shadow-sm transition-all duration-200 appearance-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50",
-            icon && "pl-11",
-            error && "border-red-500 focus:ring-red-500"
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "appearance-none pr-10",
+            icon && "pl-10",
+            error && "border-destructive focus-visible:ring-destructive"
           )}
         >
           <option value="" disabled hidden>
             {label}
           </option>
-
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
         </select>
-
-        {/* Right dropdown icon */}
-        <div className="absolute right-0 top-0 bottom-0 w-11 flex items-center justify-center text-muted-foreground pointer-events-none">
-          <ChevronDown size={16} />
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground">
+          <ChevronDown className="h-4 w-4" />
         </div>
       </div>
 

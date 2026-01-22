@@ -45,7 +45,6 @@ export function DataTable<TData, TValue>({
   globalSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
-  const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
 
   const table = useReactTable({
     data,
@@ -73,7 +72,7 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="bg-neutrals-5 border-b-neutrals-10"
+                className="bg-gray-50 border-b border-gray-200"
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -86,18 +85,10 @@ export function DataTable<TData, TValue>({
                         header.column.toggleSorting();
                       }}
                       className={clsx(
-                        "h-[44px] py-3 px-4 select-none",
+                        "h-[44px] py-3 px-4 select-none bg-gray-50",
                         header.column.columnDef.meta?.className,
-                        header.column.getCanSort() && "cursor-pointer",
-                        !header.column.columnDef.meta?.disableHighlight &&
-                          header.column.getCanSort() &&
-                          header.column.id === hoveredColumn &&
-                          "bg-neutrals-10",
-                        !header.column.columnDef.meta?.disableHighlight &&
-                          "border-b-2 border-b-secondary-black shadow-shallow z-10 bg-white",
+                        header.column.getCanSort() && "cursor-pointer hover:bg-gray-100",
                       )}
-                      onMouseEnter={() => setHoveredColumn(header.column.id)}
-                      onMouseLeave={() => setHoveredColumn(null)}
                     >
                       <div className="flex gap-2 self-stretch">
                         {flexRender(
@@ -130,25 +121,16 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="border-b-neutrals-10">
+                <TableRow key={row.id} className="border-b border-gray-100 hover:bg-gray-50">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
                       onClick={() => {
-                        if (cell.column.columnDef.meta?.disableHighlight)
-                          return;
                         cell.column.columnDef.meta?.onClick?.();
                       }}
-                      onMouseEnter={() => setHoveredColumn(cell.column.id)}
-                      onMouseLeave={() => setHoveredColumn(null)}
                       className={clsx(
                         "h-[55px] relative group p-4",
-                        !cell.column.columnDef.meta?.disableHighlight &&
-                          cell.column.getCanSort() &&
-                          cell.column.id === hoveredColumn &&
-                          "bg-neutrals-5",
-                        cell.column.columnDef.meta?.hasLink &&
-                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-secondary-black hover:bg-neutrals-5",
+                        cell.column.columnDef.meta?.hasLink && "cursor-pointer",
                       )}
                     >
                       {flexRender(
