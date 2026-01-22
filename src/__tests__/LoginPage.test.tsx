@@ -1,8 +1,10 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent , waitFor} from "@testing-library/react";
 import {LoginPage} from "../pages/LoginPage";
 import { describe, it, expect , vi} from "vitest";
 import userEvent from '@testing-library/user-event';
 import { server } from '@/mocks/server';
+import { http, HttpResponse } from 'msw';
+import LoginForm from "@/forms/login/LoginForm";
 
 const EmailPlaceHolder = "Enter your user ID";
 const PasswordPlaceHolder =  "Enter your password";
@@ -47,6 +49,7 @@ describe('LoginForm', () => {
 
 //Mock Service Worker
 describe('LoginForm with MSW', () => {
+  
   it('shows error message when credentials are invalid', async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
@@ -83,4 +86,32 @@ describe('LoginForm with MSW', () => {
       screen.queryByText(/user id or password is incorrect/i)
     ).not.toBeInTheDocument();
   });
+
+  it('shows API error when server returns 500', async () => {
+      const user = userEvent.setup();
+      // Mock MSW to return 500 for login API
+      server.use(
+        http.post('/api/login', () => {
+          return HttpResponse.json(
+            { message: 'Internal Server Error' },
+            { status: 500 }
+          );
+        })
+      );
+
+      render(<LoginForm />);
+
+      await user.type(screen.getByPlaceholderText(EmailPlaceHolder), 'admin');
+      await user.type(screen.getByPlaceholderText(PasswordPlaceHolder), 'admin123');
+      await user.type(screen.getByPlaceholderText(/location/i), 'Bangalore');
+      await user.selectOptions(screen.getByLabelText(/login location/i), 'CASFO15');
+
+      // Click Sign In
+      await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+      // Assert API error message is shown
+      await waitFor(() => {
+        expect(screen.getByText('API error occurred')).toBeInTheDocument();
+      });
+});
 });

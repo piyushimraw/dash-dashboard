@@ -18,7 +18,9 @@ export default function LoginForm() {
 
   const login = useAuthStore((state) => state.login);
   const [loginError, setLoginError] = useState(false);
-  // const [apiErrorMsg,setApiErrorMsg] = useState('');
+  const [apiError, setApiError] = useState(false);
+  const [networkError, setNetworkError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -32,25 +34,40 @@ export default function LoginForm() {
     },
   });
 
-
   const onSubmit = async (data: LoginFormValues) => {
+  setIsLoading(true);
+  setLoginError(false);
+  setApiError(false);
+  setNetworkError(false);
+
   try {
-    const success = import.meta.env.MODE === 'test' ? await loginService(data): login(data.userId, data.password);
+    const success = import.meta.env.MODE === 'test' ? await loginService(data): login(data.userId, data.password); 
     if (success) {
-      setLoginError(false);
-      // setApiErrorMsg('');
       navigate({ to: '/dashboard' });
-    } else {
-      setLoginError(true);
-      // setApiErrorMsg('');
-      console.log('Wrong credentials...');
     }
   } catch (error) {
-    console.error('Login failed with error:', error);
-    setLoginError(true);
-    // setApiErrorMsg(error as string);
+    // Catch errors thrown by loginService
+    // console.log('ErrorFromLoginService', error);
+
+    if (error instanceof Error) {
+      switch (error.message) {
+        case 'INVALID_CREDENTIALS':
+          setLoginError(true);
+          break;
+        case 'API_ERROR':
+          setApiError(true);
+          break;
+        case 'NETWORK_ERROR':
+        default:
+          setNetworkError(true);
+          break;
+      }
+    }
+  } finally {
+    setIsLoading(false);
   }
 };
+
 
   return (
     <>
@@ -96,13 +113,9 @@ export default function LoginForm() {
           </div>
 
           <div>
-              {loginError && (
-                  <p className="text-sm text-red-600">
-                    User ID or password is incorrect
-                  </p>
-              )}
-
-              {/* {apiError && <p className="text-sm text-red-600">API error occurred</p>} */}
+              {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
+              {apiError && <p className="text-sm text-red-600">API error occurred</p>}
+              {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
           </div>
 
           <Button
