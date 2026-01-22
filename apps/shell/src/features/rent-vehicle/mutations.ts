@@ -1,6 +1,5 @@
     // import { useMutation, useQueryClient } from "@tanstack/react-query";
-    // import { http } from "@/lib/api/http";
-    // import { queryKeys } from "@/lib/react-query/queryKeys";
+    // import { http, queryKeys } from "@packages/api-client";
 
     // type CreateUserPayload = {
     //   name: string;

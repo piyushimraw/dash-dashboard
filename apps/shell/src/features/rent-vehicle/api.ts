@@ -1,4 +1,4 @@
-import { http } from "@/lib/api/http";
+import { http } from "@packages/api-client";
 
 export type RentedVehicleResponseType = {
   id: number;

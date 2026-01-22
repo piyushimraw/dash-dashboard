@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getRentedVehicleList } from "./api";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { queryKeys } from "@packages/api-client";
 
 export const useGetRentedVehicleList = () =>
   useQuery({
