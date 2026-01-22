@@ -18,7 +18,8 @@
     { "path": "../mfe-car-control" },
     { "path": "../mfe-vehicle-exchange" },
     { "path": "../mfe-rent" },
-    { "path": "../mfe-dashboard" }
+    { "path": "../mfe-dashboard" },
+    { "path": "../mfe-return" }
   ],
   "include": ["src"]
 }

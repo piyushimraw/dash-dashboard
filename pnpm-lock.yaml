@@ -335,6 +335,9 @@ importers:
       '@apps/mfe-reports':
         specifier: workspace:*
         version: link:../mfe-reports
+      '@apps/mfe-return':
+        specifier: workspace:*
+        version: link:../mfe-return
       '@apps/mfe-settings':
         specifier: workspace:*
         version: link:../mfe-settings
