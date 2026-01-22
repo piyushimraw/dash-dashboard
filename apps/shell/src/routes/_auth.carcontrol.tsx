@@ -1,7 +1,7 @@
 import { requireRole } from '@/auth/requireRole'
 import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
 import { ROLES } from '@/config/roles'
-import CarControl from '@/pages/CarControl'
+import { CarControlPage } from '@apps/mfe-car-control'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/carcontrol')({
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_auth/carcontrol')({
 function RouteComponent() {
   return (
     <MfeErrorBoundary mfeName="Car Control">
-      <CarControl />
+      <CarControlPage />
     </MfeErrorBoundary>
   )
 }

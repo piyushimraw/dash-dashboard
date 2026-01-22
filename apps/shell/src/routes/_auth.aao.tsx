@@ -1,5 +1,5 @@
 import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
-import AaoPage from '@/pages/AaoPage'
+import { AaoPage } from '@apps/mfe-aao'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/aao')({

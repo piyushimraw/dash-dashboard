@@ -1,5 +1,5 @@
 import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
-import VehicleExchangePage from '@/pages/VehicleExchangePage'
+import { VehicleExchangePage } from '@apps/mfe-vehicle-exchange'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/vehicle_exchange')({
