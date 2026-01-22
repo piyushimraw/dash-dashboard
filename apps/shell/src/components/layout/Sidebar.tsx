@@ -161,8 +161,25 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
   const location = useLocation();
   const visibleItems = menuItems.filter((item) => hasAnyRole(item.roles));
 
+  // Track if we're on desktop (lg breakpoint = 1024px)
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 1024;
+    }
+    return true;
+  });
+
+  // Update isDesktop on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Desktop collapsed state with localStorage persistence
-  const [collapsed, setCollapsed] = useState(() => {
+  const [collapsedPreference, setCollapsedPreference] = useState(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("sidebar-collapsed");
       return stored === "true";
@@ -170,15 +187,18 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
     return false;
   });
 
+  // Only apply collapsed state on desktop
+  const collapsed = isDesktop && collapsedPreference;
+
   // Persist collapsed state
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("sidebar-collapsed", collapsed.toString());
+      localStorage.setItem("sidebar-collapsed", collapsedPreference.toString());
     }
-  }, [collapsed]);
+  }, [collapsedPreference]);
 
   const toggleCollapsed = () => {
-    setCollapsed((prev) => !prev);
+    setCollapsedPreference((prev) => !prev);
   };
 
   return (
