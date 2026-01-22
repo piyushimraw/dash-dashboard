@@ -3,6 +3,8 @@ import { Menu, ChevronRight } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
 import { useMemo } from "react";
 import useAuthStore from "@/store/useAuthStore";
+import { OfflineIndicator } from "@packages/ui";
+import { useNetworkState } from "@/hooks/useNetworkState";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -12,6 +14,7 @@ interface HeaderProps {
 export function Header({ onMenuClick, sidebarOpen }: HeaderProps) {
   const location = useLocation();
   const { userId } = useAuthStore();
+  const isOnline = useNetworkState();
 
   // Generate breadcrumbs from pathname (max 3 levels)
   const breadcrumbs = useMemo(() => {
@@ -32,7 +35,9 @@ export function Header({ onMenuClick, sidebarOpen }: HeaderProps) {
   const pageName = breadcrumbs[breadcrumbs.length - 1] || "Dashboard";
 
   return (
-    <header className="h-14 sm:h-16 border-b bg-white/80 backdrop-blur-sm flex items-center justify-between px-4 sm:px-6 flex-shrink-0">
+    <>
+      <OfflineIndicator isOnline={isOnline} />
+      <header className="h-14 sm:h-16 border-b bg-white/80 backdrop-blur-sm flex items-center justify-between px-4 sm:px-6 flex-shrink-0">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
@@ -87,5 +92,6 @@ export function Header({ onMenuClick, sidebarOpen }: HeaderProps) {
         </div>
       </div>
     </header>
+    </>
   );
 }
