@@ -12,9 +12,6 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 # Copy all package.json files for workspace resolution
 COPY packages/api-client/package.json ./packages/api-client/
 COPY packages/event-bus/package.json ./packages/event-bus/
-COPY packages/mfe-aao/package.json ./packages/mfe-aao/
-COPY packages/mfe-rentals/package.json ./packages/mfe-rentals/
-COPY packages/mfe-returns/package.json ./packages/mfe-returns/
 COPY packages/mfe-types/package.json ./packages/mfe-types/
 COPY packages/ui/package.json ./packages/ui/
 
