@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
     <div className="relative">
       {/* Desktop Table View */}
       <div className="bg-white shadow-sm">
-        <Table className="hidden lg:table w-full table-auto">
+        <Table className="hidden md:table w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -165,7 +165,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
+      <div className="md:hidden space-y-4">
         {table.getRowModel().rows.length === 0 ? (
           <div className="text-center p-8 border border-neutrals-10 rounded-lg">
             No Data Found

@@ -48,9 +48,9 @@ export function FormInput({
 
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
             {icon}
-          </span>
+          </div>
         )}
 
         <Input
@@ -58,7 +58,7 @@ export function FormInput({
           type={type}
           placeholder={placeholder}
           {...register(name)}
-          className={`${icon ? "pl-10" : ""} ${
+          className={`${icon ? "pl-11" : ""} ${
             error ? "border-red-500 focus-visible:ring-red-500" : ""
           }`}
         />
