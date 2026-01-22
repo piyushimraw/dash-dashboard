@@ -41,6 +41,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.90.17
         version: 5.90.19(react@19.2.3)
+      '@tanstack/react-query-persist-client':
+        specifier: ^5.90.21
+        version: 5.90.21(@tanstack/react-query@5.90.19(react@19.2.3))(react@19.2.3)
       '@tanstack/react-router':
         specifier: ^1.146.2
         version: 1.154.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -98,6 +101,9 @@ importers:
       globals:
         specifier: ^16.5.0
         version: 16.5.0
+      idb-keyval:
+        specifier: ^6.2.2
+        version: 6.2.2
       jsdom:
         specifier: ^27.4.0
         version: 27.4.0
@@ -115,7 +121,7 @@ importers:
         version: 7.71.1(react@19.2.3)
       rollup-plugin-visualizer:
         specifier: ^6.0.5
-        version: 6.0.5(rollup@4.56.0)
+        version: 6.0.5(rollup@2.79.2)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -7413,14 +7419,14 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
-  rollup-plugin-visualizer@6.0.5(rollup@4.56.0):
+  rollup-plugin-visualizer@6.0.5(rollup@2.79.2):
     dependencies:
       open: 8.4.2
       picomatch: 4.0.3
       source-map: 0.7.6
       yargs: 17.7.2
     optionalDependencies:
-      rollup: 4.56.0
+      rollup: 2.79.2
 
   rollup@2.79.2:
     optionalDependencies:
