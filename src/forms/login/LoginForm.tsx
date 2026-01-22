@@ -9,10 +9,11 @@ import useAuthStore from "@/store/useAuthStore";
 import { Building2, Lock, MapPin, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FormSelect from "@/components/form/FormSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginService } from "@/services/loginService";
 
 
+//Todo -> remove import.meta.env.MODE === 'test' from code and call an mock api here.
 export default function LoginForm() {
   const navigate = useNavigate();
 
@@ -21,6 +22,7 @@ export default function LoginForm() {
   const [apiError, setApiError] = useState(false);
   const [networkError, setNetworkError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState(LOCATION_OPTIONS);
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -33,6 +35,17 @@ export default function LoginForm() {
       loginLocation: '',
     },
   });
+
+  useEffect(() => {
+    if (import.meta.env.MODE === 'test') {
+      setIsLoading(true);
+      fetch('/api/locations')
+        .then(res => res.json())
+        .then(data => setOptions(data))
+        .catch(() => setApiError(true))
+        .finally(() => setIsLoading(false));
+    }
+  }, []);
 
   const onSubmit = async (data: LoginFormValues) => {
   setIsLoading(true);
@@ -74,7 +87,7 @@ export default function LoginForm() {
       <FormProvider
         methods={methods}
         onSubmit={methods.handleSubmit(onSubmit, (errors) => {
-          console.log("Validation Errors:", errors);
+          console.log("Validation Errors on handle submit :", errors);
         })}
       >
         <div className="space-y-5">
@@ -108,7 +121,7 @@ export default function LoginForm() {
               name="loginLocation"
               label="Login Location"
               icon={<Building2 size={20} />}
-              options={LOCATION_OPTIONS}
+              options={options}
             />
           </div>
 
@@ -116,6 +129,7 @@ export default function LoginForm() {
               {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
               {apiError && <p className="text-sm text-red-600">API error occurred</p>}
               {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
+              {isLoading && <p>Loading</p>}
           </div>
 
           <Button

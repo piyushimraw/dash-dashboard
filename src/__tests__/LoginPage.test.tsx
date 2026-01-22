@@ -28,6 +28,24 @@ describe("LoginPage", () => {
 });
 
 
+describe('LoginForm Integration - Form Validation', () => {
+  it('shows validation errors when fields are empty', async () => {
+    const user = userEvent.setup();
+
+    render(<LoginForm />);
+
+    // Click Sign In without filling any fields
+    await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+    // Assert validation messages for all required fields
+    expect(await screen.findByText(/user id is required/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Password must be at least 6 characters/i)).toBeInTheDocument();
+    expect(await screen.findByText(/user location is required/i)).toBeInTheDocument();
+    expect(await screen.findByText(/login location is required/i)).toBeInTheDocument();
+  });
+});
+
+
 describe('LoginForm', () => {
   it('shows error message when credentials are wrong', async () => {
     const user = userEvent.setup();
@@ -47,7 +65,7 @@ describe('LoginForm', () => {
   });
 });
 
-//Mock Service Worker
+// //Mock Service Worker
 describe('LoginForm with MSW', () => {
   
   it('shows error message when credentials are invalid', async () => {
