@@ -1,5 +1,10 @@
+import {
+  DEFAULT_ITEMS_SIZE,
+  DEFAULT_PAGE_INDEX,
+} from "@/components/ui/table/utils";
 import type { FilterState, TableType } from "@/types/rent-vehicles/type";
-import { useMemo, useState } from "react";
+import type { PaginationState } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 
 const initialFilters: FilterState = {
   startDate: "",
@@ -7,8 +12,11 @@ const initialFilters: FilterState = {
   status: "All",
   arrivalLocation: "",
 };
-
 export const useRentVehicleFilters = (data: TableType[] = []) => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: DEFAULT_PAGE_INDEX,
+    pageSize: DEFAULT_ITEMS_SIZE,
+  });
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
@@ -68,6 +76,13 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     });
   }, [data, filters, search]);
 
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: 0,
+    }));
+  }, [search, filters]);
+
   // UI-only action
   const submitFilters = (filtersTemp: FilterState) => {
     setFilters(filtersTemp);
@@ -85,6 +100,8 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     setSearch,
     filteredData,
     hasActiveFilters,
+    pagination,
+    setPagination,
     submitFilters,
     resetFilters,
   };

@@ -5,7 +5,7 @@ interface Props {
   search?: string;
   setSearch: (v: string) => void;
 }
-export default function SearchComponent({ setSearch }: Props) {
+export default function SearchComponent({ setSearch, search }: Props) {
   const handleSearch = (value: string) => {
     setSearch(value);
   };
@@ -18,6 +18,7 @@ export default function SearchComponent({ setSearch }: Props) {
       <Input
         type="text"
         placeholder="Customer name / email / phone"
+        value={search}
         onChange={(e) => handleSearch(e.target.value)}
         className="pl-10"
       />

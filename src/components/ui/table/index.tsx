@@ -6,6 +6,8 @@ import {
   type SortingState,
   useReactTable,
   getFilteredRowModel,
+  getPaginationRowModel,
+  type PaginationState,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -15,10 +17,12 @@ import {
   TableHead,
   TableCell,
 } from "./table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import clsx from "clsx";
 import { type Row } from "@tanstack/react-table";
+import { TablePagination } from "./table-pagination";
+import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from "./utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -26,6 +30,9 @@ interface DataTableProps<TData, TValue> {
   defaultSort?: SortingState;
   isLoading?: boolean;
   globalSearch?: string;
+  pagination?: PaginationState;
+  onPaginationChange?: React.Dispatch<React.SetStateAction<PaginationState>>;
+  disabledPagination?: boolean;
 }
 
 export function customSortDataTable<TData>(field: keyof TData) {
@@ -43,9 +50,21 @@ export function DataTable<TData, TValue>({
   defaultSort,
   isLoading,
   globalSearch,
+  pagination: paginationProp,
+  onPaginationChange,
+  disabledPagination = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
   const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
+  // internal pagination (fallback)
+  const [internalPagination, setInternalPagination] = useState<PaginationState>(
+    {
+      pageIndex: DEFAULT_PAGE_INDEX,
+      pageSize: DEFAULT_ITEMS_SIZE,
+    },
+  );
+  const pagination = paginationProp ?? internalPagination;
+  const setPagination = onPaginationChange ?? setInternalPagination;
 
   const table = useReactTable({
     data,
@@ -53,12 +72,20 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       globalFilter: globalSearch,
+      pagination,
     },
     onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    autoResetPageIndex: false,
   });
+  // Reset to page 0 when filters change
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [globalSearch]);
 
   if (isLoading) {
     return <Loader />;
@@ -67,8 +94,8 @@ export function DataTable<TData, TValue>({
   return (
     <div className="relative">
       {/* Desktop Table View */}
-      <div className="bg-white shadow-sm">
-        <Table className="hidden lg:table w-full table-auto">
+      <div className="hidden lg:block bg-white shadow-sm">
+        <Table className="table w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -162,6 +189,11 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+        <TablePagination
+          key={`${pagination.pageIndex}-${pagination.pageSize}`}
+          table={table}
+          disabledPagination={disabledPagination}
+        />
       </div>
 
       {/* Mobile Card View */}
@@ -212,6 +244,11 @@ export function DataTable<TData, TValue>({
             </div>
           ))
         )}
+        <TablePagination
+          key={`${pagination.pageIndex}-${pagination.pageSize}`}
+          table={table}
+          disabledPagination={disabledPagination}
+        />
       </div>
     </div>
   );

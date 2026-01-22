@@ -13,9 +13,12 @@ export default function ReservationLookupPage() {
   const {
     initialFilters,
     filters,
+    search,
     setSearch,
     filteredData,
     hasActiveFilters,
+    pagination,
+    setPagination,
     submitFilters,
     resetFilters,
   } = useRentVehicleFilters(data);
@@ -141,7 +144,7 @@ export default function ReservationLookupPage() {
       <HeaderComponent />
       <div className=" flex flex-col sm:flex-row gap-3">
         {/* Search Input */}
-        <SearchComponent setSearch={setSearch} />
+        <SearchComponent setSearch={setSearch} search={search} />
         {/* other filters */}
         <FiltersComponent
           initialFilters={initialFilters}
@@ -156,6 +159,9 @@ export default function ReservationLookupPage() {
         columns={tableColumn as ColumnDef<unknown, unknown>[]}
         data={filteredData as TableType[]}
         isLoading={isLoading}
+        disabledPagination={hasActiveFilters}
+        pagination={pagination}
+        onPaginationChange={setPagination}
       />
     </div>
   );
