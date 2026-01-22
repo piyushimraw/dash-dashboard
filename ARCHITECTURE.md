@@ -225,7 +225,7 @@ flowchart TB
   IndexHTML[index.html]
   Main[src/main.tsx\ncreateRouter + RouterProvider]
   SW[(Service Worker\nvite-plugin-pwa / Workbox)]
-  Cache[(Cache Storage\n(precache/runtime caching))]
+  Cache[(Cache Storage - precache/runtime)]
   RouteTree[src/routeTree.gen.ts\nGenerated route tree]
   Routes[src/routes/*\nRoute modules + guards]
   Pages[src/pages/*\nScreen-level components]
