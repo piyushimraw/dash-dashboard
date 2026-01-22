@@ -1,7 +1,7 @@
 import { requireRole } from '@/auth/requireRole'
 import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
 import { ROLES } from '@/config/roles'
-import SettingPage from '@/pages/SettingPage'
+import { SettingsPage } from '@apps/mfe-settings'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/settings')({
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_auth/settings')({
 function RouteComponent() {
   return (
     <MfeErrorBoundary mfeName="Settings">
-      <SettingPage />
+      <SettingsPage />
     </MfeErrorBoundary>
   )
 }
