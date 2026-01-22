@@ -1,4 +1,5 @@
 import { requireRole } from "@/auth/requireRole";
+import { MfeErrorBoundary } from "@/components/MfeErrorBoundary";
 import { ROLES } from "@/config/roles";
 import ReservationLookupPage from "@/pages/ReservationLookupPage";
 import { createFileRoute } from "@tanstack/react-router";
@@ -9,5 +10,9 @@ export const Route = createFileRoute("/_auth/reservation_lookup")({
 });
 
 function RouteComponent() {
-  return <ReservationLookupPage />;
+  return (
+    <MfeErrorBoundary mfeName="Reservation Lookup">
+      <ReservationLookupPage />
+    </MfeErrorBoundary>
+  );
 }

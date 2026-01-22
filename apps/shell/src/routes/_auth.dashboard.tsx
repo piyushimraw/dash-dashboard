@@ -1,3 +1,4 @@
+import { MfeErrorBoundary } from "@/components/MfeErrorBoundary";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -6,5 +7,9 @@ export const Route = createFileRoute("/_auth/dashboard")({
 });
 
 function RouteComponent() {
-  return <DashboardPage />;
+  return (
+    <MfeErrorBoundary mfeName="Dashboard">
+      <DashboardPage />
+    </MfeErrorBoundary>
+  );
 }
