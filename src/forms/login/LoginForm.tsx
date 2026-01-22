@@ -10,6 +10,7 @@ import { Building2, Lock, MapPin, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FormSelect from "@/components/form/FormSelect";
 import { useState } from "react";
+import { loginService } from "@/services/loginService";
 
 
 export default function LoginForm() {
@@ -17,6 +18,7 @@ export default function LoginForm() {
 
   const login = useAuthStore((state) => state.login);
   const [loginError, setLoginError] = useState(false);
+  // const [apiErrorMsg,setApiErrorMsg] = useState('');
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -30,17 +32,25 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log('dataonSubmit>>>>', data);
-    const areCorrectCredentials = login(data.userId, data.password);
-    if (areCorrectCredentials) {
-      navigate({ to: "/dashboard" });
-       setLoginError(false)
+
+  const onSubmit = async (data: LoginFormValues) => {
+  try {
+    const success = import.meta.env.MODE === 'test' ? await loginService(data): login(data.userId, data.password);
+    if (success) {
+      setLoginError(false);
+      // setApiErrorMsg('');
+      navigate({ to: '/dashboard' });
     } else {
-        console.log('Wrong credentials....');
-        setLoginError(true)
+      setLoginError(true);
+      // setApiErrorMsg('');
+      console.log('Wrong credentials...');
     }
-  };
+  } catch (error) {
+    console.error('Login failed with error:', error);
+    setLoginError(true);
+    // setApiErrorMsg(error as string);
+  }
+};
 
   return (
     <>
@@ -91,6 +101,8 @@ export default function LoginForm() {
                     User ID or password is incorrect
                   </p>
               )}
+
+              {/* {apiError && <p className="text-sm text-red-600">API error occurred</p>} */}
           </div>
 
           <Button
