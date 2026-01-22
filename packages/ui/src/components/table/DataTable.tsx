@@ -67,8 +67,8 @@ export function DataTable<TData, TValue>({
   return (
     <div className="relative">
       {/* Desktop Table View */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-        <Table className="hidden lg:table w-full table-auto">
+      <div className="hidden lg:block bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <Table className="w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
