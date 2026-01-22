@@ -252,6 +252,36 @@ importers:
         specifier: ^19.0.0
         version: 19.2.3(react@19.2.3)
 
+  apps/mfe-reservation-lookup:
+    dependencies:
+      '@packages/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
+      '@packages/event-bus':
+        specifier: workspace:*
+        version: link:../../packages/event-bus
+      '@packages/mfe-types':
+        specifier: workspace:*
+        version: link:../../packages/mfe-types
+      '@packages/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@tanstack/react-query':
+        specifier: ^5.90.0
+        version: 5.90.19(react@19.2.3)
+      '@tanstack/react-table':
+        specifier: ^8.21.0
+        version: 8.21.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      lucide-react:
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+
   apps/mfe-return:
     dependencies:
       '@hookform/resolvers':
@@ -335,6 +365,9 @@ importers:
       '@apps/mfe-reports':
         specifier: workspace:*
         version: link:../mfe-reports
+      '@apps/mfe-reservation-lookup':
+        specifier: workspace:*
+        version: link:../mfe-reservation-lookup
       '@apps/mfe-return':
         specifier: workspace:*
         version: link:../mfe-return

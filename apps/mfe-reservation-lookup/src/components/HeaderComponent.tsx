@@ -1,7 +1,7 @@
 // import { useGlobalDialogStore } from "../dialogs/useGlobalDialogStore";
 // import { Button } from "@packages/ui";
 
-export default function HeaderComponent() {
+export function HeaderComponent() {
   // const { openDialog } = useGlobalDialogStore();
   return (
     <div className="flex items-center justify-between">

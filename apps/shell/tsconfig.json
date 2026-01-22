@@ -19,7 +19,8 @@
     { "path": "../mfe-vehicle-exchange" },
     { "path": "../mfe-rent" },
     { "path": "../mfe-dashboard" },
-    { "path": "../mfe-return" }
+    { "path": "../mfe-return" },
+    { "path": "../mfe-reservation-lookup" }
   ],
   "include": ["src"]
 }

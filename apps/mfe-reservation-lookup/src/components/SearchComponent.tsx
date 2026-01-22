@@ -7,7 +7,7 @@ interface Props {
   setSearch: (v: string) => void;
 }
 
-export default function SearchComponent({ setSearch }: Props) {
+export function SearchComponent({ setSearch }: Props) {
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };

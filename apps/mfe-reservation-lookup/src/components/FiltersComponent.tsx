@@ -24,7 +24,7 @@ interface Props {
   submitFilters: (v: FilterState) => void;
 }
 
-export default function FiltersComponent({
+export function FiltersComponent({
   initialFilters,
   filters,
   resetFilters,

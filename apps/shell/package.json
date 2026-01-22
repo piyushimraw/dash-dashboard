@@ -20,6 +20,7 @@
     "@apps/mfe-vehicle-exchange": "workspace:*",
     "@apps/mfe-rent": "workspace:*",
     "@apps/mfe-return": "workspace:*",
+    "@apps/mfe-reservation-lookup": "workspace:*",
     "@tanstack/react-query": "^5.90.17",
     "@tanstack/react-router": "^1.146.2",
     "@tanstack/react-table": "^8.21.3",
