@@ -4,18 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "dev": "pnpm --filter @apps/shell dev",
+    "build": "pnpm -r build",
+    "typecheck": "tsc -b",
+    "lint": "eslint ."
   },
-  "dependencies": {
+  "devDependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -35,9 +29,7 @@
     "tailwind-merge": "^3.4.0",
     "vite-plugin-pwa": "^1.2.0",
     "zod": "^4.3.5",
-    "zustand": "^5.0.9"
-  },
-  "devDependencies": {
+    "zustand": "^5.0.9",
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.51.1",
     "@tailwindcss/vite": "^4.1.18",
