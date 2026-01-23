@@ -1,11 +1,4 @@
-import {
-  Sheet,
-  SheetContent,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  useIsDesktop,
-} from "@packages/ui";
+import { Sheet, SheetContent, useIsDesktop } from "@packages/ui";
 import type { ReactNode } from "react";
 
 interface ResponsiveFilterPanelProps {
@@ -18,11 +11,9 @@ interface ResponsiveFilterPanelProps {
 /**
  * ResponsiveFilterPanel
  *
- * Renders Sheet (bottom) on mobile/tablet (<1024px) and Popover on desktop (>=1024px).
- *
- * Decision rationale (per 06-CONTEXT.md):
- * - Mobile/tablet: Bottom sheet is thumb-friendly for filtering
- * - Desktop: Popover provides inline contextual access near filter button
+ * Renders Sheet from different sides based on screen size:
+ * - Mobile/tablet (<1024px): Bottom sheet for thumb-friendly filtering
+ * - Desktop (>=1024px): Right-side drawer for full filter form
  */
 export function ResponsiveFilterPanel({
   open,
@@ -32,24 +23,13 @@ export function ResponsiveFilterPanel({
 }: ResponsiveFilterPanelProps) {
   const isDesktop = useIsDesktop();
 
-  if (isDesktop) {
-    return (
-      <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-        <PopoverContent
-          align="end"
-          className="w-80 max-h-[85vh] overflow-y-auto"
-        >
-          {children}
-        </PopoverContent>
-      </Popover>
-    );
-  }
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       {trigger}
-      <SheetContent side="bottom" className="max-h-[85vh]">
+      <SheetContent
+        side={isDesktop ? "right" : "bottom"}
+        className={isDesktop ? "w-96" : "max-h-[85vh]"}
+      >
         {children}
       </SheetContent>
     </Sheet>
