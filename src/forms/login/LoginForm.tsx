@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import FormSelect from "@/components/form/FormSelect";
 import { useEffect, useState } from "react";
 import { loginService } from "@/services/loginService";
+import { useGetLoginLocations } from "@/features/hooks/useGetLoginLocations";
 
 
 //Todo -> remove import.meta.env.MODE === 'test' from code and call an mock api here.
@@ -22,7 +23,9 @@ export default function LoginForm() {
   const [apiError, setApiError] = useState(false);
   const [networkError, setNetworkError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [options, setOptions] = useState(LOCATION_OPTIONS);
+  // const [options, setOptions] = useState(LOCATION_OPTIONS);
+
+  const { data: locations, isLoading : loadingLocations, isError } = useGetLoginLocations();
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -36,17 +39,6 @@ export default function LoginForm() {
     },
   });
 
-  useEffect(() => {
-    if (import.meta.env.MODE === 'test') {
-      setIsLoading(true);
-      fetch('/api/locations')
-        .then(res => res.json())
-        .then(data => setOptions(data))
-        .catch(() => setApiError(true))
-        .finally(() => setIsLoading(false));
-    }
-  }, []);
-
   const onSubmit = async (data: LoginFormValues) => {
   setIsLoading(true);
   setLoginError(false);
@@ -59,9 +51,6 @@ export default function LoginForm() {
       navigate({ to: '/dashboard' });
     }
   } catch (error) {
-    // Catch errors thrown by loginService
-    // console.log('ErrorFromLoginService', error);
-
     if (error instanceof Error) {
       switch (error.message) {
         case 'INVALID_CREDENTIALS':
@@ -80,7 +69,6 @@ export default function LoginForm() {
     setIsLoading(false);
   }
 };
-
 
   return (
     <>
@@ -121,13 +109,13 @@ export default function LoginForm() {
               name="loginLocation"
               label="Login Location"
               icon={<Building2 size={20} />}
-              options={options}
+              options={locations ?? []}
             />
           </div>
 
           <div>
               {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
-              {apiError && <p className="text-sm text-red-600">API error occurred</p>}
+              {(apiError || isError) && <p className="text-sm text-red-600">API error occurred</p>}
               {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
               {isLoading && <p>Loading</p>}
           </div>

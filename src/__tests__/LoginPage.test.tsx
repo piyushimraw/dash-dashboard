@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { server } from '@/mocks/server';
 import { http, HttpResponse } from 'msw';
 import LoginForm from "@/forms/login/LoginForm";
+import { renderWithQueryClient } from "./test-utils";
 
 const EmailPlaceHolder = "Enter your user ID";
 const PasswordPlaceHolder =  "Enter your password";
@@ -20,7 +21,7 @@ beforeEach(() => {
 // test is checking whether the form UI renders, not whether it works.
 describe("LoginPage", () => {
   it("renders login form fields", () => {
-    render(<LoginPage />);
+    renderWithQueryClient(<LoginPage />);
     expect(screen.getByPlaceholderText(EmailPlaceHolder)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(PasswordPlaceHolder)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument(); // where name is sign in,  /i means case sensitive
@@ -32,7 +33,7 @@ describe('LoginForm Integration - Form Validation', () => {
   it('shows validation errors when fields are empty', async () => {
     const user = userEvent.setup();
 
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
 
     // Click Sign In without filling any fields
     await user.click(screen.getByRole('button', { name: /sign in/i }));
@@ -49,12 +50,18 @@ describe('LoginForm Integration - Form Validation', () => {
 describe('LoginForm', () => {
   it('shows error message when credentials are wrong', async () => {
     const user = userEvent.setup();
-    render(<LoginPage />);
+    renderWithQueryClient(<LoginPage />);
 
     await user.type(screen.getByPlaceholderText(EmailPlaceHolder), 'wronguser');
     await user.type(screen.getByPlaceholderText(PasswordPlaceHolder), 'wrongpass');
     await user.type(screen.getByPlaceholderText(/Location/i), 'Bangalore');
-    await user.selectOptions(screen.getByLabelText(/Login Location/i), 'CASFO15');
+    // await user.selectOptions(screen.getByLabelText(/Login Location/i), 'CASFO15');
+
+    await screen.findByText('San Francisco, CA (Office 15)');
+    await user.selectOptions(
+      screen.getByLabelText(/Login Location/i),
+      'CASFO15'
+    );
 
     await user.click(screen.getByRole('button', { name: /sign in/i }));
 
@@ -65,38 +72,47 @@ describe('LoginForm', () => {
   });
 });
 
-// //Mock Service Worker
+
+//Mock Service Worker
 describe('LoginForm with MSW', () => {
   
   it('shows error message when credentials are invalid', async () => {
     const user = userEvent.setup();
-    render(<LoginPage />);
+    renderWithQueryClient(<LoginPage />);
 
     await user.type(screen.getByPlaceholderText(EmailPlaceHolder), 'wronguser');
     await user.type(screen.getByPlaceholderText(PasswordPlaceHolder), 'wrongpass');
     await user.type(screen.getByPlaceholderText(/Location/i), 'Bangalore');
-    await user.selectOptions(screen.getByLabelText(/Login Location/i), 'CASFO15');
+   
+    await screen.findByText('San Francisco, CA (Office 15)');
+    await user.selectOptions(
+        screen.getByLabelText(/Login Location/i),
+        'CASFO15'
+    );
 
     await user.click(screen.getByRole('button', { name: /sign in/i }));
 
     expect(
       await screen.findByText(/user id or password is incorrect/i)
     ).toBeInTheDocument();
-
-    // expect(
-    //   await screen.findByText((text) => text?.includes('User ID or password is incorrect') || text?.includes('API error occurred'))
-    // ).toBeInTheDocument();
-
   });
 
+  
   it('logs in successfully with correct credentials', async () => {
     const user = userEvent.setup();
-    render(<LoginPage />);
+    renderWithQueryClient(<LoginPage />);
 
     await user.type(screen.getByPlaceholderText(EmailPlaceHolder), 'admin');
     await user.type(screen.getByPlaceholderText(PasswordPlaceHolder), 'admin123');
     await user.type(screen.getByPlaceholderText(/Location/i), 'Bangalore');
-    await user.selectOptions(screen.getByLabelText(/Login Location/i), 'CASFO15');
+    // await user.selectOptions(screen.getByLabelText(/Login Location/i), 'CASFO15');
+
+
+    await screen.findByText('San Francisco, CA (Office 15)');
+    await user.selectOptions(
+        screen.getByLabelText(/Login Location/i),
+        'CASFO15'
+    );
 
     await user.click(screen.getByRole('button', { name: /sign in/i }));
 
@@ -117,12 +133,18 @@ describe('LoginForm with MSW', () => {
         })
       );
 
-      render(<LoginForm />);
+      renderWithQueryClient(<LoginForm />);
 
       await user.type(screen.getByPlaceholderText(EmailPlaceHolder), 'admin');
       await user.type(screen.getByPlaceholderText(PasswordPlaceHolder), 'admin123');
       await user.type(screen.getByPlaceholderText(/location/i), 'Bangalore');
-      await user.selectOptions(screen.getByLabelText(/login location/i), 'CASFO15');
+      // await user.selectOptions(screen.getByLabelText(/login location/i), 'CASFO15');
+
+      await screen.findByText('San Francisco, CA (Office 15)');
+      await user.selectOptions(
+          screen.getByLabelText(/Login Location/i),
+          'CASFO15'
+      );
 
       // Click Sign In
       await user.click(screen.getByRole('button', { name: /sign in/i }));
@@ -132,4 +154,5 @@ describe('LoginForm with MSW', () => {
         expect(screen.getByText('API error occurred')).toBeInTheDocument();
       });
 });
+
 });

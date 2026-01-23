@@ -12,7 +12,6 @@ export async function loginService(data: LoginPayload): Promise<true> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    // console.log('ErrorInloginService', res)
     if (!res.ok) {
         if (res.status === 401) throw new Error('INVALID_CREDENTIALS');
         throw new Error('API_ERROR');

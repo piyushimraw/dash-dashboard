@@ -4,17 +4,20 @@ import { server } from '../mocks/server';
 import { http, HttpResponse } from 'msw';
 import LoginForm from '@/forms/login/LoginForm';
 import { LOCATION_OPTIONS } from '@/forms/login/login.schema';
+import { renderWithQueryClient } from './test-utils';
 
 
 describe('LoginForm > FormSelect API behavior', () => {
 
-  it('renders FormSelect options from API', async () => {
-    // Mock API response for this test
-    server.use(
-      http.get('/api/locations', () => HttpResponse.json(LOCATION_OPTIONS))
-    );
 
-    render(<LoginForm />);
+  it('renders FormSelect options from API', async () => {
+    
+  server.use(
+    http.get('https://dummyjson.com/c/4fa3-3817-4472-b407', () => 
+      HttpResponse.json(LOCATION_OPTIONS)
+    ));
+
+    renderWithQueryClient(<LoginForm />);
 
     await waitFor(() => {
       expect(screen.getByText('San Francisco, CA (Office 15)')).toBeInTheDocument();
@@ -22,14 +25,14 @@ describe('LoginForm > FormSelect API behavior', () => {
     });
   });
 
-
-
   it('handles empty array response', async () => {
     server.use(
-      http.get('/api/locations', () => HttpResponse.json([]))
-    );
+    http.get('https://dummyjson.com/c/4fa3-3817-4472-b407', () => 
+      HttpResponse.json([])
+    )
+  );
 
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
     const select = await screen.findByLabelText(/login location/i);
 
     await userEvent.click(select);
@@ -43,16 +46,17 @@ describe('LoginForm > FormSelect API behavior', () => {
     ).not.toBeInTheDocument();
   });
 
+
   it('shows error when API fails', async () => {
-    server.use(
-      http.get('/api/locations', () => HttpResponse.error())
+      server.use(
+      http.get('https://dummyjson.com/c/4fa3-3817-4472-b407', () => {
+        return HttpResponse.json({ message: 'Server error' }, { status: 500 });
+      })
     );
 
-    render(<LoginForm />);
-
-    await waitFor(() => {
-      expect(screen.getByText(/API error occurred/i)).toBeInTheDocument();
-    });
-  });
-
+    renderWithQueryClient(<LoginForm />);
+    
+    const errorMessage = await screen.findByText('API error occurred');
+    expect(errorMessage).toBeInTheDocument();
+});
 });
