@@ -6,11 +6,13 @@ import {
   CardHeader,
   CardTitle,
   DataTable,
+  useIsDesktop,
 } from "@packages/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useGetRentedVehicleList } from "./features/rent-vehicle/query";
 import { FiltersComponent } from "./components/FiltersComponent";
+import { FilterChips } from "./components/FilterChips";
 import { SearchComponent } from "./components/SearchComponent";
 import { useRentVehicleFilters } from "./hooks/useRentVehicleFilters";
 import type { TableType } from "./types/type";
@@ -25,6 +27,7 @@ export function ReservationLookupPage() {
     hasActiveFilters,
     submitFilters,
     resetFilters,
+    removeFilter,
   } = useRentVehicleFilters(data);
 
   const tableColumn: ColumnDef<TableType>[] = useMemo(() => {
@@ -154,7 +157,7 @@ export function ReservationLookupPage() {
         <CardContent className="space-y-4">
           {/* Search and Filters Row */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <SearchComponent search={filters.search} setSearch={setSearch} />
+            <SearchComponent setSearch={setSearch} />
             <FiltersComponent
               initialFilters={initialFilters}
               filters={filters}
@@ -163,6 +166,9 @@ export function ReservationLookupPage() {
               submitFilters={submitFilters}
             />
           </div>
+
+          {/* Active Filter Chips */}
+          <FilterChips filters={filters} onRemoveFilter={removeFilter} />
 
           {/* Table */}
           <DataTable

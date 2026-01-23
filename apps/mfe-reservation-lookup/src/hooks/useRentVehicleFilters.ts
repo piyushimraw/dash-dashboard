@@ -71,6 +71,10 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     setSearch("");
   };
 
+  const removeFilter = (key: keyof FilterState) => {
+    setFilters((prev) => ({ ...prev, [key]: "" }));
+  };
+
   return {
     initialFilters,
     filters,
@@ -80,5 +84,6 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     hasActiveFilters,
     submitFilters,
     resetFilters,
+    removeFilter,
   };
 };
