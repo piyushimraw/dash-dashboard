@@ -1,3 +1,4 @@
+
 export type LoginPayload = {
   userId: string;
   password: string;
@@ -12,6 +13,10 @@ export async function loginService(data: LoginPayload): Promise<true> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
+
+    // let isTest = import.meta.env.MODE === 'test'
+    // console.log('PlayloadReceieved for test env', data, isTest)
+
     if (!res.ok) {
         if (res.status === 401) throw new Error('INVALID_CREDENTIALS');
         throw new Error('API_ERROR');

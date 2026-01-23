@@ -2,28 +2,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormProvider from "@/components/form/FormProvider";
 import FormInput from "@/components/form/FormInput";
-import { LOCATION_OPTIONS, loginSchema } from "./login.schema";
+import { loginSchema } from "./login.schema";
 import type { LoginFormValues } from "./login.types";
 import { useNavigate } from "@tanstack/react-router";
-import useAuthStore from "@/store/useAuthStore";
 import { Building2, Lock, MapPin, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FormSelect from "@/components/form/FormSelect";
-import { useEffect, useState } from "react";
-import { loginService } from "@/services/loginService";
+import { useState } from "react";
 import { useGetLoginLocations } from "@/features/hooks/useGetLoginLocations";
+import { authService } from "@/services/auth/auth";
 
 
-//Todo -> remove import.meta.env.MODE === 'test' from code and call an mock api here.
 export default function LoginForm() {
   const navigate = useNavigate();
-
-  const login = useAuthStore((state) => state.login);
   const [loginError, setLoginError] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [networkError, setNetworkError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [options, setOptions] = useState(LOCATION_OPTIONS);
 
   const { data: locations, isLoading : loadingLocations, isError } = useGetLoginLocations();
 
@@ -46,7 +41,7 @@ export default function LoginForm() {
   setNetworkError(false);
 
   try {
-    const success = import.meta.env.MODE === 'test' ? await loginService(data): login(data.userId, data.password); 
+    const success = await authService.login(data);
     if (success) {
       navigate({ to: '/dashboard' });
     }

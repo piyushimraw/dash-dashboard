@@ -123,7 +123,6 @@ describe('LoginForm with MSW', () => {
 
   it('shows API error when server returns 500', async () => {
       const user = userEvent.setup();
-      // Mock MSW to return 500 for login API
       server.use(
         http.post('/api/login', () => {
           return HttpResponse.json(
@@ -146,10 +145,8 @@ describe('LoginForm with MSW', () => {
           'CASFO15'
       );
 
-      // Click Sign In
       await user.click(screen.getByRole('button', { name: /sign in/i }));
 
-      // Assert API error message is shown
       await waitFor(() => {
         expect(screen.getByText('API error occurred')).toBeInTheDocument();
       });

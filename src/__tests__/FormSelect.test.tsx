@@ -1,19 +1,19 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { server } from '../mocks/server';
 import { http, HttpResponse } from 'msw';
 import LoginForm from '@/forms/login/LoginForm';
 import { LOCATION_OPTIONS } from '@/forms/login/login.schema';
 import { renderWithQueryClient } from './test-utils';
+import { LOGIN_LOCATION_LIST_API } from '@/features/login-location/api/getLoginLocation';
 
 
 describe('LoginForm > FormSelect API behavior', () => {
 
-
   it('renders FormSelect options from API', async () => {
     
   server.use(
-    http.get('https://dummyjson.com/c/4fa3-3817-4472-b407', () => 
+    http.get(LOGIN_LOCATION_LIST_API, () => 
       HttpResponse.json(LOCATION_OPTIONS)
     ));
 
@@ -27,7 +27,7 @@ describe('LoginForm > FormSelect API behavior', () => {
 
   it('handles empty array response', async () => {
     server.use(
-    http.get('https://dummyjson.com/c/4fa3-3817-4472-b407', () => 
+    http.get(LOGIN_LOCATION_LIST_API, () => 
       HttpResponse.json([])
     )
   );
@@ -46,10 +46,9 @@ describe('LoginForm > FormSelect API behavior', () => {
     ).not.toBeInTheDocument();
   });
 
-
   it('shows error when API fails', async () => {
       server.use(
-      http.get('https://dummyjson.com/c/4fa3-3817-4472-b407', () => {
+      http.get(LOGIN_LOCATION_LIST_API, () => {
         return HttpResponse.json({ message: 'Server error' }, { status: 500 });
       })
     );
