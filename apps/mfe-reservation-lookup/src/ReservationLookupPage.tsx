@@ -23,6 +23,7 @@ export function ReservationLookupPage() {
   const {
     initialFilters,
     filters,
+    search,
     setSearch,
     filteredData,
     hasActiveFilters,
@@ -164,7 +165,7 @@ export function ReservationLookupPage() {
                 : "sticky top-0 z-10 -mx-4 px-4 py-3 bg-card border-b flex flex-col sm:flex-row gap-3"
             }
           >
-            <SearchComponent search={filters.search} setSearch={setSearch} />
+            <SearchComponent search={search} setSearch={setSearch} />
             <FiltersComponent
               initialFilters={initialFilters}
               filters={filters}

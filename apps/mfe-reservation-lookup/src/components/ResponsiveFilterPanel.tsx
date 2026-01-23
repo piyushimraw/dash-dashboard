@@ -1,4 +1,4 @@
-import { Sheet, SheetContent, useIsDesktop } from "@packages/ui";
+import { Sheet, SheetContent, SheetTrigger, useIsDesktop } from "@packages/ui";
 import type { ReactNode } from "react";
 
 interface ResponsiveFilterPanelProps {
@@ -25,7 +25,7 @@ export function ResponsiveFilterPanel({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      {trigger}
+      <SheetTrigger>{trigger}</SheetTrigger>
       <SheetContent
         side={isDesktop ? "right" : "bottom"}
         className={isDesktop ? "w-96" : "max-h-[85vh]"}
