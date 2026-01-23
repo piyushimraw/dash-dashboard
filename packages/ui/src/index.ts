@@ -8,6 +8,7 @@ export * from "./components/collapsible";
 export * from "./components/separator";
 export * from "./components/sheet";
 export * from "./components/badge";
+export * from "./components/select";
 
 // Table Components
 export {
