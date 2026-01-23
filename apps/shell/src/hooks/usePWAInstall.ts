@@ -17,6 +17,15 @@ declare global {
 
 const DISMISSED_KEY = 'pwa-install-dismissed';
 
+/**
+ * Check if dev mode force-show is enabled via ?pwa-test query param.
+ * Called inside hook to ensure it's checked on each render.
+ */
+function isDevModeForceShow(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.search.includes('pwa-test');
+}
+
 // Module-scope variable to store deferred prompt
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
@@ -111,7 +120,9 @@ export function usePWAInstall() {
     sessionStorage.setItem(DISMISSED_KEY, 'true');
   }, []);
 
-  const showBanner = canInstall && !isStandalone && !isDismissed;
+  // Show banner if install prompt available OR in dev test mode (via ?pwa-test query param)
+  const devForceShow = isDevModeForceShow();
+  const showBanner = (canInstall || devForceShow) && !isStandalone && !isDismissed;
 
   return {
     canInstall,

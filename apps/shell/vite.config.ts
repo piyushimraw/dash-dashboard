@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import routerPlugin from "@tanstack/router-plugin/vite";
 import path from "path";
+import fs from "fs";
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -127,5 +128,12 @@ export default defineConfig({
         },
       },
     },
+  },
+  preview: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2.pem')),
+    },
+    port: 4173,
   },
 });
