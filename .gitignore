@@ -31,4 +31,5 @@ workbox-*.js
 
 
 #Docs
-.planning
+.planning# Local HTTPS certificates (mkcert)
+**/certs/

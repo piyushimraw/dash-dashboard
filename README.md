@@ -16,6 +16,45 @@ pnpm dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
+### Production Preview (HTTPS)
+
+To test PWA features like the install prompt locally, you need HTTPS with trusted certificates:
+
+```bash
+# One-command setup and preview
+pnpm run preview:https
+```
+
+This uses [mkcert](https://github.com/FiloSottile/mkcert) to create locally-trusted certificates.
+
+**First-time setup:**
+
+1. Install mkcert: `brew install mkcert`
+2. Run setup: `pnpm run setup:https` (requires password for CA installation)
+3. **Restart your browser** (quit and reopen to trust the new CA)
+4. Build and preview: `pnpm run build && pnpm run preview`
+
+Open [https://localhost:4173](https://localhost:4173) in Chrome. The PWA install banner should appear.
+
+**Manual certificate setup:**
+
+```bash
+# Install mkcert (macOS)
+brew install mkcert
+
+# Install local CA (requires password)
+mkcert -install
+
+# Generate certificates (run from project root)
+mkdir -p apps/shell/certs
+cd apps/shell/certs
+mkcert localhost 127.0.0.1 ::1
+cd -
+
+# Build and preview
+pnpm run build && pnpm run preview
+```
+
 ### Production (Docker)
 
 ```bash
@@ -108,6 +147,9 @@ For event types and payloads, see [docs/CONTRACTS.md](docs/CONTRACTS.md).
 |--------|-------------|
 | `pnpm dev` | Start shell dev server |
 | `pnpm build` | Build all packages and shell |
+| `pnpm preview` | Preview production build (HTTPS) |
+| `pnpm preview:https` | Setup certs + build + preview (one command) |
+| `pnpm setup:https` | Setup mkcert certificates only |
 | `pnpm typecheck` | Run TypeScript checks |
 | `pnpm lint` | Run ESLint |
 | `pnpm test` | Run unit tests (Vitest) |

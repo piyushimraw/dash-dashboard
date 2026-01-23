@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "pnpm --filter @apps/shell dev",
     "build": "pnpm -r build",
+    "preview": "pnpm --filter @apps/shell preview",
+    "preview:https": "./scripts/setup-https.sh && pnpm run build && pnpm run preview",
+    "setup:https": "./scripts/setup-https.sh",
     "typecheck": "tsc -b",
     "lint": "eslint ."
   },
