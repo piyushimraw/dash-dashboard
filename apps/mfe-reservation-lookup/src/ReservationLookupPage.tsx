@@ -18,6 +18,7 @@ import { useRentVehicleFilters } from "./hooks/useRentVehicleFilters";
 import type { TableType } from "./types/type";
 
 export function ReservationLookupPage() {
+  const isDesktop = useIsDesktop();
   const { data, isLoading } = useGetRentedVehicleList();
   const {
     initialFilters,
@@ -155,9 +156,15 @@ export function ReservationLookupPage() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Search and Filters Row */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <SearchComponent setSearch={setSearch} />
+          {/* Search and Filters Row - Sticky on mobile */}
+          <div
+            className={
+              isDesktop
+                ? "flex flex-col sm:flex-row gap-3"
+                : "sticky top-0 z-10 -mx-4 px-4 py-3 bg-card border-b flex flex-col sm:flex-row gap-3"
+            }
+          >
+            <SearchComponent search={filters.search} setSearch={setSearch} />
             <FiltersComponent
               initialFilters={initialFilters}
               filters={filters}
