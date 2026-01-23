@@ -230,3 +230,18 @@
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
+@keyframes slideUp {
+  from {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
+}
+
