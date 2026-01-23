@@ -35,3 +35,8 @@ workbox-*.js
 
 # Local HTTPS certificates (mkcert)
 **/certs/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/

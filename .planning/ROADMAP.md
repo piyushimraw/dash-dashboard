@@ -17,6 +17,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Production Ready** - Build optimization, Docker, documentation
 - [x] **Phase 4: PWA & Offline Support** - Full PWA and offline support for Reservation Lookup module
 - [x] **Phase 5: Installation Banner** - PWA install prompt to encourage app installation from browser
+- [ ] **Phase 6: Reservation Lookup UI** - Responsive UI improvements for mobile and desktop
+- [ ] **Phase 7: Client-Side Filter** - Client-side filtering for reservation lookup
+- [ ] **Phase 8: E2E Testing with Cypress** - Setup Cypress and write E2E tests for login and reservation lookup
 
 ## Phase Details
 
@@ -146,10 +149,59 @@ Plans:
 Plans:
 - [x] 05-01-PLAN.md - Refactor install hook and banner with brand styling and animation
 
+### Phase 6: Reservation Lookup UI
+**Goal**: Improve reservation lookup page with responsive UI for mobile and desktop views
+**Depends on**: Phase 5
+**Requirements**: UI-01, UI-02
+**Success Criteria** (what must be TRUE):
+  1. Filter panel adapts between Sheet (mobile) and Popover (desktop)
+  2. Active filter chips display with individual removal capability
+  3. Sticky header keeps search/filter accessible on mobile scroll
+  4. Touch-friendly UI meets WCAG 2.5.5 (44px minimum touch targets)
+**Plans**: 4 plans
+
+Plans:
+- [x] 06-01-PLAN.md - Extract useIsDesktop hook and add Popover component
+- [x] 06-02-PLAN.md - Create ResponsiveFilterPanel with active filter chips
+- [x] 06-03-PLAN.md - Implement sticky header and expandable search on mobile
+- [ ] 06-04-PLAN.md - Final polish and human verification
+
+### Phase 7: Client-Side Filter
+**Goal**: Implement client-side filtering for reservation lookup page
+**Depends on**: Phase 6
+**Requirements**: FILTER-01
+**Success Criteria** (what must be TRUE):
+  1. Client-side filtering works without API calls for loaded data
+  2. Filter state persists across navigation
+  3. Filter performance acceptable for typical data sizes
+**Plans**: TBD
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 7 to break down)
+
+### Phase 8: E2E Testing with Cypress
+**Goal**: Setup E2E testing infrastructure using Cypress and write tests for login and reservation lookup page as verification step
+**Depends on**: Phase 7
+**Requirements**: TEST-01, TEST-02, TEST-03
+**Success Criteria** (what must be TRUE):
+  1. Cypress installed and configured for the monorepo structure
+  2. Test commands available in root package.json (test:e2e, test:e2e:open)
+  3. Login flow E2E test covers authentication success and failure scenarios
+  4. Reservation lookup E2E tests cover search, filtering, and data display
+  5. Tests run successfully in CI-compatible headless mode
+  6. Tests can be used as verification step for future changes
+  7. Human verification confirms all E2E tests pass
+**Plans**: 3 plans
+
+Plans:
+- [ ] 08-01-PLAN.md - Install Cypress and create configuration with custom commands
+- [ ] 08-02-PLAN.md - Add data-cy attributes to login form and create login E2E tests
+- [ ] 08-03-PLAN.md - Add data-cy attributes to reservation lookup and create E2E tests
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -158,7 +210,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 3. Production Ready | 3/3 | Complete | 2026-01-23 |
 | 4. PWA & Offline Support | 3/3 | Complete | 2026-01-23 |
 | 5. Installation Banner | 1/1 | Complete | 2026-01-23 |
+| 6. Reservation Lookup UI | 3/4 | In Progress | - |
+| 7. Client-Side Filter | 0/? | Not Started | - |
+| 8. E2E Testing with Cypress | 0/3 | Not Started | - |
 
 ---
 *Roadmap created: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 5 complete - Milestone complete)*
+*Last updated: 2026-01-24 (Phase 8 planned - 3 plans)*
