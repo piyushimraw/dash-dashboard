@@ -15,24 +15,11 @@ import {
   TableHead,
   TableCell,
 } from "./table";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import clsx from "clsx";
 import { type Row } from "@tanstack/react-table";
-
-// Hook to detect if screen is desktop (lg breakpoint = 1024px)
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(true);
-
-  useEffect(() => {
-    const checkWidth = () => setIsDesktop(window.innerWidth >= 1024);
-    checkWidth();
-    window.addEventListener("resize", checkWidth);
-    return () => window.removeEventListener("resize", checkWidth);
-  }, []);
-
-  return isDesktop;
-}
+import { useIsDesktop } from "../../hooks/useIsDesktop";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
