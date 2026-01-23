@@ -1,10 +1,17 @@
-import { DataTable, Badge } from "@packages/ui";
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  DataTable,
+} from "@packages/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useGetRentedVehicleList } from "./features/rent-vehicle/query";
 import { FiltersComponent } from "./components/FiltersComponent";
 import { SearchComponent } from "./components/SearchComponent";
-import { HeaderComponent } from "./components/HeaderComponent";
 import { useRentVehicleFilters } from "./hooks/useRentVehicleFilters";
 import type { TableType } from "./types/type";
 
@@ -20,7 +27,6 @@ export function ReservationLookupPage() {
     resetFilters,
   } = useRentVehicleFilters(data);
 
-  // Define table columns based on the performance context
   const tableColumn: ColumnDef<TableType>[] = useMemo(() => {
     return [
       {
@@ -77,7 +83,10 @@ export function ReservationLookupPage() {
         cell: ({ row }) => {
           const status = row.original.resStatus;
 
-          const statusVariantMap: Record<string, "success" | "muted" | "destructive"> = {
+          const statusVariantMap: Record<
+            string,
+            "success" | "muted" | "destructive"
+          > = {
             Confirmed: "success",
             Completed: "muted",
             Cancelled: "destructive",
@@ -132,27 +141,37 @@ export function ReservationLookupPage() {
   }, []);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto flex flex-col gap-6 px-4 py-6">
-      {/* Header / Action bar */}
-      <HeaderComponent />
-      <div className=" flex flex-col sm:flex-row gap-3">
-        {/* Search Input */}
-        <SearchComponent setSearch={setSearch} />
-        {/* other filters */}
-        <FiltersComponent
-          initialFilters={initialFilters}
-          filters={filters}
-          resetFilters={resetFilters}
-          hasActiveFilters={hasActiveFilters}
-          submitFilters={submitFilters}
-        />
-      </div>
-      {/* Table container */}
-      <DataTable
-        columns={tableColumn as ColumnDef<unknown, unknown>[]}
-        data={filteredData as TableType[]}
-        isLoading={isLoading}
-      />
+    <div className="w-full max-w-[1200px] mx-auto px-4 py-6">
+      <Card>
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <CardTitle className="text-xl">Reservation Search Results</CardTitle>
+              <CardDescription>Track all rented vehicles</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Search and Filters Row */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <SearchComponent setSearch={setSearch} />
+            <FiltersComponent
+              initialFilters={initialFilters}
+              filters={filters}
+              resetFilters={resetFilters}
+              hasActiveFilters={hasActiveFilters}
+              submitFilters={submitFilters}
+            />
+          </div>
+
+          {/* Table */}
+          <DataTable
+            columns={tableColumn as ColumnDef<unknown, unknown>[]}
+            data={filteredData as TableType[]}
+            isLoading={isLoading}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
