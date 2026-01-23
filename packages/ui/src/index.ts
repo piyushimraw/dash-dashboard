@@ -9,6 +9,7 @@ export * from "./components/separator";
 export * from "./components/sheet";
 export * from "./components/badge";
 export * from "./components/select";
+export * from "./components/popover";
 
 // Table Components
 export {
@@ -32,6 +33,9 @@ export { FormError } from "./components/form/FormError";
 
 // Offline Indicator
 export { OfflineIndicator } from "./components/OfflineIndicator";
+
+// Hooks
+export { useIsDesktop } from "./hooks/useIsDesktop";
 
 // Utilities
 export { cn } from "./lib/utils";
