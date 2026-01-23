@@ -3,8 +3,12 @@ describe('Reservation Filters', () => {
     // Login before each test
     cy.login('counter', 'counter123')
     cy.visit('/reservation_lookup')
-    // Wait for data to load
-    cy.getBySel('data-table').should('exist')
+    // Wait for page container to load first
+    cy.getBySel('reservation-lookup-page', { timeout: 15000 }).should('exist')
+    // Add a small wait for React to finish mounting
+    cy.wait(1000)
+    // Then wait for data table
+    cy.getBySel('data-table', { timeout: 15000 }).should('exist')
   })
 
   it('opens filter panel when filter button is clicked', () => {
