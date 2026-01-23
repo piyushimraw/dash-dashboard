@@ -1,7 +1,7 @@
 {
   "validUser": {
-    "username": "admin",
-    "password": "admin123",
+    "username": "counter",
+    "password": "counter123",
     "userLocation": "CASFO15",
     "loginLocation": "CASFO15"
   },
