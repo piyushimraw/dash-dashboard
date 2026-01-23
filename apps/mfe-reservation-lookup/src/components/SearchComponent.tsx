@@ -39,6 +39,7 @@ export function SearchComponent({ setSearch, search = "" }: Props) {
           onChange={handleSearch}
           value={search}
           className="pl-10 w-full"
+          data-cy="search-input"
         />
         {search && (
           <Button
@@ -48,6 +49,7 @@ export function SearchComponent({ setSearch, search = "" }: Props) {
             onClick={handleClear}
             className="absolute right-1 h-7 w-7 p-0"
             aria-label="Clear search"
+            data-cy="search-clear-button"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -66,6 +68,7 @@ export function SearchComponent({ setSearch, search = "" }: Props) {
         onClick={handleExpand}
         className="h-11 w-11 shrink-0"
         aria-label="Open search"
+        data-cy="search-expand-button"
       >
         <Search className="h-5 w-5" />
       </Button>
@@ -85,6 +88,7 @@ export function SearchComponent({ setSearch, search = "" }: Props) {
         value={search}
         className="pl-10 pr-10 w-full"
         autoFocus
+        data-cy="search-input"
       />
       <Button
         type="button"
@@ -93,6 +97,7 @@ export function SearchComponent({ setSearch, search = "" }: Props) {
         onClick={handleClear}
         className="absolute right-1 h-7 w-7 p-0"
         aria-label="Clear search"
+        data-cy="search-clear-button"
       >
         <X className="h-4 w-4" />
       </Button>

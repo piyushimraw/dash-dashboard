@@ -75,6 +75,7 @@ export function FiltersComponent({
                   ? "bg-brand-yellow-light border-brand-yellow-dark text-lavender-deep"
                   : "border-lavender hover:bg-lavender"
               )}
+              data-cy="filter-button"
             >
               <Filter size={20} />
               <span className="hidden sm:inline">Filter</span>
@@ -106,6 +107,7 @@ export function FiltersComponent({
                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
                     handleFilterChange("startDate", event.target.value);
                   }}
+                  data-cy="filter-start-date"
                 />
               </div>
 
@@ -119,6 +121,7 @@ export function FiltersComponent({
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     handleFilterChange("endDate", event.target.value)
                   }
+                  data-cy="filter-end-date"
                 />
               </div>
 
@@ -131,7 +134,7 @@ export function FiltersComponent({
                     handleFilterChange("status", value === "all" ? "" : value)
                   }
                 >
-                  <SelectTrigger id="status">
+                  <SelectTrigger id="status" data-cy="filter-status">
                     <SelectValue placeholder="All Statuses" />
                   </SelectTrigger>
                   <SelectContent 
@@ -169,6 +172,7 @@ export function FiltersComponent({
                     handleFilterChange("arrivalLocation", event.target.value)
                   }
                   placeholder="Ex: CCUAIR"
+                  data-cy="filter-arrival-location"
                 />
               </div>
             </div>
@@ -179,10 +183,11 @@ export function FiltersComponent({
                 variant="ghost"
                 className="border flex-1"
                 onClick={handleResetGlobalFilters}
+                data-cy="filter-reset-button"
               >
                 Reset All
               </Button>
-              <Button className="flex-1" onClick={handleApplyFilters}>
+              <Button className="flex-1" onClick={handleApplyFilters} data-cy="filter-apply-button">
                 Apply Filters
               </Button>
             </div>
@@ -194,6 +199,7 @@ export function FiltersComponent({
             variant="ghost"
             onClick={resetFilters}
             className="px-4 py-2 border border-lavender rounded-lg flex items-center gap-2 hover:bg-lavender transition-colors"
+            data-cy="reset-filters-button"
           >
             <RotateCcw size={20} />
             <span className="hidden sm:inline">Reset</span>

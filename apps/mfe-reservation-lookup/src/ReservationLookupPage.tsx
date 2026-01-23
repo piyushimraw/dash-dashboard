@@ -146,12 +146,12 @@ export function ReservationLookupPage() {
   }, []);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto px-4 py-6">
+    <div className="w-full max-w-[1200px] mx-auto px-4 py-6" data-cy="reservation-lookup-page">
       <Card>
         <CardHeader className="pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <CardTitle className="text-xl">Reservation Search Results</CardTitle>
+              <CardTitle className="text-xl" data-cy="page-title">Reservation Search Results</CardTitle>
               <CardDescription>Track all rented vehicles</CardDescription>
             </div>
           </div>

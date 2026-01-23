@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="relative">
+    <div className="relative" data-cy="data-table">
       {/* Desktop Table View */}
       {isDesktop && (
       <div className="bg-white shadow-sm rounded-lg border border-lavender overflow-hidden">
@@ -124,10 +124,10 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody data-cy="data-table-body">
             {table.getRowModel().rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center p-4">
+                <TableCell colSpan={columns.length} className="text-center p-4" data-cy="no-data-message">
                   No Data Found
                 </TableCell>
               </TableRow>
@@ -178,7 +178,7 @@ export function DataTable<TData, TValue>({
       {!isDesktop && (
       <div className="space-y-4">
         {table.getRowModel().rows.length === 0 ? (
-          <div className="text-center p-8 border border-lavender rounded-lg bg-white">
+          <div className="text-center p-8 border border-lavender rounded-lg bg-white" data-cy="no-data-message">
             No Data Found
           </div>
         ) : (
@@ -186,6 +186,7 @@ export function DataTable<TData, TValue>({
             <div
               key={row.id}
               className="border border-lavender rounded-lg p-4 bg-white shadow-sm space-y-3"
+              data-cy="data-card"
             >
               {row.getVisibleCells().map((cell) => {
                 const header = cell.column.columnDef.header;
@@ -233,7 +234,7 @@ const Loader = () => {
   return (
     <>
       {/* Desktop skeleton */}
-      <div className="hidden lg:block overflow-hidden border border-gray-200 rounded-lg">
+      <div className="hidden lg:block overflow-hidden border border-gray-200 rounded-lg" data-cy="table-loading">
         <table className="w-full border-collapse">
           <thead className="bg-gray-50">
             <tr>
@@ -259,7 +260,7 @@ const Loader = () => {
       </div>
 
       {/* Mobile skeleton */}
-      <div className="lg:hidden space-y-4">
+      <div className="lg:hidden space-y-4" data-cy="table-loading">
         {[...Array(4)].map((_, idx) => (
           <div
             key={idx}

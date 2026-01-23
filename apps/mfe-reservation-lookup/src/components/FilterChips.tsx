@@ -55,12 +55,13 @@ export function FilterChips({ filters, onRemoveFilter }: FilterChipsProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2" role="list" aria-label="Active filters">
+    <div className="flex flex-wrap gap-2" role="list" aria-label="Active filters" data-cy="filter-chips">
       {activeFilters.map((filter) => (
         <div
           key={filter.key}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-yellow-light border border-brand-yellow-dark text-lavender-deep text-sm font-medium"
           role="listitem"
+          data-cy={`filter-chip-${filter.key}`}
         >
           <span className="text-xs text-muted-foreground">{filter.label}:</span>
           <span>{filter.value}</span>
@@ -70,6 +71,7 @@ export function FilterChips({ filters, onRemoveFilter }: FilterChipsProps) {
             onClick={() => onRemoveFilter(filter.key)}
             className="h-5 w-5 p-0 hover:bg-brand-yellow-dark rounded-full"
             aria-label={`Remove ${filter.label} filter`}
+            data-cy={`filter-chip-remove-${filter.key}`}
           >
             <X className="h-3 w-3" />
           </Button>
