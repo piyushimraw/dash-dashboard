@@ -1,0 +1,11 @@
+{
+  "searchTerms": {
+    "validCustomer": "John",
+    "validEmail": "@example.com",
+    "noResults": "ZZZZNONEXISTENT"
+  },
+  "filterValues": {
+    "status": "Confirmed",
+    "arrivalLocation": "CCUAIR"
+  }
+}

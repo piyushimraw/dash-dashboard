@@ -62,12 +62,12 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <div className="relative" data-cy="data-table">
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
       {/* Desktop Table View */}
       {isDesktop && (
       <div className="bg-white shadow-sm rounded-lg border border-lavender overflow-hidden">
@@ -225,6 +225,8 @@ export function DataTable<TData, TValue>({
           ))
         )}
       </div>
+      )}
+      </>
       )}
     </div>
   );
