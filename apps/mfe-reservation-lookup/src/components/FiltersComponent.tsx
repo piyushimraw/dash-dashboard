@@ -134,7 +134,20 @@ export function FiltersComponent({
                   <SelectTrigger id="status">
                     <SelectValue placeholder="All Statuses" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent 
+                    position="popper"
+                    sideOffset={4}
+                    className="z-[200]"
+                    style={{
+                      zIndex: 200,
+                      backgroundColor: 'white',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px',
+                      boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+                      padding: '4px',
+                      minWidth: '180px',
+                    }}
+                  >
                     <SelectItem value="all">All Statuses</SelectItem>
                     {STATUS_OPTIONS.map((status) => (
                       <SelectItem key={status} value={status}>
