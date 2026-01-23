@@ -2,6 +2,11 @@ import {
   Button,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -24,6 +29,8 @@ interface Props {
   submitFilters: (v: FilterState) => void;
 }
 
+const STATUS_OPTIONS = ["Confirmed", "Completed", "Cancelled"] as const;
+
 export function FiltersComponent({
   initialFilters,
   filters,
@@ -33,14 +40,14 @@ export function FiltersComponent({
 }: Props) {
   const [open, setOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState(initialFilters);
-  //update global filters from temporary filters
+
   const handleApplyFilters = () => {
     submitFilters(tempFilters);
     setOpen(false);
   };
-  //clear temp state of filters
+
   const resetTempFilters = () => setTempFilters(initialFilters);
-  //clear temp and global state of filters
+
   const handleResetGlobalFilters = () => {
     resetFilters();
     resetTempFilters();
@@ -49,7 +56,7 @@ export function FiltersComponent({
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     setTempFilters((prev) => ({ ...prev, [key]: value }));
   };
-  //set filters to initial state or initialize with existing global filters
+
   useEffect(() => {
     if (!open) {
       resetTempFilters();
@@ -57,6 +64,7 @@ export function FiltersComponent({
       setTempFilters(filters);
     }
   }, [open]);
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       {/* Filter and Reset Buttons */}
@@ -68,7 +76,7 @@ export function FiltersComponent({
               "px-4 py-2 border rounded-lg flex items-center gap-2 transition-colors",
               hasActiveFilters
                 ? "bg-brand-yellow-light border-brand-yellow-dark text-lavender-deep"
-                : "border-lavender hover:bg-lavender",
+                : "border-lavender hover:bg-lavender"
             )}
           >
             <Filter size={20} />
@@ -98,16 +106,14 @@ export function FiltersComponent({
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
           <SheetDescription>
-            Make changes to your listing here. Click save when you&apos;re done.
+            Refine your reservation search. Click apply when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
-        {/* Sidebar */}
+
         <div className="px-4">
-          {/* Filter Fields */}
           <div className="space-y-6">
-            {/* ----- Filter rentals whose rent date falls within the selected start and end dates ---- */}
             {/* Start Date */}
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="startDate">Start Date</Label>
               <Input
                 id="startDate"
@@ -120,7 +126,7 @@ export function FiltersComponent({
             </div>
 
             {/* End Date */}
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="endDate">End Date</Label>
               <Input
                 id="endDate"
@@ -132,31 +138,29 @@ export function FiltersComponent({
               />
             </div>
 
-            {/* Status Dropdown */}
-            <div>
+            {/* Status Select */}
+            <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
-                value={tempFilters.status}
-                onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                  handleFilterChange("status", event.target.value)
-                }
-                className="w-full px-3 py-2 border border-lavender rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent bg-white"
+              <Select
+                value={tempFilters.status || "all"}
+                onValueChange={(value) => handleFilterChange("status", value === "all" ? "" : value)}
               >
-                <option value="">All Statuses</option>
-                {[
-                  "Confirmed",
-                  "Completed",
-                  "Cancelled",
-                ].map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger id="status">
+                  <SelectValue placeholder="All Statuses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  {STATUS_OPTIONS.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            {/* Location Dropdown */}
-            <div>
+
+            {/* Arrival Location */}
+            <div className="space-y-2">
               <Label htmlFor="arrivalLocation">Arrival Location</Label>
               <Input
                 id="arrivalLocation"
@@ -170,9 +174,8 @@ export function FiltersComponent({
             </div>
           </div>
 
-          {/* Action Buttons */}
           <SheetFooter>
-            <div className="flex gap-3">
+            <div className="flex gap-3 w-full">
               <Button
                 variant="ghost"
                 className="border flex-1"
