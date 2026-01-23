@@ -154,7 +154,7 @@ export function ReservationLookupPage() {
         <CardContent className="space-y-4">
           {/* Search and Filters Row */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <SearchComponent setSearch={setSearch} />
+            <SearchComponent search={filters.search} setSearch={setSearch} />
             <FiltersComponent
               initialFilters={initialFilters}
               filters={filters}
