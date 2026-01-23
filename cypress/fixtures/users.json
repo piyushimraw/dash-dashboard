@@ -1,0 +1,12 @@
+{
+  "validUser": {
+    "username": "admin",
+    "password": "admin123",
+    "userLocation": "CASFO15",
+    "loginLocation": "CASFO15"
+  },
+  "invalidUser": {
+    "username": "baduser",
+    "password": "wrongpass"
+  }
+}
