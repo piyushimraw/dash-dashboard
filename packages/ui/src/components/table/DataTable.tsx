@@ -132,8 +132,14 @@ export function DataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             ) : (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="border-b border-gray-100">
+              table.getRowModel().rows.map((row, rowIdx) => (
+                <TableRow
+                  key={row.id}
+                  className={clsx(
+                    "border-b border-gray-100",
+                    rowIdx % 2 === 1 && "bg-muted/30"
+                  )}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
