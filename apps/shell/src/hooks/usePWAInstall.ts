@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useSyncExternalStore, useState, useCallback } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -17,75 +17,108 @@ declare global {
 
 const DISMISSED_KEY = 'pwa-install-dismissed';
 
+// Module-scope variable to store deferred prompt
+let deferredPrompt: BeforeInstallPromptEvent | null = null;
+
+/**
+ * Subscribes to beforeinstallprompt and appinstalled events.
+ * Uses useSyncExternalStore for React 18+ concurrent mode compatibility.
+ */
+function subscribe(callback: () => void) {
+  const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    callback();
+  };
+
+  const handleAppInstalled = () => {
+    deferredPrompt = null;
+    // Clear session dismissal when app is installed
+    sessionStorage.removeItem(DISMISSED_KEY);
+    callback();
+  };
+
+  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  window.addEventListener('appinstalled', handleAppInstalled);
+
+  return () => {
+    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.removeEventListener('appinstalled', handleAppInstalled);
+  };
+}
+
+function getSnapshot() {
+  return deferredPrompt !== null;
+}
+
+function getServerSnapshot() {
+  // On server, install prompt not available
+  return false;
+}
+
+/**
+ * Detects if app is running in standalone mode (already installed).
+ * Checks both standard display-mode and iOS-specific property.
+ */
+function isStandaloneMode(): boolean {
+  // Standard PWA standalone detection
+  if (typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches) {
+    return true;
+  }
+
+  // iOS-specific standalone detection
+  if (typeof navigator !== 'undefined' && 'standalone' in navigator) {
+    return (navigator as any).standalone === true;
+  }
+
+  return false;
+}
+
+/**
+ * Hook that manages PWA installation prompt state.
+ * Uses useSyncExternalStore for reactive subscription to install events.
+ * Dismissal is session-scoped (clears on browser close).
+ *
+ * @returns Object with install state and control functions
+ */
 export function usePWAInstall() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [canInstall, setCanInstall] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const canInstall = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isStandalone = isStandaloneMode();
+
   const [isDismissed, setIsDismissed] = useState(() => {
-    return localStorage.getItem(DISMISSED_KEY) === 'true';
+    return sessionStorage.getItem(DISMISSED_KEY) === 'true';
   });
 
-  useEffect(() => {
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true);
-      return;
-    }
-
-    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setCanInstall(true);
-    };
-
-    const handleAppInstalled = () => {
-      setIsInstalled(true);
-      setCanInstall(false);
-      setDeferredPrompt(null);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
-  }, []);
-
-  const install = useCallback(async () => {
+  const promptInstall = useCallback(async () => {
     if (!deferredPrompt) {
-      return false;
+      return { outcome: 'dismissed' as const };
     }
 
     await deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
+    const result = await deferredPrompt.userChoice;
 
-    if (outcome === 'accepted') {
-      setDeferredPrompt(null);
-      setCanInstall(false);
+    if (result.outcome === 'accepted') {
+      deferredPrompt = null;
+      sessionStorage.removeItem(DISMISSED_KEY);
+      setIsDismissed(false);
     }
 
-    return outcome === 'accepted';
-  }, [deferredPrompt]);
+    return result;
+  }, []);
 
   const dismiss = useCallback(() => {
     setIsDismissed(true);
-    localStorage.setItem(DISMISSED_KEY, 'true');
+    sessionStorage.setItem(DISMISSED_KEY, 'true');
   }, []);
 
-  const resetDismiss = useCallback(() => {
-    setIsDismissed(false);
-    localStorage.removeItem(DISMISSED_KEY);
-  }, []);
+  const showBanner = canInstall && !isStandalone && !isDismissed;
 
   return {
     canInstall,
-    isInstalled,
+    isStandalone,
     isDismissed,
-    install,
+    promptInstall,
     dismiss,
-    resetDismiss,
-    showPrompt: canInstall && !isInstalled && !isDismissed,
+    showBanner,
   };
 }
