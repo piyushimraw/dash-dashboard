@@ -83,13 +83,13 @@ export function DataTable<TData, TValue>({
     <div className="relative">
       {/* Desktop Table View */}
       {isDesktop && (
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white shadow-sm rounded-lg border border-lavender overflow-hidden">
         <Table className="w-full table-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="bg-gray-50 border-b border-gray-200"
+                className="bg-brand-yellow-light/50 border-b border-lavender"
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -108,9 +108,9 @@ export function DataTable<TData, TValue>({
                         !header.column.columnDef.meta?.disableHighlight &&
                           header.column.getCanSort() &&
                           header.column.id === hoveredColumn &&
-                          "bg-gray-100",
+                          "bg-brand-yellow-light",
                         !header.column.columnDef.meta?.disableHighlight &&
-                          "border-b-2 border-b-gray-800 bg-white",
+                          "border-b-2 border-b-lavender-deep bg-white",
                       )}
                       onMouseEnter={() => setHoveredColumn(header.column.id)}
                       onMouseLeave={() => setHoveredColumn(null)}
@@ -162,9 +162,9 @@ export function DataTable<TData, TValue>({
                         !cell.column.columnDef.meta?.disableHighlight &&
                           cell.column.getCanSort() &&
                           cell.column.id === hoveredColumn &&
-                          "bg-gray-50",
+                          "bg-brand-yellow-light/30",
                         cell.column.columnDef.meta?.hasLink &&
-                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-gray-800 hover:bg-gray-50",
+                          "cursor-pointer p-0 hover:border-b-2 hover:border-b-lavender-deep hover:bg-brand-yellow-light/30",
                       )}
                     >
                       {flexRender(
@@ -185,14 +185,14 @@ export function DataTable<TData, TValue>({
       {!isDesktop && (
       <div className="space-y-4">
         {table.getRowModel().rows.length === 0 ? (
-          <div className="text-center p-8 border border-gray-200 rounded-lg bg-white">
+          <div className="text-center p-8 border border-lavender rounded-lg bg-white">
             No Data Found
           </div>
         ) : (
           table.getRowModel().rows.map((row) => (
             <div
               key={row.id}
-              className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm space-y-3"
+              className="border border-lavender rounded-lg p-4 bg-white shadow-sm space-y-3"
             >
               {row.getVisibleCells().map((cell) => {
                 const header = cell.column.columnDef.header;

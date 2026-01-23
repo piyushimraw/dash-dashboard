@@ -7,6 +7,7 @@ export * from "./components/label";
 export * from "./components/collapsible";
 export * from "./components/separator";
 export * from "./components/sheet";
+export * from "./components/badge";
 
 // Table Components
 export {
