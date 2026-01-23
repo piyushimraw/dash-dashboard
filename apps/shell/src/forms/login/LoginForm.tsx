@@ -65,13 +65,14 @@ export default function LoginForm() {
             <InputIcon><User size={20} /></InputIcon>
             <Input
               id="userId"
+              data-cy="userId"
               placeholder="Enter your user ID"
               className="pl-10"
               {...register("userId")}
             />
           </div>
           {errors.userId && (
-            <p className="text-sm text-red-500">{errors.userId.message}</p>
+            <p className="text-sm text-red-500" data-cy="userId-error">{errors.userId.message}</p>
           )}
         </div>
 
@@ -82,6 +83,7 @@ export default function LoginForm() {
             <InputIcon><Lock size={20} /></InputIcon>
             <Input
               id="password"
+              data-cy="password"
               type="password"
               placeholder="Enter your password"
               className="pl-10"
@@ -89,7 +91,7 @@ export default function LoginForm() {
             />
           </div>
           {errors.password && (
-            <p className="text-sm text-red-500">{errors.password.message}</p>
+            <p className="text-sm text-red-500" data-cy="password-error">{errors.password.message}</p>
           )}
         </div>
 
@@ -101,6 +103,7 @@ export default function LoginForm() {
               <InputIcon><MapPin size={20} /></InputIcon>
               <Input
                 id="userLocation"
+                data-cy="userLocation"
                 placeholder="Location"
                 className="pl-10"
                 {...register("userLocation")}
@@ -114,6 +117,7 @@ export default function LoginForm() {
               <InputIcon><Building2 size={20} /></InputIcon>
               <select
                 id="loginLocation"
+                data-cy="loginLocation"
                 {...register("loginLocation")}
                 className="h-11 w-full rounded-lg border border-input bg-white pl-10 pr-10 text-base shadow-sm transition-all duration-200 appearance-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent"
               >
@@ -137,12 +141,12 @@ export default function LoginForm() {
         </div>
 
         {loginError && (
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-red-500" data-cy="login-error">
             User ID or password is incorrect
           </p>
         )}
 
-        <Button type="submit" size="lg" className="w-full mt-6">
+        <Button type="submit" size="lg" className="w-full mt-6" data-cy="login-button">
           Sign In
         </Button>
 
