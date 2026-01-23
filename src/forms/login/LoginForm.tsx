@@ -70,7 +70,7 @@ export default function LoginForm() {
       <FormProvider
         methods={methods}
         onSubmit={methods.handleSubmit(onSubmit, (errors) => {
-          console.log("Validation Errors on handle submit :", errors);
+          // console.log("Validation Errors on handle submit :", errors);
         })}
       >
         <div className="space-y-5">
