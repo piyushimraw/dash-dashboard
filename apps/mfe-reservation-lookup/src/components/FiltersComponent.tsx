@@ -67,14 +67,14 @@ export function FiltersComponent({
             className={clsx(
               "px-4 py-2 border rounded-lg flex items-center gap-2 transition-colors",
               hasActiveFilters
-                ? "bg-blue-50 border-blue-500 text-blue-700"
-                : "border-gray-300 hover:bg-gray-50",
+                ? "bg-brand-yellow-light border-brand-yellow-dark text-lavender-deep"
+                : "border-lavender hover:bg-lavender",
             )}
           >
             <Filter size={20} />
             <span className="hidden sm:inline">Filter</span>
             {hasActiveFilters && (
-              <span className="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="bg-brand-yellow text-lavender-deep text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 !
               </span>
             )}
@@ -85,7 +85,7 @@ export function FiltersComponent({
           <Button
             variant="ghost"
             onClick={resetFilters}
-            className="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 border border-lavender rounded-lg flex items-center gap-2 hover:bg-lavender transition-colors"
           >
             <RotateCcw size={20} />
             <span className="hidden sm:inline">Reset</span>
@@ -141,7 +141,7 @@ export function FiltersComponent({
                 onChange={(event: ChangeEvent<HTMLSelectElement>) =>
                   handleFilterChange("status", event.target.value)
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                className="w-full px-3 py-2 border border-lavender rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent bg-white"
               >
                 <option value="">All Statuses</option>
                 {[

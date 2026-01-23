@@ -1,4 +1,4 @@
-import { DataTable } from "@packages/ui";
+import { DataTable, Badge } from "@packages/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useGetRentedVehicleList } from "./features/rent-vehicle/query";
@@ -77,20 +77,16 @@ export function ReservationLookupPage() {
         cell: ({ row }) => {
           const status = row.original.resStatus;
 
-          const statusMap: Record<string, string> = {
-            Confirmed: "bg-green-100 text-green-700",
-            Completed: "bg-gray-100 text-gray-700",
-            Cancelled: "bg-red-100 text-red-700",
+          const statusVariantMap: Record<string, "success" | "muted" | "destructive"> = {
+            Confirmed: "success",
+            Completed: "muted",
+            Cancelled: "destructive",
           };
 
           return (
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                statusMap[status] ?? "bg-muted text-muted-foreground"
-              }`}
-            >
+            <Badge variant={statusVariantMap[status] ?? "muted"}>
               {status}
-            </span>
+            </Badge>
           );
         },
       },
