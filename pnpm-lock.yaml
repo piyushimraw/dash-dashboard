@@ -124,7 +124,7 @@ importers:
         version: 7.71.1(react@19.2.3)
       rollup-plugin-visualizer:
         specifier: ^6.0.5
-        version: 6.0.5(rollup@2.79.2)
+        version: 6.0.5(rollup@4.56.0)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -7795,14 +7795,14 @@ snapshots:
 
   rettime@0.7.0: {}
 
-  rollup-plugin-visualizer@6.0.5(rollup@2.79.2):
+  rollup-plugin-visualizer@6.0.5(rollup@4.56.0):
     dependencies:
       open: 8.4.2
       picomatch: 4.0.3
       source-map: 0.7.6
       yargs: 17.7.2
     optionalDependencies:
-      rollup: 2.79.2
+      rollup: 4.56.0
 
   rollup@2.79.2:
     optionalDependencies:

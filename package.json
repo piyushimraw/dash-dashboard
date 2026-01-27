@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "clean": "rm -rf apps/*/dist apps/*/dev-dist packages/*/dist packages/*/*.tsbuildinfo apps/*/node_modules packages/*/node_modules",
+    "fresh": "pnpm clean && pnpm install && pnpm build",
     "dev": "pnpm --filter @apps/shell dev",
-    "build": "pnpm -r build",
+    "build": "pnpm --filter './packages/**' build && pnpm --filter './apps/**' build",
     "preview": "pnpm --filter @apps/shell preview",
     "preview:https": "./scripts/setup-https.sh && pnpm run build && pnpm run preview",
     "setup:https": "./scripts/setup-https.sh",

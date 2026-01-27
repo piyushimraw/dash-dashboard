@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import routerPlugin from "@tanstack/router-plugin/vite";
@@ -7,8 +7,18 @@ import fs from "fs";
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 
+// Resolve @packages/* to source files in dev for HMR support
+const packagesRoot = path.resolve(__dirname, "../../packages");
+const devPackageAliases = {
+  "@packages/ui/lib/utils": path.resolve(packagesRoot, "ui/src/lib/utils.ts"),
+  "@packages/ui": path.resolve(packagesRoot, "ui/src/index.ts"),
+  "@packages/api-client": path.resolve(packagesRoot, "api-client/src/index.ts"),
+  "@packages/event-bus": path.resolve(packagesRoot, "event-bus/src/index.ts"),
+  "@packages/mfe-types": path.resolve(packagesRoot, "mfe-types/src/index.ts"),
+};
+
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     routerPlugin({
       autoCodeSplitting: true,
@@ -100,6 +110,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // In dev mode, resolve packages to source for HMR
+      ...(mode === "development" ? devPackageAliases : {}),
     },
   },
   build: {
@@ -136,7 +148,7 @@ export default defineConfig({
     },
     port: 4173,
   },
-  test: {
+    test: {
     environment: "jsdom",
     globals: true,
     // setupFiles: "./src/setupTests.ts",
@@ -153,4 +165,4 @@ export default defineConfig({
       ],
     },
   },
-});
+}));
