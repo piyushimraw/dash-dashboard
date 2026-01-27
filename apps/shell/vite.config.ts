@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import routerPlugin from "@tanstack/router-plugin/vite";
@@ -135,5 +135,21 @@ export default defineConfig({
       cert: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2.pem')),
     },
     port: 4173,
+  },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/setupTests.ts",
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'lcov'],
+      reportsDirectory: './coverage',
+      exclude: [
+        'node_modules/',
+        'src/setupTests.ts',
+        '**/*.d.ts',
+        '**/*.config.*',
+      ],
+    },
   },
 });
