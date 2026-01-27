@@ -1,4 +1,4 @@
-import { LoginPage } from "@/pages/LoginPage";
+import { LoginPage } from "@/pages/login/LoginPage";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 const fallback = "/dashboard" as const;
