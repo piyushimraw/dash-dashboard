@@ -1,8 +1,7 @@
-import { useFormContext, useFormState } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+import { SelectBox } from "../selectbox";
 import { FormError } from "./FormError";
-import { Label } from "../label";
-import { ChevronDown } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { cn } from "@ui/lib/utils";
 
 type Option = {
   label: string;
@@ -15,50 +14,47 @@ type Props = {
   options: Option[];
   icon?: React.ReactNode;
 };
-
+/*----------usage example------------
+    <FormSelect
+    name="role"
+    label="Role"
+    options={[
+        { label: "Admin", value: "admin" },
+        { label: "User", value: "user" },
+    ]}
+    />
+*/
 export function FormSelect({ name, label, options, icon }: Props) {
-  const { register } = useFormContext();
-  const { errors } = useFormState({ name });
-
-  const error = errors?.[name];
+  const { control } = useFormContext();
 
   return (
-    <div className="space-y-2">
-      <Label htmlFor={name}>{label}</Label>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState }) => (
+        <div className="space-y-1">
+          <div className="relative">
+            {icon && (
+              <span className="absolute left-3 top-3/4 -translate-y-3/4 text-muted-foreground pointer-events-none">
+                {icon}
+              </span>
+            )}
 
-      <div className="relative">
-        {icon && (
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
-            {icon}
+            <SelectBox
+              label={label}
+              options={options}
+              value={field.value}
+              onValueChange={field.onChange}
+              className={cn(
+                icon ? "pl-10" : "",
+                fieldState?.error ? "border-red-500 focus:ring-red-500" : "",
+              )}
+            />
           </div>
-        )}
-        <select
-          id={name}
-          {...register(name)}
-          className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            "appearance-none pr-10",
-            icon && "pl-10",
-            error && "border-destructive focus-visible:ring-destructive"
-          )}
-        >
-          <option value="" disabled hidden>
-            {label}
-          </option>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground">
-          <ChevronDown className="h-4 w-4" />
-        </div>
-      </div>
 
-      <FormError error={error as any} />
-    </div>
+          <FormError error={fieldState.error} />
+        </div>
+      )}
+    />
   );
 }
