@@ -68,6 +68,10 @@ export function DataTable<TData, TValue>({
   const pagination = paginationProp ?? internalPagination;
   const setPagination = onPaginationChange ?? setInternalPagination;
 
+  console.log("table:,",{
+    data,
+  })
+
   const table = useReactTable({
     data,
     columns,

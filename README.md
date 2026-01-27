@@ -147,6 +147,8 @@ For event types and payloads, see [docs/CONTRACTS.md](docs/CONTRACTS.md).
 |--------|-------------|
 | `pnpm dev` | Start shell dev server |
 | `pnpm build` | Build all packages and shell |
+| `pnpm clean` | Remove dist, dev-dist, tsbuildinfo, and nested node_modules |
+| `pnpm fresh` | Clean + install + build (fresh start for dev) |
 | `pnpm preview` | Preview production build (HTTPS) |
 | `pnpm preview:https` | Setup certs + build + preview (one command) |
 | `pnpm setup:https` | Setup mkcert certificates only |
