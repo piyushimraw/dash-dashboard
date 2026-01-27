@@ -1,19 +1,31 @@
+import {
+  DEFAULT_ITEMS_SIZE,
+  DEFAULT_PAGE_INDEX,
+} from "@/components/ui/table/utils";
 import type { FilterState, TableType } from "@/types/rent-vehicles/type";
-import { useMemo, useState } from "react";
+import type { PaginationState } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 
 const initialFilters: FilterState = {
   startDate: "",
   endDate: "",
-  status: "",
-  arrivalLocation:""
+  status: "All",
+  arrivalLocation: "",
 };
-
 export const useRentVehicleFilters = (data: TableType[] = []) => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: DEFAULT_PAGE_INDEX,
+    pageSize: DEFAULT_ITEMS_SIZE,
+  });
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   const hasActiveFilters =
-    !!filters.startDate || !!filters.endDate || !!filters.status || !!filters.arrivalLocation || !!search;
+    !!filters.startDate ||
+    !!filters.endDate ||
+    (!!filters.status && filters.status !== "All") ||
+    !!filters.arrivalLocation ||
+    !!search;
 
   // Single source of filtering truth
   const filteredData = useMemo(() => {
@@ -35,12 +47,19 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
       }
 
       // Status
-      if (filters.status && item.resStatus !== filters.status) {
+      if (
+        filters.status &&
+        filters.status !== "All" &&
+        item.resStatus !== filters.status
+      ) {
         return false;
       }
 
       // arrival location
-      if (filters.arrivalLocation && item.arrivalLocation !== filters.arrivalLocation) {
+      if (
+        filters.arrivalLocation &&
+        item.arrivalLocation !== filters.arrivalLocation
+      ) {
         return false;
       }
 
@@ -56,6 +75,13 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
       return true;
     });
   }, [data, filters, search]);
+
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: 0,
+    }));
+  }, [search, filters]);
 
   // UI-only action
   const submitFilters = (filtersTemp: FilterState) => {
@@ -74,6 +100,8 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     setSearch,
     filteredData,
     hasActiveFilters,
+    pagination,
+    setPagination,
     submitFilters,
     resetFilters,
   };

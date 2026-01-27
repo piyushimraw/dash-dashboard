@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import type { FilterState } from "@/types/rent-vehicles/type";
+import { SelectBox } from "../ui/selectbox";
 
 interface Props {
   initialFilters: FilterState;
@@ -22,17 +23,23 @@ interface Props {
   hasActiveFilters: boolean;
   submitFilters: (v: FilterState) => void;
 }
-const arrivalLocations = [
-  "BLRAIR", // Bengaluru Airport
-  "DELCTR", // Delhi City Center
-  "MUMT1", // Mumbai Terminal 1
-  "MUMT2", // Mumbai Terminal 2
-  "HYDAIR", // Hyderabad Airport
-  "CHNAIR", // Chennai Airport
-  "PNQAIR", // Pune Airport
-  "CCUAIR", // Kolkata Airport
-  "AMDAIR", // Ahmedabad Airport
-  "GOIAPD", // Goa Airport
+// const arrivalLocations = [
+//   "BLRAIR", // Bengaluru Airport
+//   "DELCTR", // Delhi City Center
+//   "MUMT1", // Mumbai Terminal 1
+//   "MUMT2", // Mumbai Terminal 2
+//   "HYDAIR", // Hyderabad Airport
+//   "CHNAIR", // Chennai Airport
+//   "PNQAIR", // Pune Airport
+//   "CCUAIR", // Kolkata Airport
+//   "AMDAIR", // Ahmedabad Airport
+//   "GOIAPD", // Goa Airport
+// ];
+const statusValues = [
+  { label: "All", value: "All" },
+  { label: "Confirmed", value: "Confirmed" },
+  { label: "Completed", value: "Completed" },
+  { label: "Cancelled", value: "Cancelled" },
 ];
 
 export default function FiltersComponent({
@@ -143,20 +150,13 @@ export default function FiltersComponent({
 
             {/* Status Dropdown */}
             <div>
-              <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
+              <SelectBox
+                label="Status"
+                placeholder="Select status"
+                options={statusValues}
                 value={tempFilters.status}
-                onChange={(e) => handleFilterChange("status", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-              >
-                <option value="">All Statuses</option>
-                {["Confirmed", "Completed", "Cancelled"].map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
+                onValueChange={(value) => handleFilterChange("status", value)}
+              />
             </div>
             {/* Location Dropdown */}
             <div>
