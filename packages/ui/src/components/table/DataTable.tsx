@@ -68,10 +68,6 @@ export function DataTable<TData, TValue>({
   const pagination = paginationProp ?? internalPagination;
   const setPagination = onPaginationChange ?? setInternalPagination;
 
-  console.log("table:,",{
-    data,
-  })
-
   const table = useReactTable({
     data,
     columns,
@@ -101,116 +97,124 @@ export function DataTable<TData, TValue>({
     <div className="relative">
       {/* Desktop Table View */}
       {isDesktop && (
-        <div className="bg-white shadow-sm rounded-lg border border-lavender overflow-hidden">
-          <Table className="w-full table-auto">
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="bg-brand-yellow-light/50 border-b border-lavender"
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        onClick={() => {
-                          if (data?.length === 0 || !header.column.getCanSort())
-                            return;
-                          header.column.columnDef.meta?.onClick?.();
-                          header.column.toggleSorting();
-                        }}
-                        className={clsx(
-                          "h-[44px] py-3 px-4 select-none",
-                          header.column.columnDef.meta?.className,
-                          header.column.getCanSort() && "cursor-pointer",
-                          !header.column.columnDef.meta?.disableHighlight &&
-                            header.column.getCanSort() &&
-                            header.column.id === hoveredColumn &&
-                            "bg-brand-yellow-light",
-                          !header.column.columnDef.meta?.disableHighlight &&
-                            "border-b-2 border-b-lavender-deep bg-white",
-                        )}
-                        onMouseEnter={() => setHoveredColumn(header.column.id)}
-                        onMouseLeave={() => setHoveredColumn(null)}
-                      >
-                        <div className="flex gap-2 self-stretch">
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {header.column.getCanSort() ? (
-                            header.column.getIsSorted() === "asc" ? (
-                              <ChevronDown size={20} />
-                            ) : header.column.getIsSorted() === "desc" ? (
-                              <ChevronUp size={20} />
-                            ) : null
-                          ) : header.column.columnDef.meta?.forceArrow &&
-                            sorting.length === 0 ? (
-                            <ChevronUp size={20} />
-                          ) : null}
-                        </div>
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="text-center p-4"
-                  >
-                    No Data Found
-                  </TableCell>
-                </TableRow>
-              ) : (
-                table.getRowModel().rows.map((row, rowIdx) => (
+        <>
+          <div className="bg-white shadow-sm rounded-lg border border-lavender overflow-auto">
+            <Table className="w-full table-auto">
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow
-                    key={row.id}
-                    className={clsx(
-                      "border-b border-gray-100",
-                      rowIdx % 2 === 1 && "bg-muted/30",
-                    )}
+                    key={headerGroup.id}
+                    className="bg-brand-yellow-light/50 border-b border-lavender"
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        onClick={() => {
-                          if (cell.column.columnDef.meta?.disableHighlight)
-                            return;
-                          cell.column.columnDef.meta?.onClick?.();
-                        }}
-                        onMouseEnter={() => setHoveredColumn(cell.column.id)}
-                        onMouseLeave={() => setHoveredColumn(null)}
-                        className={clsx(
-                          "h-[55px] relative group p-4",
-                          !cell.column.columnDef.meta?.disableHighlight &&
-                            cell.column.getCanSort() &&
-                            cell.column.id === hoveredColumn &&
-                            "bg-brand-yellow-light/30",
-                          cell.column.columnDef.meta?.hasLink &&
-                            "cursor-pointer p-0 hover:border-b-2 hover:border-b-lavender-deep hover:bg-brand-yellow-light/30",
-                        )}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          onClick={() => {
+                            if (
+                              data?.length === 0 ||
+                              !header.column.getCanSort()
+                            )
+                              return;
+                            header.column.columnDef.meta?.onClick?.();
+                            header.column.toggleSorting();
+                          }}
+                          className={clsx(
+                            "h-[44px] py-3 px-4 select-none",
+                            header.column.columnDef.meta?.className,
+                            header.column.getCanSort() && "cursor-pointer",
+                            !header.column.columnDef.meta?.disableHighlight &&
+                              header.column.getCanSort() &&
+                              header.column.id === hoveredColumn &&
+                              "bg-brand-yellow-light",
+                            !header.column.columnDef.meta?.disableHighlight &&
+                              "border-b-2 border-b-lavender-deep bg-white",
+                          )}
+                          onMouseEnter={() =>
+                            setHoveredColumn(header.column.id)
+                          }
+                          onMouseLeave={() => setHoveredColumn(null)}
+                        >
+                          <div className="flex gap-2 self-stretch">
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                            {header.column.getCanSort() ? (
+                              header.column.getIsSorted() === "asc" ? (
+                                <ChevronDown size={20} />
+                              ) : header.column.getIsSorted() === "desc" ? (
+                                <ChevronUp size={20} />
+                              ) : null
+                            ) : header.column.columnDef.meta?.forceArrow &&
+                              sorting.length === 0 ? (
+                              <ChevronUp size={20} />
+                            ) : null}
+                          </div>
+                        </TableHead>
+                      );
+                    })}
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="text-center p-4"
+                    >
+                      No Data Found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  table.getRowModel().rows.map((row, rowIdx) => (
+                    <TableRow
+                      key={row.id}
+                      className={clsx(
+                        "border-b border-gray-100",
+                        rowIdx % 2 === 1 && "bg-muted/30",
+                      )}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          onClick={() => {
+                            if (cell.column.columnDef.meta?.disableHighlight)
+                              return;
+                            cell.column.columnDef.meta?.onClick?.();
+                          }}
+                          onMouseEnter={() => setHoveredColumn(cell.column.id)}
+                          onMouseLeave={() => setHoveredColumn(null)}
+                          className={clsx(
+                            "h-[55px] relative group p-4",
+                            !cell.column.columnDef.meta?.disableHighlight &&
+                              cell.column.getCanSort() &&
+                              cell.column.id === hoveredColumn &&
+                              "bg-brand-yellow-light/30",
+                            cell.column.columnDef.meta?.hasLink &&
+                              "cursor-pointer p-0 hover:border-b-2 hover:border-b-lavender-deep hover:bg-brand-yellow-light/30",
+                          )}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
           <TablePagination
             key={`${pagination.pageIndex}-${pagination.pageSize}`}
             table={table}
             disabledPagination={disabledPagination}
           />
-        </div>
+        </>
       )}
       {/* Mobile Card View */}
       {!isDesktop && (

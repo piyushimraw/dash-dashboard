@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Label } from "../label";
 import { Input } from "../input";
 import { FormError } from "./FormError";
+import { cn } from "../../lib/utils";
 
 type Props = {
   name: string;
@@ -48,9 +49,9 @@ export function FormInput({
 
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
             {icon}
-          </span>
+          </div>
         )}
 
         <Input
@@ -58,9 +59,10 @@ export function FormInput({
           type={type}
           placeholder={placeholder}
           {...register(name)}
-          className={`${icon ? "pl-10" : ""} ${
-            error ? "border-red-500 focus-visible:ring-red-500" : ""
-          }`}
+          className={cn(
+            icon && "pl-10",
+            error && "border-destructive focus-visible:ring-destructive",
+          )}
         />
       </div>
 
