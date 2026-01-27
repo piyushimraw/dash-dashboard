@@ -49,6 +49,10 @@ export function DataTable<TData, TValue>({
   const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
   const isDesktop = useIsDesktop();
 
+  console.log("table:,",{
+    data,
+  })
+
   const table = useReactTable({
     data,
     columns,

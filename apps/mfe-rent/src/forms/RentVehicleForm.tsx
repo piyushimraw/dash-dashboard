@@ -9,6 +9,7 @@ import { rentVehicleSchema } from "./rent.schema";
 import type { RentVehicleFormValues } from "./rent.types";
 
 export function RentVehicleForm() {
+  console.log("RentVehicleForm");
   const form = useForm<RentVehicleFormValues>({
     resolver: zodResolver(rentVehicleSchema),
     mode: "onChange",
