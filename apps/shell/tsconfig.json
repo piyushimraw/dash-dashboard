@@ -22,5 +22,5 @@
     { "path": "../mfe-return" },
     { "path": "../mfe-reservation-lookup" }
   ],
-  "include": ["src"]
+  "include": ["src", "../../tests/mocks", "../../setupTests.ts"]
 }

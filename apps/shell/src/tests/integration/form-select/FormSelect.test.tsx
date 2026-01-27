@@ -4,8 +4,8 @@ import { http, HttpResponse } from 'msw';
 import LoginForm from '@/forms/login/LoginForm';
 import { LOCATION_OPTIONS } from '@/forms/login/login.schema';
 import { LOGIN_LOCATION_LIST_API } from '@/features/login-location/api/getLoginLocation';
-import { server } from '@/tests/mocks/server';
 import { renderWithQueryClient } from '@/tests/utils/test-utils';
+import { server } from '../../../../../../tests/mocks/server';
 
 
 describe('LoginForm > FormSelect API behavior', () => {
