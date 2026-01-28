@@ -10,6 +10,8 @@ import { Building2, ChevronDown, Lock, MapPin, User } from "lucide-react";
 import { useState } from "react";
 import { useGetLoginLocations } from "@/features/hooks/useGetLoginLocations";
 import { authService } from "@/services/authSelector";
+// import { toast } from "@packages/ui";
+import { eventBus, MfeEventNames } from "@packages/event-bus";
 
 // Icon wrapper component for consistent vertical centering
 function InputIcon({ children }: { children: React.ReactNode }) {
@@ -56,6 +58,18 @@ export default function LoginForm() {
   setLoginError(false);
   setApiError(false);
   setNetworkError(false);
+
+  // toast({
+  //   title: "Login SuccessFull",
+  //   description: "You have logged in successfully",
+  //   variant: "success",
+  // });
+
+   eventBus.emit(MfeEventNames.NotificationShow, {
+      type: "success",
+      message: "Logged In Successfully",
+      duration: 5000,
+    });
 
   try {
     const success = await authService.login(data);

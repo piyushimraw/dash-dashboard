@@ -9,6 +9,9 @@ import GlobalDialog from "./components/dialogs/global-dialog";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { queryClient } from "@packages/api-client";
 import { createIDBPersister } from "./lib/queryPersister";
+// import { ToastProvider } from "@radix-ui/react-toast";
+import { Toaster, ToastProvider } from "@packages/ui";
+// import { Toaster } from "@packages/ui";
 
 registerSW({ immediate: true });
 
@@ -45,8 +48,11 @@ createRoot(document.getElementById("root")!).render(
         },
       }}
     >
+      <ToastProvider>
       <AppRouter />
       <GlobalDialog />
+      <Toaster />
+      </ToastProvider>
     </PersistQueryClientProvider>
   </StrictMode>
 );

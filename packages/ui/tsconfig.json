@@ -6,8 +6,12 @@
     "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
-      "@ui/*": ["./src/*"]
+      "@ui/*": ["./src/*"],
+      // "@packages/event-bus": ["../event-bus/src"],
     }
   },
+  "references": [
+    { "path": "../event-bus" }
+  ],
   "include": ["src/**/*"]
 }
