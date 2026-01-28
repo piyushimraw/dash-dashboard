@@ -12,6 +12,8 @@
     }
   },
   "scripts": {
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "prebuild": "pnpm clean",
     "build": "tsc -b",
     "dev": "tsc -b --watch"
   },
