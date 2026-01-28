@@ -27,9 +27,10 @@ export function ReservationLookupPage() {
     setSearch,
     filteredData,
     hasActiveFilters,
+    pagination,
+    setPagination,
     submitFilters,
     resetFilters,
-    removeFilter,
   } = useRentVehicleFilters(data);
 
   const tableColumn: ColumnDef<TableType>[] = useMemo(() => {
@@ -98,7 +99,7 @@ export function ReservationLookupPage() {
           };
 
           return (
-            <Badge variant={statusVariantMap[status] ?? "muted"}>
+            <Badge size="lg" variant={statusVariantMap[status] ?? "muted"}>
               {status}
             </Badge>
           );
@@ -151,7 +152,9 @@ export function ReservationLookupPage() {
         <CardHeader className="pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <CardTitle className="text-xl">Reservation Search Results</CardTitle>
+              <CardTitle className="text-xl">
+                Reservation Search Results
+              </CardTitle>
               <CardDescription>Track all rented vehicles</CardDescription>
             </div>
           </div>
@@ -174,15 +177,16 @@ export function ReservationLookupPage() {
               submitFilters={submitFilters}
             />
           </div>
-
           {/* Active Filter Chips */}
-          <FilterChips filters={filters} onRemoveFilter={removeFilter} />
-
+          <FilterChips filters={filters} onRemoveFilter={resetFilters} />
           {/* Table */}
           <DataTable
             columns={tableColumn as ColumnDef<unknown, unknown>[]}
             data={filteredData as TableType[]}
             isLoading={isLoading}
+            disabledPagination={hasActiveFilters}
+            pagination={pagination}
+            onPaginationChange={setPagination}
           />
         </CardContent>
       </Card>

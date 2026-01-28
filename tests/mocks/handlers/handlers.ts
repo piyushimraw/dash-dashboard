@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw';
+import { rentedVehiclesMock } from '../shared-mocks/rentedVehicles.mock';
 
 type LoginRequestBody = {
   userId: string;
@@ -21,4 +22,9 @@ export const handlers = [
       { status: 401 }
     );
   }),
+  // Mock the external dummyjson endpoint used by getRentedVehicleList in tests
+  http.get(
+    "https://dummyjson.com/c/1394-326c-4220-88d7",
+    () => HttpResponse.json(rentedVehiclesMock),
+  ),
 ];

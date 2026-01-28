@@ -2,11 +2,6 @@ import {
   Button,
   Input,
   Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "@packages/ui";
 import { Filter, RotateCcw } from "lucide-react";
 import clsx from "clsx";
@@ -14,6 +9,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import type { FilterState } from "../types/type";
 import { ResponsiveFilterPanel } from "./ResponsiveFilterPanel";
+import  {SelectBox}  from "@packages/ui";
 
 interface Props {
   initialFilters: FilterState;
@@ -23,7 +19,12 @@ interface Props {
   submitFilters: (v: FilterState) => void;
 }
 
-const STATUS_OPTIONS = ["Confirmed", "Completed", "Cancelled"] as const;
+const statusValues = [
+  { label: "All", value: "All" },
+  { label: "Confirmed", value: "Confirmed" },
+  { label: "Completed", value: "Completed" },
+  { label: "Cancelled", value: "Cancelled" },
+];
 
 export function FiltersComponent({
   initialFilters,
@@ -73,7 +74,7 @@ export function FiltersComponent({
                 "px-4 py-2 border rounded-lg flex items-center gap-2 transition-colors",
                 hasActiveFilters
                   ? "bg-brand-yellow-light border-brand-yellow-dark text-lavender-deep"
-                  : "border-lavender hover:bg-lavender"
+                  : "border-lavender hover:bg-lavender",
               )}
             >
               <Filter size={20} />
@@ -91,7 +92,8 @@ export function FiltersComponent({
             <div>
               <h3 className="text-lg font-semibold">Filters</h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Refine your reservation search. Click apply when you&apos;re done.
+                Refine your reservation search. Click apply when you&apos;re
+                done.
               </p>
             </div>
 
@@ -124,7 +126,14 @@ export function FiltersComponent({
 
               {/* Status Select */}
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <SelectBox
+                  label="Status"
+                  placeholder="Select status"
+                  options={statusValues}
+                  value={tempFilters.status}
+                  onValueChange={(value) => handleFilterChange("status", value)}
+                />
+                {/* <Label htmlFor="status">Status</Label>
                 <Select
                   value={tempFilters.status || "all"}
                   onValueChange={(value) =>
@@ -155,7 +164,7 @@ export function FiltersComponent({
                       </SelectItem>
                     ))}
                   </SelectContent>
-                </Select>
+                </Select> */}
               </div>
 
               {/* Arrival Location */}
