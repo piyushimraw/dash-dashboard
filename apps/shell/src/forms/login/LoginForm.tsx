@@ -3,12 +3,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LOCATION_OPTIONS, loginSchema } from "./login.schema";
+import { loginSchema } from "./login.schema";
 import type { LoginFormValues } from "./login.types";
 import { useNavigate } from "@tanstack/react-router";
-import useAuthStore from "@/store/useAuthStore";
 import { Building2, ChevronDown, Lock, MapPin, User } from "lucide-react";
 import { useState } from "react";
+import { useGetLoginLocations } from "@/features/hooks/useGetLoginLocations";
+import { authService } from "@/services/authSelector";
 
 // Icon wrapper component for consistent vertical centering
 function InputIcon({ children }: { children: React.ReactNode }) {
@@ -24,8 +25,13 @@ function InputIcon({ children }: { children: React.ReactNode }) {
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
   const [loginError, setLoginError] = useState(false);
+
+  const [apiError, setApiError] = useState(false);
+  const [networkError, setNetworkError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { data: locations, isLoading : loadingLocations, isError } = useGetLoginLocations();
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -45,15 +51,36 @@ export default function LoginForm() {
     formState: { errors },
   } = methods;
 
-  const onSubmit = (data: LoginFormValues) => {
-    const areCorrectCredentials = login(data.userId, data.password);
-    if (areCorrectCredentials) {
-      navigate({ to: "/dashboard" });
-      setLoginError(false);
-    } else {
-      setLoginError(true);
+  const onSubmit = async (data: LoginFormValues) => {
+  setIsLoading(true);
+  setLoginError(false);
+  setApiError(false);
+  setNetworkError(false);
+
+  try {
+    const success = await authService.login(data);
+    if (success) {
+      navigate({ to: '/dashboard' });
     }
-  };
+  } catch (error) {
+    if (error instanceof Error) {
+      switch (error.message) {
+        case 'INVALID_CREDENTIALS':
+          setLoginError(true);
+          break;
+        case 'API_ERROR':
+          setApiError(true);
+          break;
+        case 'NETWORK_ERROR':
+        default:
+          setNetworkError(true);
+          break;
+      }
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <FormProvider {...methods}>
@@ -120,7 +147,7 @@ export default function LoginForm() {
                 <option value="" disabled hidden>
                   Login Location
                 </option>
-                {LOCATION_OPTIONS.map((option) => (
+                {locations?.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -136,11 +163,10 @@ export default function LoginForm() {
           </div>
         </div>
 
-        {loginError && (
-          <p className="text-sm text-red-500">
-            User ID or password is incorrect
-          </p>
-        )}
+        {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
+        {(apiError || isError) && <p className="text-sm text-red-600">API error occurred</p>}
+        {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
+        {isLoading && <p>Loading</p>}
 
         <Button type="submit" size="lg" className="w-full mt-6">
           Sign In
