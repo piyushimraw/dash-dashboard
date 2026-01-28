@@ -1,1 +1,0 @@
-import "@testing-library/jest-dom"; //import that adds extra, more readable assertions for testing the DOM.
