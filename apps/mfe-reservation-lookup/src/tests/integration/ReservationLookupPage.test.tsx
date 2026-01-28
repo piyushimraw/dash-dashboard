@@ -1,20 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, RenderResult, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReservationLookupPage } from "../../ReservationLookupPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const renderWithQueryClient = (ui: React.ReactNode): RenderResult => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false }, // avoid retries in tests
-    },
-  });
-
-  return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
-  );
-};
+import { renderWithQueryClient } from "../utils/test-utils";
 
 describe("ReservationLookupPage – integration", () => {
   test("renders data from API in table", async () => {
