@@ -179,18 +179,6 @@ export function ReservationLookupPage() {
           </div>
           {/* Active Filter Chips */}
           <FilterChips filters={filters} onRemoveFilter={resetFilters} />
-          {/* <SelectBox
-            label="Status"
-            placeholder="Select status"
-            options={[
-              { label: "All", value: "All" },
-              { label: "Confirmed", value: "Confirmed" },
-              { label: "Completed", value: "Completed" },
-              { label: "Cancelled", value: "Cancelled" },
-            ]}
-            // value={tempFilters.status}
-            // onValueChange={(value) => handleFilterChange("status", value)}
-          /> */}
           {/* Table */}
           <DataTable
             columns={tableColumn as ColumnDef<unknown, unknown>[]}

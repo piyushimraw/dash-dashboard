@@ -14,7 +14,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'apps/shell/src'), // adjust per app if needed
+      '@': path.resolve(__dirname, 'apps/shell/src'),
+      '@packages/ui': path.resolve(__dirname, 'packages/ui/src'),
+      '@packages/api-client': path.resolve(__dirname, 'packages/api-client/src'),
+      '@packages/event-bus': path.resolve(__dirname, 'packages/event-bus/src'),
+      '@packages/mfe-types': path.resolve(__dirname, 'packages/mfe-types/src'),
     },
   },
 });
