@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
   DataTable,
-  SelectBox,
   useIsDesktop,
 } from "@packages/ui";
 import type { ColumnDef } from "@tanstack/react-table";
