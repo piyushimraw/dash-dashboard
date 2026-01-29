@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthVehicle_exchangeRouteImport } from './routes/_auth.vehicle_exchange'
+import { Route as AuthTest_errorRouteImport } from './routes/_auth.test_error'
 import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as AuthReturnRouteImport } from './routes/_auth.return'
 import { Route as AuthReservation_lookupRouteImport } from './routes/_auth.reservation_lookup'
@@ -21,6 +22,7 @@ import { Route as AuthReportsRouteImport } from './routes/_auth.reports'
 import { Route as AuthRentRouteImport } from './routes/_auth.rent'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
 import { Route as AuthCarcontrolRouteImport } from './routes/_auth.carcontrol'
+import { Route as AuthBroken_componentRouteImport } from './routes/_auth.broken_component'
 import { Route as AuthAaoRouteImport } from './routes/_auth.aao'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -45,6 +47,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthVehicle_exchangeRoute = AuthVehicle_exchangeRouteImport.update({
   id: '/vehicle_exchange',
   path: '/vehicle_exchange',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthTest_errorRoute = AuthTest_errorRouteImport.update({
+  id: '/test_error',
+  path: '/test_error',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
@@ -82,6 +89,11 @@ const AuthCarcontrolRoute = AuthCarcontrolRouteImport.update({
   path: '/carcontrol',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthBroken_componentRoute = AuthBroken_componentRouteImport.update({
+  id: '/broken_component',
+  path: '/broken_component',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthAaoRoute = AuthAaoRouteImport.update({
   id: '/aao',
   path: '/aao',
@@ -93,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/broken_component': typeof AuthBroken_componentRoute
   '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
@@ -100,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/reservation_lookup': typeof AuthReservation_lookupRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
+  '/test_error': typeof AuthTest_errorRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRoutesByTo {
@@ -107,6 +121,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/broken_component': typeof AuthBroken_componentRoute
   '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
@@ -114,6 +129,7 @@ export interface FileRoutesByTo {
   '/reservation_lookup': typeof AuthReservation_lookupRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
+  '/test_error': typeof AuthTest_errorRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRoutesById {
@@ -123,6 +139,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/_auth/aao': typeof AuthAaoRoute
+  '/_auth/broken_component': typeof AuthBroken_componentRoute
   '/_auth/carcontrol': typeof AuthCarcontrolRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/rent': typeof AuthRentRoute
@@ -130,6 +147,7 @@ export interface FileRoutesById {
   '/_auth/reservation_lookup': typeof AuthReservation_lookupRoute
   '/_auth/return': typeof AuthReturnRoute
   '/_auth/settings': typeof AuthSettingsRoute
+  '/_auth/test_error': typeof AuthTest_errorRoute
   '/_auth/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRouteTypes {
@@ -139,6 +157,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/aao'
+    | '/broken_component'
     | '/carcontrol'
     | '/dashboard'
     | '/rent'
@@ -146,6 +165,7 @@ export interface FileRouteTypes {
     | '/reservation_lookup'
     | '/return'
     | '/settings'
+    | '/test_error'
     | '/vehicle_exchange'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -153,6 +173,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/aao'
+    | '/broken_component'
     | '/carcontrol'
     | '/dashboard'
     | '/rent'
@@ -160,6 +181,7 @@ export interface FileRouteTypes {
     | '/reservation_lookup'
     | '/return'
     | '/settings'
+    | '/test_error'
     | '/vehicle_exchange'
   id:
     | '__root__'
@@ -168,6 +190,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/_auth/aao'
+    | '/_auth/broken_component'
     | '/_auth/carcontrol'
     | '/_auth/dashboard'
     | '/_auth/rent'
@@ -175,6 +198,7 @@ export interface FileRouteTypes {
     | '/_auth/reservation_lookup'
     | '/_auth/return'
     | '/_auth/settings'
+    | '/_auth/test_error'
     | '/_auth/vehicle_exchange'
   fileRoutesById: FileRoutesById
 }
@@ -220,6 +244,13 @@ declare module '@tanstack/react-router' {
       path: '/vehicle_exchange'
       fullPath: '/vehicle_exchange'
       preLoaderRoute: typeof AuthVehicle_exchangeRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/test_error': {
+      id: '/_auth/test_error'
+      path: '/test_error'
+      fullPath: '/test_error'
+      preLoaderRoute: typeof AuthTest_errorRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings': {
@@ -271,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCarcontrolRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/broken_component': {
+      id: '/_auth/broken_component'
+      path: '/broken_component'
+      fullPath: '/broken_component'
+      preLoaderRoute: typeof AuthBroken_componentRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/aao': {
       id: '/_auth/aao'
       path: '/aao'
@@ -283,6 +321,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthAaoRoute: typeof AuthAaoRoute
+  AuthBroken_componentRoute: typeof AuthBroken_componentRoute
   AuthCarcontrolRoute: typeof AuthCarcontrolRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthRentRoute: typeof AuthRentRoute
@@ -290,11 +329,13 @@ interface AuthRouteChildren {
   AuthReservation_lookupRoute: typeof AuthReservation_lookupRoute
   AuthReturnRoute: typeof AuthReturnRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
+  AuthTest_errorRoute: typeof AuthTest_errorRoute
   AuthVehicle_exchangeRoute: typeof AuthVehicle_exchangeRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAaoRoute: AuthAaoRoute,
+  AuthBroken_componentRoute: AuthBroken_componentRoute,
   AuthCarcontrolRoute: AuthCarcontrolRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthRentRoute: AuthRentRoute,
@@ -302,6 +343,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthReservation_lookupRoute: AuthReservation_lookupRoute,
   AuthReturnRoute: AuthReturnRoute,
   AuthSettingsRoute: AuthSettingsRoute,
+  AuthTest_errorRoute: AuthTest_errorRoute,
   AuthVehicle_exchangeRoute: AuthVehicle_exchangeRoute,
 }
 

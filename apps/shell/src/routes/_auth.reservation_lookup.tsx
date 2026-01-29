@@ -1,5 +1,6 @@
 import { requireRole } from "@/auth/requireRole";
-import { MfeErrorBoundary } from "@/components/MfeErrorBoundary";
+import { RouteErrorBoundary } from "@/components/error-boundary/RouteErrorBoundary";
+import { MfeErrorBoundary } from "@/components/error-boundary/MfeErrorBoundary";
 import { ROLES } from "@/config/roles";
 import { ReservationLookupPage } from "@apps/mfe-reservation-lookup";
 import { createFileRoute } from "@tanstack/react-router";
@@ -16,8 +17,10 @@ export const Route = createFileRoute("/_auth/reservation_lookup")({
 
 function RouteComponent() {
   return (
-    <MfeErrorBoundary mfeName="Reservation Lookup">
-      <ReservationLookupPage />
-    </MfeErrorBoundary>
+    <RouteErrorBoundary routeName="Reservation Lookup">
+      <MfeErrorBoundary mfeName="Reservation Lookup">
+        <ReservationLookupPage />
+      </MfeErrorBoundary>
+    </RouteErrorBoundary>
   );
 }
