@@ -64,7 +64,6 @@ export function AppPagination({
   };
   const canGoPrev = page > 1 && !disabled;
   const canGoNext = page < totalPages && !disabled;
-  console.log(canGoNext);
   return (
     <Pagination>
       <PaginationContent>
@@ -73,7 +72,7 @@ export function AppPagination({
             aria-disabled={!canGoPrev}
             className={
               !canGoPrev
-                ? "pointer-events-none opacity-50 bg-red-500 text-muted-foreground transition-none"
+                ? "pointer-events-none opacity-50 text-muted-foreground transition-none"
                 : ""
             }
             onClick={(e) => {
@@ -105,7 +104,7 @@ export function AppPagination({
             aria-disabled={!canGoNext}
             className={
               !canGoNext
-                ? "pointer-events-none opacity-50 bg-red-500 text-muted-foreground transition-none"
+                ? "pointer-events-none opacity-50 text-muted-foreground transition-none"
                 : ""
             }
             onClick={(e) => {
