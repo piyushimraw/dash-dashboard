@@ -1,6 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Scan shared packages for Tailwind classes */
+@source "../../../packages/ui/src";
+
+/* Scan all microfrontend apps for Tailwind classes */
+@source "../../../apps/mfe-aao/src";
+@source "../../../apps/mfe-car-control/src";
+@source "../../../apps/mfe-dashboard/src";
+@source "../../../apps/mfe-rent/src";
+@source "../../../apps/mfe-reports/src";
+@source "../../../apps/mfe-reservation-lookup/src";
+@source "../../../apps/mfe-return/src";
+@source "../../../apps/mfe-settings/src";
+@source "../../../apps/mfe-vehicle-exchange/src";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
