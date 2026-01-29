@@ -10,7 +10,6 @@ import { Building2, ChevronDown, Lock, MapPin, User } from "lucide-react";
 import { useState } from "react";
 import { useGetLoginLocations } from "@/features/hooks/useGetLoginLocations";
 import { authService } from "@/services/authSelector";
-// import { toast } from "@packages/ui";
 import { eventBus, MfeEventNames } from "@packages/event-bus";
 
 // Icon wrapper component for consistent vertical centering
@@ -59,35 +58,32 @@ export default function LoginForm() {
   setApiError(false);
   setNetworkError(false);
 
-  // toast({
-  //   title: "Login SuccessFull",
-  //   description: "You have logged in successfully",
-  //   variant: "success",
-  // });
-
-   eventBus.emit(MfeEventNames.NotificationShow, {
-      type: "success",
-      message: "Logged In Successfully",
-      duration: 5000,
-    });
-
   try {
     const success = await authService.login(data);
     if (success) {
       navigate({ to: '/dashboard' });
+    } else {
+      setLoginError(true);
     }
   } catch (error) {
     if (error instanceof Error) {
       switch (error.message) {
-        case 'INVALID_CREDENTIALS':
-          setLoginError(true);
-          break;
         case 'API_ERROR':
           setApiError(true);
+          eventBus.emit(MfeEventNames.NotificationShow, {
+            type: "error",
+            message: "API error occurred. Please try again.",
+            duration: 5000,
+          });
           break;
         case 'NETWORK_ERROR':
         default:
           setNetworkError(true);
+          eventBus.emit(MfeEventNames.NotificationShow, {
+            type: "error",
+            message: "Network issue. Please try again.",
+            duration: 5000,
+          });
           break;
       }
     }
