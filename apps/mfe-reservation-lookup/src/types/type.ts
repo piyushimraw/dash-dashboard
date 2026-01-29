@@ -1,5 +1,5 @@
 export interface TableType {
-  id: number;
+  id: number | string;
   customerName: string;
   serviceLevel: "Gold" | "Silver" | "Platinum";
   cvi: string;
@@ -7,7 +7,7 @@ export interface TableType {
   estArrival: string;
   flightInfoStatus: "On Time" | "Delayed" | "Cancelled";
   numberOfDays: number;
-  resClass: "SUV" | "Sedan" | "Hatchback";
+  resClass: "SUV" | "Sedan" | "Hatchback" | "Economy" | "Business";
   resStatus: "Confirmed" | "Completed" | "Cancelled";
   dashStatus: "Active" | "Closed" | "Inactive";
   rentDate: string;
