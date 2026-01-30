@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import { handleQueryError } from "./errorHandler";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,6 +13,7 @@ export const queryClient = new QueryClient({
     },
     mutations: {
       retry: 0,
+      onError: handleQueryError,
     },
   },
 });

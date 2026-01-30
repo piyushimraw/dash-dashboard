@@ -5,7 +5,7 @@ import { ROLES } from "@/config/roles";
 import { ReservationLookupPage } from "@apps/mfe-reservation-lookup";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth/reservation_lookup")({
+export const Route = createFileRoute("/_auth/reservation_lookup_corrupt_data")({
   beforeLoad: () =>
     requireRole([
       ROLES.SUPER_ADMIN,
@@ -17,9 +17,9 @@ export const Route = createFileRoute("/_auth/reservation_lookup")({
 
 function RouteComponent() {
   return (
-    <RouteErrorBoundary routeName="Reservation Lookup">
-      <MfeErrorBoundary mfeName="Reservation Lookup">
-        <ReservationLookupPage showCorruptData={false} />
+    <RouteErrorBoundary routeName="Reservation Lookup With Corrupt Data">
+      <MfeErrorBoundary mfeName="Reservation Lookup With Corrupt Data">
+        <ReservationLookupPage showCorruptData={true} />
       </MfeErrorBoundary>
     </RouteErrorBoundary>
   );

@@ -1,4 +1,5 @@
-import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
+import { RouteErrorBoundary } from '@/components/error-boundary/RouteErrorBoundary'
+import { MfeErrorBoundary } from '@/components/error-boundary/MfeErrorBoundary'
 import { VehicleExchangePage } from '@apps/mfe-vehicle-exchange'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -8,8 +9,10 @@ export const Route = createFileRoute('/_auth/vehicle_exchange')({
 
 function RouteComponent() {
   return (
-    <MfeErrorBoundary mfeName="Vehicle Exchange">
-      <VehicleExchangePage />
-    </MfeErrorBoundary>
+    <RouteErrorBoundary routeName="Vehicle Exchange">
+      <MfeErrorBoundary mfeName="Vehicle Exchange">
+        <VehicleExchangePage />
+      </MfeErrorBoundary>
+    </RouteErrorBoundary>
   )
 }
