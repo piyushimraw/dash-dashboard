@@ -16,7 +16,11 @@ interface FilterChipsProps {
  * Touch-friendly: Uses Button component which enforces 44px minimum (WCAG 2.5.5)
  */
 export function FilterChips({ filters, onRemoveFilter }: FilterChipsProps) {
-  const activeFilters: Array<{ key: keyof FilterState; label: string; value: string }> = [];
+  const activeFilters: Array<{
+    key: keyof FilterState;
+    label: string;
+    value: string;
+  }> = [];
 
   if (filters.startDate) {
     activeFilters.push({
@@ -55,11 +59,15 @@ export function FilterChips({ filters, onRemoveFilter }: FilterChipsProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2" role="list" aria-label="Active filters">
+    <div
+      className="flex flex-wrap gap-2"
+      role="list"
+      aria-label="Active filters"
+    >
       {activeFilters.map((filter) => (
         <div
           key={filter.key}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-yellow-light border border-brand-yellow-dark text-lavender-deep text-sm font-medium"
+          className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-brand-yellow-light border border-brand-yellow-dark text-lavender-deep text-sm font-medium"
           role="listitem"
         >
           <span className="text-xs text-muted-foreground">{filter.label}:</span>

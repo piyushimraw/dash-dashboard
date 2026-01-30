@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - microfrontend-arch
+  push:
+    branches:
+      - microfrontend-arch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Prepare coverage comment
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## 📊 Code Coverage" > coverage-comment.md
+          if [ -f coverage/coverage-summary.json ]; then
+            node -e "
+              const c = require('./coverage/coverage-summary.json').total;
+              console.log(
+                `Lines: ${c.lines.pct}%\nBranches: ${c.branches.pct}%\nFunctions: ${c.functions.pct}%\nStatements: ${c.statements.pct}%`
+              );
+            " >> coverage-comment.md
+          else
+            echo "*Coverage summary not found (check coverage reporters and paths)*" >> coverage-comment.md
+            echo "--- Debug: coverage directory contents ---" >> coverage-comment.md
+            ls -la coverage || true >> coverage-comment.md
+            echo "--- Debug: lcov (first 100 lines) ---" >> coverage-comment.md
+            if [ -f coverage/lcov.info ]; then
+              head -n 100 coverage/lcov.info >> coverage-comment.md
+            else
+              echo "lcov.info not found" >> coverage-comment.md
+            fi
+          fi
+
+      - name: Post coverage comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: coverage-comment.md

@@ -23,6 +23,7 @@ export {
   TableCaption,
 } from "./components/table/table";
 
+export { SelectBox } from "./components/selectbox";
 export { DataTable, customSortDataTable } from "./components/table/DataTable";
 
 // Form Components
@@ -39,3 +40,7 @@ export { useIsDesktop } from "./hooks/useIsDesktop";
 
 // Utilities
 export { cn } from "./lib/utils";
+export {
+  DEFAULT_ITEMS_SIZE,
+  DEFAULT_PAGE_INDEX,
+} from "./components/table/utils";
