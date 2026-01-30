@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [microfrontend-arch]
+  push:
+    branches: [microfrontend-arch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Prepare coverage comment
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## 📊 Code Coverage" > coverage-comment.md
+          node -e "
+            const c = require('./coverage/coverage-summary.json').total;
+            console.log(
+              `Lines: ${c.lines.pct}%\nBranches: ${c.branches.pct}%\nFunctions: ${c.functions.pct}%\nStatements: ${c.statements.pct}%`
+            );
+          " >> coverage-comment.md
+
+      - name: Post coverage comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: coverage-comment.md
