@@ -19,7 +19,7 @@ function RouteComponent() {
   return (
     <RouteErrorBoundary routeName="Reservation Lookup">
       <MfeErrorBoundary mfeName="Reservation Lookup">
-        <ReservationLookupPage />
+        <ReservationLookupPage showCorruptData={false} />
       </MfeErrorBoundary>
     </RouteErrorBoundary>
   );

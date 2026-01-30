@@ -8,16 +8,20 @@ type UseGetRentedVehicleListParams = {
 
 export const useGetRentedVehicleList = ({showCorruptData} : UseGetRentedVehicleListParams) =>
   useQuery({
-    queryKey: queryKeys.rentedVehicles.all,
+    // queryKey: queryKeys.rentedVehicles.all,
+    queryKey: [
+      ...queryKeys.rentedVehicles.all,
+      { showCorruptData }
+    ],
     queryFn: showCorruptData ? getRentedVehicleListWithCorruptData : getRentedVehicleList,
 
     //uncomment to test local query error handling and removing caching
-    throwOnError: true,
-    staleTime: 0,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
-    gcTime: 0
+    // throwOnError: true,
+    // staleTime: 0,
+    // refetchOnMount: true,
+    // refetchOnWindowFocus: true,
+    // refetchOnReconnect: true,
+    // gcTime: 0
   });
 
 // export const useUser = (id: string) =>
