@@ -62,7 +62,7 @@ function SidebarMenuItem({
 
   if (!item.children) {
     return (
-      <div className=" bg-gray-200">
+      <div className="bg-gray-200">
         <Button
           variant="sidebar"
           size="sidebar"
@@ -102,10 +102,11 @@ function SidebarMenuItem({
           aria-expanded={isOpen}
           aria-controls={menuId}
         >
-          <span className="flex items-center gap-3">
+          <span className="flex items-start gap-3 min-w-0 text-left">
             <Icon />
-            <span>{item.label}</span>
+            <span className="break-words whitespace-normal">{item.label}</span>
           </span>
+
           <ChevronDown
             className={cn(
               "h-4 w-4 text-sidebar-muted transition-transform duration-200",
@@ -136,7 +137,7 @@ function SidebarMenuItem({
                   }}
                   className={cn(
                     location.pathname === child.pathname && "bg-sidebar-accent",
-                    "w-full justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3",
+                    "w-full min-w-0 justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3",
                   )}
                   role="menuitem"
                 >
@@ -145,7 +146,9 @@ function SidebarMenuItem({
                       <Icon />
                     </span>
                   )}
-                  {child.label}
+                  <span className="break-words whitespace-normal">
+                    {child.label}
+                  </span>
                 </Button>
               </li>
             );

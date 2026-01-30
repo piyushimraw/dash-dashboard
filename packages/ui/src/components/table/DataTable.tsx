@@ -87,7 +87,7 @@ export function DataTable<TData, TValue>({
   // Reset to page 0 when filters change
   useEffect(() => {
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-  }, [globalSearch]);
+  }, [globalSearch, setPagination]);
 
   if (isLoading) {
     return <Loader />;

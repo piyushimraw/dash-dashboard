@@ -31,6 +31,7 @@ export function ReservationLookupPage() {
     setPagination,
     submitFilters,
     resetFilters,
+    removeFilter
   } = useRentVehicleFilters(data);
 
   const tableColumn: ColumnDef<TableType>[] = useMemo(() => {
@@ -99,7 +100,7 @@ export function ReservationLookupPage() {
           };
 
           return (
-            <Badge size="lg" variant={statusVariantMap[status] ?? "muted"}>
+            <Badge variant={statusVariantMap[status] ?? "muted"}>
               {status}
             </Badge>
           );
@@ -178,7 +179,7 @@ export function ReservationLookupPage() {
             />
           </div>
           {/* Active Filter Chips */}
-          <FilterChips filters={filters} onRemoveFilter={resetFilters} />
+          <FilterChips filters={filters} onRemoveFilter={removeFilter} />
           {/* Table */}
           <DataTable
             columns={tableColumn as ColumnDef<unknown, unknown>[]}

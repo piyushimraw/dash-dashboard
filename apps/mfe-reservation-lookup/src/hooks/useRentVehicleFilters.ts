@@ -78,7 +78,7 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
       ...prev,
       pageIndex: 0,
     }));
-  }, [search, filters]);
+  }, [search, filters, setPagination]);
 
   // UI-only action
   const submitFilters = (filtersTemp: FilterState) => {
@@ -88,6 +88,10 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
   const resetFilters = () => {
     setFilters(initialFilters);
     setSearch("");
+  };
+
+  const removeFilter = (key: keyof FilterState) => {
+    setFilters((prev) => ({ ...prev, [key]: "" }));
   };
 
   return {
@@ -101,5 +105,6 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     setPagination,
     submitFilters,
     resetFilters,
+    removeFilter,
   };
 };

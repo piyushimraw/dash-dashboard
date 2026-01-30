@@ -7,11 +7,10 @@ vi.mock("@packages/ui", () => ({
   DEFAULT_ITEMS_SIZE: 10,
 }));
 
-
 describe("useRentVehicleFilters", () => {
   it("should initialize with full data and default values", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     expect(result.current.filteredData).toHaveLength(5);
@@ -23,7 +22,7 @@ describe("useRentVehicleFilters", () => {
 
   it("should filter by search (customer name)", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -37,7 +36,7 @@ describe("useRentVehicleFilters", () => {
 
   it("should filter by email search", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -50,7 +49,7 @@ describe("useRentVehicleFilters", () => {
 
   it("should filter by status = Confirmed", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -65,14 +64,14 @@ describe("useRentVehicleFilters", () => {
     expect(result.current.filteredData).toHaveLength(2);
     expect(
       result.current.filteredData.every(
-        (item) => item.resStatus === "Confirmed"
-      )
+        (item) => item.resStatus === "Confirmed",
+      ),
     ).toBe(true);
   });
 
   it("should filter by arrival location DEL", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -87,14 +86,14 @@ describe("useRentVehicleFilters", () => {
     expect(result.current.filteredData).toHaveLength(2);
     expect(
       result.current.filteredData.every(
-        (item) => item.arrivalLocation === "DEL"
-      )
+        (item) => item.arrivalLocation === "DEL",
+      ),
     ).toBe(true);
   });
 
   it("should filter by date range (Jan 2025 only)", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -107,14 +106,16 @@ describe("useRentVehicleFilters", () => {
     });
 
     expect(result.current.filteredData).toHaveLength(3);
-    expect(
-      result.current.filteredData.map((i) => i.id)
-    ).toEqual(["1", "2", "4"]);
+    expect(result.current.filteredData.map((i) => i.id)).toEqual([
+      "1",
+      "2",
+      "4",
+    ]);
   });
 
   it("should combine filters (status + location)", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -127,14 +128,12 @@ describe("useRentVehicleFilters", () => {
     });
 
     expect(result.current.filteredData).toHaveLength(1);
-    expect(result.current.filteredData[0].customerName).toBe(
-      "Michael Johnson"
-    );
+    expect(result.current.filteredData[0].customerName).toBe("Michael Johnson");
   });
 
   it("should reset pagination when search changes", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
@@ -151,9 +150,29 @@ describe("useRentVehicleFilters", () => {
     expect(result.current.pagination.pageIndex).toBe(0);
   });
 
+  it("should remove specific filter", () => {
+    const { result } = renderHook(() =>
+      useRentVehicleFilters(rentedVehiclesMock),
+    );
+
+    act(() => {
+      result.current.submitFilters({
+        startDate: "2025-01-01",
+        endDate: "",
+        status: "Confirmed",
+        arrivalLocation: "DEL",
+      });
+    });
+
+    act(() => {
+      result.current.removeFilter("startDate");
+    });
+    expect(result.current.filters.startDate).toBe("");
+  });
+
   it("should reset filters and search", () => {
     const { result } = renderHook(() =>
-      useRentVehicleFilters(rentedVehiclesMock)
+      useRentVehicleFilters(rentedVehiclesMock),
     );
 
     act(() => {
