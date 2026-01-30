@@ -33,7 +33,7 @@ export function RentVehicleForm() {
 
   return (
     <FormProvider methods={form} onSubmit={form.handleSubmit(onSubmit)}>
-      <div className="space-y-5 max-w-md mx-auto">
+      <div className="w-full space-y-5 max-w-md mx-auto">
         <FormInput
           name="custName"
           label="Customer Name"

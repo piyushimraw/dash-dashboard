@@ -1,4 +1,6 @@
 import { http, HttpResponse } from 'msw';
+import { rentedVehiclesMock } from '../shared-mocks/rentedVehicles.mock';
+import { LOCATION_OPTIONS } from '@/forms/login/login.schema';
 
 type LoginRequestBody = {
   userId: string;
@@ -21,4 +23,14 @@ export const handlers = [
       { status: 401 }
     );
   }),
+  // Mock the external dummyjson endpoint used by getRentedVehicleList in tests
+  http.get(
+    "https://dummyjson.com/c/1394-326c-4220-88d7",
+    () => HttpResponse.json(rentedVehiclesMock),
+  ),
+  // Mock the external dummyjson endpoint used by getLoginLocations
+  http.get(
+    "https://dummyjson.com/c/4fa3-3817-4472-b407",
+    () => HttpResponse.json(LOCATION_OPTIONS),
+  ),
 ];

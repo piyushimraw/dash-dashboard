@@ -1,8 +1,9 @@
 import { useFormContext, useFormState } from "react-hook-form";
-import { FormError } from "./FormError";
-import { Label } from "../label";
-import { cn } from "../../lib/utils";
 import type { ReactNode } from "react";
+import { Label } from "../label";
+import { Input } from "../input";
+import { FormError } from "./FormError";
+import { cn } from "../../lib/utils";
 
 type Props = {
   name: string;
@@ -11,6 +12,22 @@ type Props = {
   icon?: ReactNode;
   placeholder?: string;
 };
+
+/*
+----------usage example------------
+<FormInput
+  name="email"
+  label="Email"
+  icon={<Mail className="h-4 w-4 text-muted-foreground" />}
+/>
+
+<FormInput
+  name="password"
+  label="Password"
+  type="password"
+  icon={<Lock className="h-4 w-4 text-muted-foreground" />}
+/>
+*/
 
 export function FormInput({
   name,
@@ -25,8 +42,10 @@ export function FormInput({
   const error = errors?.[name];
 
   return (
-    <div className="space-y-2">
-      <Label htmlFor={name}>{label}</Label>
+    <div className="space-y-1">
+      <Label htmlFor={name} className="text-sm font-medium">
+        {label}
+      </Label>
 
       <div className="relative">
         {icon && (
@@ -34,19 +53,15 @@ export function FormInput({
             {icon}
           </div>
         )}
-        <input
+
+        <Input
           id={name}
           type={type}
           placeholder={placeholder}
           {...register(name)}
           className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
-            "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-            "placeholder:text-muted-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            "disabled:cursor-not-allowed disabled:opacity-50",
             icon && "pl-10",
-            error && "border-destructive focus-visible:ring-destructive"
+            error && "border-destructive focus-visible:ring-destructive",
           )}
         />
       </div>
