@@ -17,5 +17,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "types": ["vite/client","vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@packages/*": ["packages/*/src"],
+      "@apps/*": ["apps/*/src"]
+    }
   }
 }

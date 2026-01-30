@@ -111,7 +111,12 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       // In dev mode, resolve packages to source for HMR
-      ...(mode === "development" ? devPackageAliases : {}),
+      ...(mode === "development" ? devPackageAliases : {
+        "@packages/event-bus": path.resolve(packagesRoot, "event-bus/dist/index.js"),
+        "@packages/api-client": path.resolve(packagesRoot, "api-client/dist/index.js"),
+        "@packages/ui": path.resolve(packagesRoot, "ui/dist/index.js"),
+        "@packages/mfe-types": path.resolve(packagesRoot, "mfe-types/dist/index.js"),
+      }),
     },
   },
   build: {
