@@ -12,6 +12,9 @@ export * from "./components/badge";
 export * from "./components/select";
 export * from "./components/popover";
 
+// Error Boundary
+export { ErrorBoundary } from "./components/ErrorBoundary";
+
 // Table Components
 export {
   Table,

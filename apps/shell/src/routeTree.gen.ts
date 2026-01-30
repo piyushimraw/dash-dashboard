@@ -17,6 +17,7 @@ import { Route as AuthVehicle_exchangeRouteImport } from './routes/_auth.vehicle
 import { Route as AuthTest_errorRouteImport } from './routes/_auth.test_error'
 import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as AuthReturnRouteImport } from './routes/_auth.return'
+import { Route as AuthReservation_lookup_corrupt_dataRouteImport } from './routes/_auth.reservation_lookup_corrupt_data'
 import { Route as AuthReservation_lookupRouteImport } from './routes/_auth.reservation_lookup'
 import { Route as AuthReportsRouteImport } from './routes/_auth.reports'
 import { Route as AuthRentRouteImport } from './routes/_auth.rent'
@@ -64,6 +65,12 @@ const AuthReturnRoute = AuthReturnRouteImport.update({
   path: '/return',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthReservation_lookup_corrupt_dataRoute =
+  AuthReservation_lookup_corrupt_dataRouteImport.update({
+    id: '/reservation_lookup_corrupt_data',
+    path: '/reservation_lookup_corrupt_data',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthReservation_lookupRoute = AuthReservation_lookupRouteImport.update({
   id: '/reservation_lookup',
   path: '/reservation_lookup',
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/rent': typeof AuthRentRoute
   '/reports': typeof AuthReportsRoute
   '/reservation_lookup': typeof AuthReservation_lookupRoute
+  '/reservation_lookup_corrupt_data': typeof AuthReservation_lookup_corrupt_dataRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
   '/test_error': typeof AuthTest_errorRoute
@@ -127,6 +135,7 @@ export interface FileRoutesByTo {
   '/rent': typeof AuthRentRoute
   '/reports': typeof AuthReportsRoute
   '/reservation_lookup': typeof AuthReservation_lookupRoute
+  '/reservation_lookup_corrupt_data': typeof AuthReservation_lookup_corrupt_dataRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
   '/test_error': typeof AuthTest_errorRoute
@@ -145,6 +154,7 @@ export interface FileRoutesById {
   '/_auth/rent': typeof AuthRentRoute
   '/_auth/reports': typeof AuthReportsRoute
   '/_auth/reservation_lookup': typeof AuthReservation_lookupRoute
+  '/_auth/reservation_lookup_corrupt_data': typeof AuthReservation_lookup_corrupt_dataRoute
   '/_auth/return': typeof AuthReturnRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/test_error': typeof AuthTest_errorRoute
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/rent'
     | '/reports'
     | '/reservation_lookup'
+    | '/reservation_lookup_corrupt_data'
     | '/return'
     | '/settings'
     | '/test_error'
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/rent'
     | '/reports'
     | '/reservation_lookup'
+    | '/reservation_lookup_corrupt_data'
     | '/return'
     | '/settings'
     | '/test_error'
@@ -196,6 +208,7 @@ export interface FileRouteTypes {
     | '/_auth/rent'
     | '/_auth/reports'
     | '/_auth/reservation_lookup'
+    | '/_auth/reservation_lookup_corrupt_data'
     | '/_auth/return'
     | '/_auth/settings'
     | '/_auth/test_error'
@@ -267,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthReturnRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/reservation_lookup_corrupt_data': {
+      id: '/_auth/reservation_lookup_corrupt_data'
+      path: '/reservation_lookup_corrupt_data'
+      fullPath: '/reservation_lookup_corrupt_data'
+      preLoaderRoute: typeof AuthReservation_lookup_corrupt_dataRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/reservation_lookup': {
       id: '/_auth/reservation_lookup'
       path: '/reservation_lookup'
@@ -327,6 +347,7 @@ interface AuthRouteChildren {
   AuthRentRoute: typeof AuthRentRoute
   AuthReportsRoute: typeof AuthReportsRoute
   AuthReservation_lookupRoute: typeof AuthReservation_lookupRoute
+  AuthReservation_lookup_corrupt_dataRoute: typeof AuthReservation_lookup_corrupt_dataRoute
   AuthReturnRoute: typeof AuthReturnRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthTest_errorRoute: typeof AuthTest_errorRoute
@@ -341,6 +362,8 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthRentRoute: AuthRentRoute,
   AuthReportsRoute: AuthReportsRoute,
   AuthReservation_lookupRoute: AuthReservation_lookupRoute,
+  AuthReservation_lookup_corrupt_dataRoute:
+    AuthReservation_lookup_corrupt_dataRoute,
   AuthReturnRoute: AuthReturnRoute,
   AuthSettingsRoute: AuthSettingsRoute,
   AuthTest_errorRoute: AuthTest_errorRoute,

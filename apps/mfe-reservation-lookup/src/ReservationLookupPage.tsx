@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
   DataTable,
+  ErrorBoundary,
   useIsDesktop,
 } from "@packages/ui";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -17,9 +18,13 @@ import { SearchComponent } from "./components/SearchComponent";
 import { useRentVehicleFilters } from "./hooks/useRentVehicleFilters";
 import type { TableType } from "./types/type";
 
-export function ReservationLookupPage() {
+type ReservationLookupPageProps = {
+  showCorruptData?: boolean;
+};
+
+export function ReservationLookupPage({ showCorruptData = false }: ReservationLookupPageProps) {
   const isDesktop = useIsDesktop();
-  const { data, isLoading } = useGetRentedVehicleList();
+  const { data, isLoading } = useGetRentedVehicleList({ showCorruptData });
   const {
     initialFilters,
     filters,
