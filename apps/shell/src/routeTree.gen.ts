@@ -24,6 +24,7 @@ import { Route as AuthRentRouteImport } from './routes/_auth.rent'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
 import { Route as AuthCarcontrolRouteImport } from './routes/_auth.carcontrol'
 import { Route as AuthBroken_componentRouteImport } from './routes/_auth.broken_component'
+import { Route as AuthBff_demoRouteImport } from './routes/_auth.bff_demo'
 import { Route as AuthAaoRouteImport } from './routes/_auth.aao'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -101,6 +102,11 @@ const AuthBroken_componentRoute = AuthBroken_componentRouteImport.update({
   path: '/broken_component',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthBff_demoRoute = AuthBff_demoRouteImport.update({
+  id: '/bff_demo',
+  path: '/bff_demo',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthAaoRoute = AuthAaoRouteImport.update({
   id: '/aao',
   path: '/aao',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/bff_demo': typeof AuthBff_demoRoute
   '/broken_component': typeof AuthBroken_componentRoute
   '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/bff_demo': typeof AuthBff_demoRoute
   '/broken_component': typeof AuthBroken_componentRoute
   '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/_auth/aao': typeof AuthAaoRoute
+  '/_auth/bff_demo': typeof AuthBff_demoRoute
   '/_auth/broken_component': typeof AuthBroken_componentRoute
   '/_auth/carcontrol': typeof AuthCarcontrolRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/aao'
+    | '/bff_demo'
     | '/broken_component'
     | '/carcontrol'
     | '/dashboard'
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/aao'
+    | '/bff_demo'
     | '/broken_component'
     | '/carcontrol'
     | '/dashboard'
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/_auth/aao'
+    | '/_auth/bff_demo'
     | '/_auth/broken_component'
     | '/_auth/carcontrol'
     | '/_auth/dashboard'
@@ -329,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthBroken_componentRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/bff_demo': {
+      id: '/_auth/bff_demo'
+      path: '/bff_demo'
+      fullPath: '/bff_demo'
+      preLoaderRoute: typeof AuthBff_demoRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/aao': {
       id: '/_auth/aao'
       path: '/aao'
@@ -341,6 +360,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthAaoRoute: typeof AuthAaoRoute
+  AuthBff_demoRoute: typeof AuthBff_demoRoute
   AuthBroken_componentRoute: typeof AuthBroken_componentRoute
   AuthCarcontrolRoute: typeof AuthCarcontrolRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
@@ -356,6 +376,7 @@ interface AuthRouteChildren {
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAaoRoute: AuthAaoRoute,
+  AuthBff_demoRoute: AuthBff_demoRoute,
   AuthBroken_componentRoute: AuthBroken_componentRoute,
   AuthCarcontrolRoute: AuthCarcontrolRoute,
   AuthDashboardRoute: AuthDashboardRoute,

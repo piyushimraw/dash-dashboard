@@ -20,27 +20,26 @@ app.get("/api/vehicles", async (req, res) => {
   }
 });
 
-//todo -> implement this on a dummy url. 
-// use allSettled
+// use allSettled instead of all to see how to handle partial failures.
 
-// app.get("/api/dashboard", async (req, res) => {
-//   try {
-//     const [vehicles, pricing, availability] = await Promise.all([
-//       axios.get("https://dummyjson.com/c/1394-326c-4220-88d7"),
-//       axios.get("https://dummyjson.com/products"),
-//       axios.get("https://dummyjson.com/users")
-//     ]);
+app.get("/api/dashboard", async (req, res) => {
+  try {
+    const [vehicles, pricing, availability] = await Promise.all([
+      axios.get("https://dummyjson.com/c/1394-326c-4220-88d7"),
+      axios.get("https://dummyjson.com/products"),
+      axios.get("https://dummyjson.com/users")
+    ]);
 
-//     res.json({
-//       vehicles: vehicles.data,
-//       pricing: pricing.data,
-//       availability: availability.data
-//     });
+    res.json({
+      vehicles: vehicles.data,
+      pricing: pricing.data,
+      availability: availability.data
+    });
 
-//   } catch (err) {
-//     res.status(500).json({ message: "Dashboard fetch failed" });
-//   }
-// });
+  } catch (err) {
+    res.status(500).json({ message: "Dashboard fetch failed" });
+  }
+});
 
 
 app.listen(PORT, () => {

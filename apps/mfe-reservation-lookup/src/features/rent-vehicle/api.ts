@@ -21,10 +21,6 @@ export type RentedVehicleResponseType = {
 // old api
 // ("https://dummyjson.com/c/fd99-532e-4733-83a3");
 
-//for using BFF api
-//http://localhost:3001/api/vehicles
-
-
 export const getRentedVehicleList = () =>
   http<RentedVehicleResponseType[]>(
     "https://dummyjson.com/c/1394-326c-4220-88d7",
@@ -33,6 +29,11 @@ export const getRentedVehicleList = () =>
 export const getRentedVehicleListWithCorruptData = () =>
   http<RentedVehicleResponseType[]>(
     "https://dummyjson.com/c/6436-1d85-4abd-bdad",
+);
+
+export const getRentedVehicleListUsingBff = () =>
+  http<RentedVehicleResponseType[]>(
+    "http://localhost:3001/api/vehicles",
 );
 
 // uncomment to test global test error using handleQueryError
