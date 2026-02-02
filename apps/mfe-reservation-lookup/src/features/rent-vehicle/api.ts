@@ -1,29 +1,11 @@
-import { http } from "@packages/api-client";
+import { getRentedVehicles } from "@packages/api-client";
+import type { RentedVehicle } from "@packages/mfe-types";
 
-export type RentedVehicleResponseType = {
-  id: number;
-  customerName: string;
-  serviceLevel: "Gold" | "Silver" | "Platinum";
-  cvi: string;
-  arrivalLocation: string;
-  estArrival: string;
-  flightInfoStatus: "On Time" | "Delayed" | "Cancelled";
-  numberOfDays: number;
-  resClass: "SUV" | "Sedan" | "Hatchback";
-  resStatus: "Confirmed" | "Completed" | "Cancelled";
-  dashStatus: "Active" | "Closed" | "Inactive";
-  rentDate: string;
-  returnDate: string;
-  email: string;
-  phone: string;
-};
+export type RentedVehicleResponseType = RentedVehicle;
 
-// old api
-// ("https://dummyjson.com/c/fd99-532e-4733-83a3");
-export const getRentedVehicleList = () =>
-  http<RentedVehicleResponseType[]>(
-    "https://dummyjson.com/c/1394-326c-4220-88d7",
-  );
+// Use the BFF proxy endpoint instead of calling the external upstream service
+export const getRentedVehicleList = (query?: Record<string, string | number>) =>
+  getRentedVehicles(query);
 
 // export const getRentedVehicleById = (id: string) =>
 //   http<User>(`/api/test/${id}`);

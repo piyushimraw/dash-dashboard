@@ -32,3 +32,11 @@ export type {
   DialogDefinition,
   DialogState,
 } from './dialog';
+
+// BFF (OpenAPI-generated) types — compatibility exports
+// The codegen produces a `components` interface. For convenience and
+// backwards compatibility with earlier hand-written types, we expose a
+// small set of commonly used type aliases here.
+import type { components as _BffComponents } from './generated/bff'
+export type RentedVehicle = _BffComponents['schemas']['RentedVehicle']
+export type GetRentedVehiclesResponse = RentedVehicle[]
