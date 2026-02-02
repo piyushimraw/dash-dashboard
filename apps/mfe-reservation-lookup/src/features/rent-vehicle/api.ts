@@ -21,6 +21,9 @@ export type RentedVehicleResponseType = {
 // old api
 // ("https://dummyjson.com/c/fd99-532e-4733-83a3");
 
+//for using BFF api
+//http://localhost:3001/api/vehicles
+
 
 export const getRentedVehicleList = () =>
   http<RentedVehicleResponseType[]>(
