@@ -41,7 +41,15 @@ new-dash-ui/
 │   ├── ui/                    # Shared UI components (shadcn/ui style)
 │   ├── api-client/            # React Query setup, API hooks
 │   ├── event-bus/             # Cross-MFE communication (mitt-based)
-│   └── mfe-types/             # Type contracts (auth, navigation, etc.)
+│   ├── mfe-types/             # Type contracts (auth, navigation, etc.)
+│   │   └── src/
+│   │       └── generated/     # Auto-generated types from BFF
+│   │           └── bff.ts     # OpenAPI-derived TypeScript types
+│   └── bff/                   # Backend-for-Frontend (Hono)
+│       ├── src/
+│       │   └── index.ts       # Hono server with proxy routes
+│       ├── openapi.yaml       # OpenAPI 3.x specification
+│       └── package.json       # BFF scripts and dependencies
 ├── docker/
 │   └── nginx.conf             # Production server config (SPA routing)
 └── docker-compose.yml         # Local production demo
@@ -148,6 +156,7 @@ flowchart TB
         API[api-client - React Query]
         EB[event-bus - Communication]
         Types[mfe-types - Contracts]
+        BFF[bff - Backend Proxy]
     end
 
     Shell --> UI
@@ -162,6 +171,8 @@ flowchart TB
     MFE2 --> UI
     MFE2 --> API
     MFE2 --> Types
+    
+    API --> BFF
 ```
 
 ### 4.2 Shell Orchestration
@@ -265,6 +276,7 @@ Shared TypeScript type definitions providing compile-time verification:
 | `AuthState`, `AuthService`, `User`, `Role` | Authentication contracts |
 | `NavigationItem`, `NavigationGroup` | Navigation structure |
 | `DialogDefinition`, `DialogState` | Cross-MFE modal system |
+| `generated/bff.ts` | Auto-generated types from BFF OpenAPI spec |
 
 ### 5.2 packages/event-bus
 
@@ -451,6 +463,7 @@ When modifying `packages/*`:
 | Shared types package | Compile-time verification of contracts between shell and MFEs |
 | Vendor chunk splitting | Separate cache lifetimes for React, UI libs, etc. |
 | TanStack Router auto code-splitting | Route-based lazy loading without manual configuration |
+| BFF with OpenAPI-first | Type-safe API contracts; single source of truth for frontend-backend interface |
 
 ---
 
@@ -474,7 +487,433 @@ pnpm test:e2e          # Playwright E2E tests
 
 ---
 
-## 11) Related Documentation
+## 11) Backend-for-Frontend (BFF) Architecture
+
+### 11.1 Tech Stack
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Node.js** | Runtime environment | Executes JavaScript on server-side |
+| **Hono** | ^4.0.0 | Lightweight, fast web framework for building the BFF API |
+| **@hono/node-server** | ^1.2.0 | Node.js adapter for Hono |
+| **TypeScript** | ^5.9.3 | Type-safe development with compile-time checks |
+| **tsx** | ^4.21.0 | TypeScript execution and watch mode for development |
+| **openapi-typescript** | latest | Generates TypeScript types from OpenAPI specifications |
+| **js-yaml** | ^4.1.0 | Parses OpenAPI YAML file and converts to JSON |
+
+### 11.2 Why These Technologies Were Chosen
+
+- **Hono**
+  - Ultra-lightweight (~13KB) compared to Express (~200KB)
+  - Built with TypeScript-first approach for native type safety
+  - Web Standard APIs (Request/Response) make it portable and future-proof
+  - Excellent performance for proxy/aggregation use cases
+  - Minimal overhead for a thin BFF layer
+
+- **openapi-typescript**
+  - Single source of truth for API contracts
+  - Automatic TypeScript type generation from OpenAPI specs
+  - Eliminates manual type definitions and synchronization issues
+  - Ensures frontend-backend type alignment
+
+- **tsx**
+  - Fast TypeScript execution without build step in development
+  - Hot reload during development
+  - Simpler development workflow than ts-node-dev
+
+- **js-yaml**
+  - OpenAPI specs are authored in YAML for readability
+  - Runtime conversion to JSON for `/openapi.json` endpoint
+
+### 11.3 Overall BFF Architecture
+
+The BFF acts as a **thin proxy and aggregation layer** between the React micro-frontend shell and upstream services.
+
+```mermaid
+flowchart TB
+    subgraph Frontend["Frontend (React MFE Shell)"]
+        MFE[MFE Components]
+        RQ[TanStack Query]
+        AC[API Client Package]
+    end
+
+    subgraph BFF["BFF Layer (Hono)"]
+        direction TB
+        H[Hono Server :3001]
+        R1[/api/rented-vehicles]
+        R2[/openapi.json]
+        R3[/ - health check]
+    end
+
+    subgraph Upstream["Upstream Services"]
+        US1[Rented Vehicles API<br/>dummyjson.com]
+        US2[Other Services...]
+    end
+
+    subgraph TypeGen["Type Generation"]
+        YAML[openapi.yaml]
+        OAT[openapi-typescript]
+        TS[generated/bff.ts]
+    end
+
+    MFE --> AC
+    AC --> RQ
+    RQ -->|HTTP Request| H
+    H --> R1
+    H --> R2
+    H --> R3
+    
+    R1 -->|Proxy| US1
+    R2 -->|Serve spec| YAML
+    
+    YAML -->|gen:types| OAT
+    OAT --> TS
+    TS -->|Import types| AC
+```
+
+**Integration with React MFE Architecture:**
+
+1. **Shared Type Package** - `packages/mfe-types` contains generated BFF types in `src/generated/bff.ts`
+2. **API Client Package** - `packages/api-client` consumes BFF types for React Query hooks
+3. **Development Mode** - BFF runs on port 3001 alongside shell on port 5173
+4. **Production Mode** - BFF can be deployed separately or bundled based on deployment strategy
+
+### 11.4 Request Flow: Frontend → BFF → Upstream
+
+```mermaid
+sequenceDiagram
+    participant MFE as MFE Component
+    participant RQ as React Query
+    participant BFF as Hono BFF :3001
+    participant US as Upstream API
+
+    MFE->>RQ: useRentedVehicles()
+    RQ->>BFF: GET /api/rented-vehicles?page=1
+    
+    Note over BFF: Parse query params<br/>Build upstream URL
+    
+    BFF->>US: GET https://dummyjson.com/c/1394-326c-4220-88d7?page=1
+    
+    alt Success
+        US-->>BFF: 200 OK (JSON response)
+        BFF-->>RQ: Proxy response (same status + body)
+        RQ-->>MFE: Render vehicle list
+    else Upstream Error
+        US-->>BFF: 500 Internal Error
+        BFF-->>RQ: 502 Bad Gateway
+        RQ-->>MFE: Show error state
+    else Network Timeout (10s)
+        BFF->>BFF: AbortController.abort()
+        BFF-->>RQ: 502 Bad Gateway
+        RQ-->>MFE: Show timeout error
+    end
+```
+
+**Key Flow Characteristics:**
+
+1. **Query Parameter Forwarding** - All query params from frontend are forwarded to upstream
+2. **Timeout Protection** - 10-second timeout with AbortController prevents hanging requests
+3. **Type-Safe Responses** - Generated types ensure frontend expects correct response shape
+4. **Error Handling** - Upstream failures return 502 with descriptive messages
+5. **Content-Type Preservation** - Original `content-type` header is maintained in proxy response
+
+### 11.5 Hono Handlers → OpenAPI Mapping
+
+**File Structure:**
+```
+packages/bff/
+├── src/
+│   └── index.ts          # Hono routes and handlers
+├── openapi.yaml          # OpenAPI 3.x specification
+└── package.json          # Scripts and dependencies
+```
+
+**OpenAPI Specification (openapi.yaml):**
+
+The OpenAPI spec defines:
+- API endpoints (e.g., `/api/rented-vehicles`)
+- Request parameters (query, path, body)
+- Response schemas (success and error cases)
+- Data models and types
+
+**Handler Implementation Pattern:**
+
+```typescript
+// From packages/bff/src/index.ts
+
+// 1. Define route matching OpenAPI path
+app.get('/api/rented-vehicles', async (c: Context) => {
+  
+  // 2. Read environment config
+  const upstream = process.env.RENTED_VEHICLES_URL ?? 'https://dummyjson.com/...'
+  
+  // 3. Forward query parameters (type-safe via OpenAPI)
+  const upstreamUrl = new URL(upstream)
+  for (const [key, value] of Object.entries(c.req.query())) {
+    upstreamUrl.searchParams.set(key, value)
+  }
+  
+  // 4. Fetch with timeout protection
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10_000)
+  const res = await fetch(upstreamUrl, { signal: controller.signal })
+  clearTimeout(timeout)
+  
+  // 5. Return raw Response (type-safe, matches OpenAPI schema)
+  return new Response(await res.text(), {
+    status: res.status,
+    headers: { 'content-type': res.headers.get('content-type') ?? 'text/plain' }
+  })
+})
+```
+
+**OpenAPI Document Endpoint:**
+
+```typescript
+app.get('/openapi.json', async () => {
+  const file = await fs.readFile('./openapi.yaml', 'utf8')
+  const doc = yaml.load(file)  // Parse YAML to JS object
+  return new Response(JSON.stringify(doc), {
+    status: 200,
+    headers: { 'content-type': 'application/json' }
+  })
+})
+```
+
+This allows frontend tools (Swagger UI, Postman) to introspect the API.
+
+### 11.6 Type Safety Strategy
+
+**Single Source of Truth: OpenAPI Specification**
+
+```mermaid
+flowchart LR
+    YAML[openapi.yaml<br/>Manual authoring]
+    
+    subgraph Generation["Type Generation Pipeline"]
+        OAT[openapi-typescript CLI]
+        TS[generated/bff.ts<br/>TypeScript types]
+    end
+    
+    subgraph Consumption["Type Consumption"]
+        MT[mfe-types package]
+        AC[api-client package]
+        MFE[MFE components]
+    end
+    
+    YAML -->|pnpm gen:types| OAT
+    OAT --> TS
+    TS --> MT
+    MT --> AC
+    MT --> MFE
+    
+    style YAML fill:#e1f5ff
+    style TS fill:#fff4e1
+```
+
+**Step-by-Step Type Flow:**
+
+1. **Define API Contract** - Edit `packages/bff/openapi.yaml`
+   ```yaml
+   /api/rented-vehicles:
+     get:
+       parameters:
+         - name: page
+           in: query
+           schema:
+             type: integer
+       responses:
+         200:
+           content:
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/RentedVehiclesResponse'
+   ```
+
+2. **Generate Types** - Run `pnpm --filter @packages/bff gen:types`
+   ```bash
+   # Executes: npx openapi-typescript openapi.yaml \
+   #   --output ../mfe-types/src/generated/bff.ts
+   ```
+
+3. **Generated TypeScript Output** - `packages/mfe-types/src/generated/bff.ts`
+   ```typescript
+   export interface paths {
+     "/api/rented-vehicles": {
+       get: {
+         parameters: {
+           query?: { page?: number }
+         }
+         responses: {
+           200: {
+             content: {
+               "application/json": RentedVehiclesResponse
+             }
+           }
+         }
+       }
+     }
+   }
+   ```
+
+4. **Consume Types in API Client** - `packages/api-client/src/hooks/useRentedVehicles.ts`
+   ```typescript
+   import type { paths } from '@packages/mfe-types/generated/bff'
+   
+   type RentedVehiclesResponse = 
+     paths['/api/rented-vehicles']['get']['responses'][200]['content']['application/json']
+   
+   export const useRentedVehicles = (page: number) => {
+     return useQuery<RentedVehiclesResponse>({
+       queryKey: ['rented-vehicles', page],
+       queryFn: () => fetch(`/api/rented-vehicles?page=${page}`).then(r => r.json())
+     })
+   }
+   ```
+
+**Type Safety Benefits:**
+
+- ✅ **Compile-time verification** - TypeScript catches mismatches before runtime
+- ✅ **Auto-completion** - IDEs provide accurate suggestions for API responses
+- ✅ **Refactoring safety** - Changing OpenAPI spec shows errors in consuming code
+- ✅ **No manual syncing** - Types automatically stay aligned with API contract
+- ✅ **Documentation as code** - OpenAPI spec documents and types APIs simultaneously
+
+### 11.7 Running the BFF Server
+
+**Development Mode (Hot Reload):**
+
+```bash
+# From project root
+pnpm --filter @packages/bff dev
+
+# What it does:
+# - Runs: tsx watch src/index.ts
+# - Watches for file changes
+# - Auto-restarts on changes
+# - Server available at: http://localhost:3001
+```
+
+**Production Build:**
+
+```bash
+# Step 1: Compile TypeScript
+pnpm --filter @packages/bff build
+
+# What it does:
+# - Runs: tsc -b
+# - Outputs compiled JS to: packages/bff/dist/
+
+# Step 2: Start production server
+pnpm --filter @packages/bff start
+
+# What it does:
+# - Runs: node dist/src/index.js
+# - Server available at: http://localhost:3001
+```
+
+**Type Generation:**
+
+```bash
+# Generate TypeScript types from OpenAPI spec
+pnpm --filter @packages/bff gen:types
+
+# What it does:
+# - Runs: npx openapi-typescript openapi.yaml \
+#         --output ../mfe-types/src/generated/bff.ts \
+#         --prettier --silent
+# - Reads: packages/bff/openapi.yaml
+# - Writes: packages/mfe-types/src/generated/bff.ts
+# - Applies Prettier formatting
+# - Runs silently (no console output)
+
+# After type generation, rebuild mfe-types package:
+pnpm --filter @packages/mfe-types build
+```
+
+**Environment Configuration:**
+
+```bash
+# Default port: 3001
+# Override via environment variable:
+PORT=4000 pnpm --filter @packages/bff dev
+
+# Upstream service URL (with fallback):
+RENTED_VEHICLES_URL=https://api.example.com/vehicles pnpm dev
+```
+
+**Available Endpoints:**
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/` | GET | Health check - returns "BFF (Hono) is running" |
+| `/api/rented-vehicles` | GET | Proxy to rented vehicles upstream API |
+| `/openapi.json` | GET | Serves OpenAPI specification (generated from YAML) |
+
+**Testing the BFF:**
+
+```bash
+# Health check
+curl http://localhost:3001/
+
+# Fetch rented vehicles
+curl http://localhost:3001/api/rented-vehicles?page=1
+
+# Get OpenAPI spec
+curl http://localhost:3001/openapi.json
+```
+
+### 11.8 BFF Integration with MFE Development Workflow
+
+**Typical Development Flow:**
+
+1. **Start BFF server** (terminal 1)
+   ```bash
+   pnpm --filter @packages/bff dev
+   # BFF running on http://localhost:3001
+   ```
+
+2. **Start shell application** (terminal 2)
+   ```bash
+   pnpm --filter @apps/shell dev
+   # Shell running on http://localhost:5173
+   # Vite proxy configured to forward /api/* to http://localhost:3001
+   ```
+
+3. **MFEs make API calls through proxy**
+   ```typescript
+   // Frontend code (MFE component)
+   fetch('/api/rented-vehicles?page=1')
+   // → Vite dev server proxies to → http://localhost:3001/api/rented-vehicles?page=1
+   // → BFF proxies to → upstream service
+   ```
+
+**Vite Proxy Configuration (apps/shell/vite.config.ts):**
+
+```typescript
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      }
+    }
+  }
+})
+```
+
+**Type Generation Workflow:**
+
+1. Update `packages/bff/openapi.yaml`
+2. Run `pnpm --filter @packages/bff gen:types`
+3. Run `pnpm --filter @packages/mfe-types build`
+4. TypeScript compiler in MFEs picks up new types automatically
+
+---
+
+## 12) Related Documentation
 
 - [CONTRACTS.md](docs/CONTRACTS.md) - Event bus events and type definitions
 - [README.md](README.md) - Quick start and project overview
+- [packages/bff/README.md](packages/bff/README.md) - BFF package-specific documentation
