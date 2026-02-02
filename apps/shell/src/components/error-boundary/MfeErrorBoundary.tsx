@@ -5,12 +5,16 @@
  * Provides retry functionality and minimal inline error UI.
  */
 
-import React from 'react';
+import React, { ComponentType } from 'react';
 
 interface MfeErrorBoundaryProps {
   children: React.ReactNode;
   mfeName?: string;
   fallback?: React.ReactNode;
+  FallbackComponent?: ComponentType<{
+    error: Error;
+    resetErrorBoundary: () => void;
+  }>;
 }
 
 interface MfeErrorBoundaryState {
@@ -83,8 +87,24 @@ export class MfeErrorBoundary extends React.Component<
 
   render(): React.ReactNode {
     if (this.state.hasError) {
-      // Use custom fallback if provided
+      // If a FallbackComponent (component type) is provided, render it with error/reset props
+      if (this.props.FallbackComponent) {
+        const Fallback = this.props.FallbackComponent;
+        return (
+          <Fallback
+            error={this.state.error ?? new Error('Unknown MFE error')}
+            resetErrorBoundary={this.handleRetry}
+          />
+        );
+      }
+
+      // Use custom fallback element if provided and inject error/reset props when possible
       if (this.props.fallback) {
+        if (React.isValidElement(this.props.fallback)) {
+          const el = this.props.fallback as React.ReactElement<any, any>;
+          return React.cloneElement(el, { error: this.state.error, resetErrorBoundary: this.handleRetry } as any);
+        }
+
         return this.props.fallback;
       }
 

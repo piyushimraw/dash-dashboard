@@ -1,19 +1,19 @@
 /**
- * MFE Error Boundary
+ * Error Boundary Component
  *
- * Isolates MFE failures to prevent shell crashes.
+ * Isolates component failures to prevent crashes.
  * Provides retry functionality and minimal inline error UI.
  */
 
 import React from 'react';
 
-interface MfeErrorBoundaryProps {
+interface ErrorBoundaryProps {
   children: React.ReactNode;
   mfeName?: string;
   fallback?: React.ReactNode;
 }
 
-interface MfeErrorBoundaryState {
+interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
   errorInfo: React.ErrorInfo | null;
@@ -22,13 +22,13 @@ interface MfeErrorBoundaryState {
 
 /**
  * Error Boundary Component
- * Catches errors in MFE components and displays fallback UI
+ * Catches errors in components and displays fallback UI
  */
-export class MfeErrorBoundary extends React.Component<
-  MfeErrorBoundaryProps,
-  MfeErrorBoundaryState
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
 > {
-  constructor(props: MfeErrorBoundaryProps) {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,
@@ -38,7 +38,7 @@ export class MfeErrorBoundary extends React.Component<
     };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<MfeErrorBoundaryState> {
+  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     // Update state so the next render will show the fallback UI
     return {
       hasError: true,
@@ -48,8 +48,8 @@ export class MfeErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error details for debugging
-    console.error('MFE Error Boundary caught an error:', {
-      mfeName: this.props.mfeName || 'Unknown MFE',
+    console.error('Error Boundary caught an error:', {
+      mfeName: this.props.mfeName || 'Unknown Component',
       error: error.message,
       componentStack: errorInfo.componentStack,
       retryCount: this.state.retryCount,
@@ -92,13 +92,13 @@ export class MfeErrorBoundary extends React.Component<
       return (
         <div
           role="alert"
-          className="flex flex-col items-center justify-center min-h-[400px] p-6 bg-red-50 border border-red-200 rounded-lg"
+          className="flex flex-col items-center justify-center min-h-[200px] p-4 bg-red-50 border border-red-200 rounded-lg"
         >
           <div className="text-center max-w-md">
             {/* Error Icon */}
-            <div className="mb-4 flex justify-center">
+            <div className="mb-3 flex justify-center">
               <svg
-                className="w-16 h-16 text-red-500"
+                className="w-8 h-8 text-red-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -114,23 +114,22 @@ export class MfeErrorBoundary extends React.Component<
             </div>
 
             {/* Error Message */}
-            <h2 className="text-xl font-semibold text-red-900 mb-2">
+            <h3 className="text-lg font-semibold text-red-900 mb-2">
               {this.props.mfeName
                 ? `${this.props.mfeName} encountered an error`
                 : 'Something went wrong'}
-            </h2>
-            <p className="text-sm text-red-700 mb-6">
-              This feature is temporarily unavailable. Other parts of the application should
-              continue to work normally.
+            </h3>
+            <p className="text-sm text-red-700 mb-4">
+              This item is temporarily unavailable.
             </p>
 
             {/* Error Details (in development only) */}
             {import.meta.env.DEV && this.state.error && (
-              <details className="mb-6 text-left bg-white p-4 rounded border border-red-300">
+              <details className="mb-4 text-left bg-white p-3 rounded border border-red-300">
                 <summary className="cursor-pointer text-sm font-medium text-red-800 mb-2">
                   Error Details
                 </summary>
-                <pre className="text-xs text-red-600 overflow-auto max-h-40 whitespace-pre-wrap">
+                <pre className="text-xs text-red-600 overflow-auto max-h-32 whitespace-pre-wrap">
                   {this.state.error.toString()}
                   {this.state.errorInfo?.componentStack}
                 </pre>
@@ -138,17 +137,17 @@ export class MfeErrorBoundary extends React.Component<
             )}
 
             {/* Action Buttons */}
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-2 justify-center">
               <button
                 onClick={this.handleRetry}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
-                aria-label="Retry loading this feature"
+                className="px-3 py-1.5 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                aria-label="Retry loading this item"
               >
                 Try Again
               </button>
               <button
                 onClick={this.handleReload}
-                className="px-4 py-2 bg-white text-red-700 border border-red-300 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                className="px-3 py-1.5 bg-white text-red-700 text-sm border border-red-300 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
                 aria-label="Reload the entire page"
               >
                 Reload Page
@@ -157,7 +156,7 @@ export class MfeErrorBoundary extends React.Component<
 
             {/* Retry Count (in development only) */}
             {import.meta.env.DEV && this.state.retryCount > 0 && (
-              <p className="mt-4 text-xs text-red-600">
+              <p className="mt-3 text-xs text-red-600">
                 Retry attempts: {this.state.retryCount}
               </p>
             )}
@@ -173,18 +172,18 @@ export class MfeErrorBoundary extends React.Component<
 /**
  * Higher-Order Component to wrap components with error boundary
  */
-export function withMfeErrorBoundary<P extends object>(
+export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   mfeName?: string,
   fallback?: React.ReactNode
 ): React.ComponentType<P> {
   const WrappedComponent: React.FC<P> = (props) => (
-    <MfeErrorBoundary mfeName={mfeName} fallback={fallback}>
+    <ErrorBoundary mfeName={mfeName} fallback={fallback}>
       <Component {...props} />
-    </MfeErrorBoundary>
+    </ErrorBoundary>
   );
 
-  WrappedComponent.displayName = `withMfeErrorBoundary(${Component.displayName || Component.name || 'Component'})`;
+  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name || 'Component'})`;
 
   return WrappedComponent;
 }

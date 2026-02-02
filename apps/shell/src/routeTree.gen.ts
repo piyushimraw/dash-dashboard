@@ -14,13 +14,16 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthVehicle_exchangeRouteImport } from './routes/_auth.vehicle_exchange'
+import { Route as AuthTest_errorRouteImport } from './routes/_auth.test_error'
 import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as AuthReturnRouteImport } from './routes/_auth.return'
+import { Route as AuthReservation_lookup_corrupt_dataRouteImport } from './routes/_auth.reservation_lookup_corrupt_data'
 import { Route as AuthReservation_lookupRouteImport } from './routes/_auth.reservation_lookup'
 import { Route as AuthReportsRouteImport } from './routes/_auth.reports'
 import { Route as AuthRentRouteImport } from './routes/_auth.rent'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
 import { Route as AuthCarcontrolRouteImport } from './routes/_auth.carcontrol'
+import { Route as AuthBroken_componentRouteImport } from './routes/_auth.broken_component'
 import { Route as AuthAaoRouteImport } from './routes/_auth.aao'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -47,6 +50,11 @@ const AuthVehicle_exchangeRoute = AuthVehicle_exchangeRouteImport.update({
   path: '/vehicle_exchange',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthTest_errorRoute = AuthTest_errorRouteImport.update({
+  id: '/test_error',
+  path: '/test_error',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -57,6 +65,12 @@ const AuthReturnRoute = AuthReturnRouteImport.update({
   path: '/return',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthReservation_lookup_corrupt_dataRoute =
+  AuthReservation_lookup_corrupt_dataRouteImport.update({
+    id: '/reservation_lookup_corrupt_data',
+    path: '/reservation_lookup_corrupt_data',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthReservation_lookupRoute = AuthReservation_lookupRouteImport.update({
   id: '/reservation_lookup',
   path: '/reservation_lookup',
@@ -82,6 +96,11 @@ const AuthCarcontrolRoute = AuthCarcontrolRouteImport.update({
   path: '/carcontrol',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthBroken_componentRoute = AuthBroken_componentRouteImport.update({
+  id: '/broken_component',
+  path: '/broken_component',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthAaoRoute = AuthAaoRouteImport.update({
   id: '/aao',
   path: '/aao',
@@ -93,13 +112,16 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/broken_component': typeof AuthBroken_componentRoute
   '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
   '/reports': typeof AuthReportsRoute
   '/reservation_lookup': typeof AuthReservation_lookupRoute
+  '/reservation_lookup_corrupt_data': typeof AuthReservation_lookup_corrupt_dataRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
+  '/test_error': typeof AuthTest_errorRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRoutesByTo {
@@ -107,13 +129,16 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/aao': typeof AuthAaoRoute
+  '/broken_component': typeof AuthBroken_componentRoute
   '/carcontrol': typeof AuthCarcontrolRoute
   '/dashboard': typeof AuthDashboardRoute
   '/rent': typeof AuthRentRoute
   '/reports': typeof AuthReportsRoute
   '/reservation_lookup': typeof AuthReservation_lookupRoute
+  '/reservation_lookup_corrupt_data': typeof AuthReservation_lookup_corrupt_dataRoute
   '/return': typeof AuthReturnRoute
   '/settings': typeof AuthSettingsRoute
+  '/test_error': typeof AuthTest_errorRoute
   '/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRoutesById {
@@ -123,13 +148,16 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/_auth/aao': typeof AuthAaoRoute
+  '/_auth/broken_component': typeof AuthBroken_componentRoute
   '/_auth/carcontrol': typeof AuthCarcontrolRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/rent': typeof AuthRentRoute
   '/_auth/reports': typeof AuthReportsRoute
   '/_auth/reservation_lookup': typeof AuthReservation_lookupRoute
+  '/_auth/reservation_lookup_corrupt_data': typeof AuthReservation_lookup_corrupt_dataRoute
   '/_auth/return': typeof AuthReturnRoute
   '/_auth/settings': typeof AuthSettingsRoute
+  '/_auth/test_error': typeof AuthTest_errorRoute
   '/_auth/vehicle_exchange': typeof AuthVehicle_exchangeRoute
 }
 export interface FileRouteTypes {
@@ -139,13 +167,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/aao'
+    | '/broken_component'
     | '/carcontrol'
     | '/dashboard'
     | '/rent'
     | '/reports'
     | '/reservation_lookup'
+    | '/reservation_lookup_corrupt_data'
     | '/return'
     | '/settings'
+    | '/test_error'
     | '/vehicle_exchange'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -153,13 +184,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/aao'
+    | '/broken_component'
     | '/carcontrol'
     | '/dashboard'
     | '/rent'
     | '/reports'
     | '/reservation_lookup'
+    | '/reservation_lookup_corrupt_data'
     | '/return'
     | '/settings'
+    | '/test_error'
     | '/vehicle_exchange'
   id:
     | '__root__'
@@ -168,13 +202,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/unauthorized'
     | '/_auth/aao'
+    | '/_auth/broken_component'
     | '/_auth/carcontrol'
     | '/_auth/dashboard'
     | '/_auth/rent'
     | '/_auth/reports'
     | '/_auth/reservation_lookup'
+    | '/_auth/reservation_lookup_corrupt_data'
     | '/_auth/return'
     | '/_auth/settings'
+    | '/_auth/test_error'
     | '/_auth/vehicle_exchange'
   fileRoutesById: FileRoutesById
 }
@@ -222,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVehicle_exchangeRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/test_error': {
+      id: '/_auth/test_error'
+      path: '/test_error'
+      fullPath: '/test_error'
+      preLoaderRoute: typeof AuthTest_errorRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -234,6 +278,13 @@ declare module '@tanstack/react-router' {
       path: '/return'
       fullPath: '/return'
       preLoaderRoute: typeof AuthReturnRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/reservation_lookup_corrupt_data': {
+      id: '/_auth/reservation_lookup_corrupt_data'
+      path: '/reservation_lookup_corrupt_data'
+      fullPath: '/reservation_lookup_corrupt_data'
+      preLoaderRoute: typeof AuthReservation_lookup_corrupt_dataRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/reservation_lookup': {
@@ -271,6 +322,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCarcontrolRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/broken_component': {
+      id: '/_auth/broken_component'
+      path: '/broken_component'
+      fullPath: '/broken_component'
+      preLoaderRoute: typeof AuthBroken_componentRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/aao': {
       id: '/_auth/aao'
       path: '/aao'
@@ -283,25 +341,32 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthAaoRoute: typeof AuthAaoRoute
+  AuthBroken_componentRoute: typeof AuthBroken_componentRoute
   AuthCarcontrolRoute: typeof AuthCarcontrolRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthRentRoute: typeof AuthRentRoute
   AuthReportsRoute: typeof AuthReportsRoute
   AuthReservation_lookupRoute: typeof AuthReservation_lookupRoute
+  AuthReservation_lookup_corrupt_dataRoute: typeof AuthReservation_lookup_corrupt_dataRoute
   AuthReturnRoute: typeof AuthReturnRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
+  AuthTest_errorRoute: typeof AuthTest_errorRoute
   AuthVehicle_exchangeRoute: typeof AuthVehicle_exchangeRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAaoRoute: AuthAaoRoute,
+  AuthBroken_componentRoute: AuthBroken_componentRoute,
   AuthCarcontrolRoute: AuthCarcontrolRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthRentRoute: AuthRentRoute,
   AuthReportsRoute: AuthReportsRoute,
   AuthReservation_lookupRoute: AuthReservation_lookupRoute,
+  AuthReservation_lookup_corrupt_dataRoute:
+    AuthReservation_lookup_corrupt_dataRoute,
   AuthReturnRoute: AuthReturnRoute,
   AuthSettingsRoute: AuthSettingsRoute,
+  AuthTest_errorRoute: AuthTest_errorRoute,
   AuthVehicle_exchangeRoute: AuthVehicle_exchangeRoute,
 }
 

@@ -30,12 +30,27 @@ export interface AuthStateChangedEvent {
   };
 }
 
+export enum MfeEventNames {
+  NavigationChange = "navigation:change",
+  DataRefresh = "data:refresh",
+  NotificationShow = "notification:show",
+  AuthStateChanged = "auth:state-changed",
+}
+
 /**
  * MfeEvents type maps event names to their payload types
  */
+// export type MfeEvents = {
+//   "navigation:change": NavigationEvent;
+//   "data:refresh": DataRefreshEvent;
+//   "notification:show": NotificationEvent;
+//   "auth:state-changed": AuthStateChangedEvent;
+// };
+
 export type MfeEvents = {
-  "navigation:change": NavigationEvent;
-  "data:refresh": DataRefreshEvent;
-  "notification:show": NotificationEvent;
-  "auth:state-changed": AuthStateChangedEvent;
+  [MfeEventNames.NavigationChange]: NavigationEvent;
+  [MfeEventNames.DataRefresh]: DataRefreshEvent;
+  [MfeEventNames.NotificationShow]: NotificationEvent;
+  [MfeEventNames.AuthStateChanged]: AuthStateChangedEvent;
 };
+

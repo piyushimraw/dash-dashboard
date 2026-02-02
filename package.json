@@ -69,5 +69,8 @@
     "vitest": "^4.0.16",
     "zod": "^4.3.5",
     "zustand": "^5.0.9"
+  },
+  "dependencies": {
+    "@radix-ui/react-toast": "^1.2.15"
   }
 }

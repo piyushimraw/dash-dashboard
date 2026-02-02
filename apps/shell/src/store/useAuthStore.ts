@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import type { Role, User, AuthState } from '@packages/mfe-types';
 import { DUMMY_USERS } from "../config/users";
 import { ROLE_HIERARCHY } from "../config/roles";
+import { eventBus, MfeEventNames } from "@packages/event-bus";
 
 interface AuthStore extends AuthState {
   // Actions
@@ -34,7 +35,14 @@ const useAuthStore = create<AuthStore>()(
           (u) => u.username === username && u.password === password
         );
 
-        if (!dummyUser) return false;
+        if (!dummyUser) {
+          eventBus.emit(MfeEventNames.NotificationShow, {
+            type: "error",
+            message: "User ID or password is incorrect",
+            duration: 5000,
+          });
+          return false;
+        }
 
         const user: User = {
           id: dummyUser.username,
@@ -50,6 +58,12 @@ const useAuthStore = create<AuthStore>()(
           role: user.role,
         });
 
+        eventBus.emit(MfeEventNames.NotificationShow, {
+          type: "success",
+          message: "Logged In Successfully",
+          duration: 5000,
+        });
+
         return true;
       },
 
@@ -60,6 +74,12 @@ const useAuthStore = create<AuthStore>()(
           isLoggedIn: false,
           userId: "",
           role: null,
+        });
+
+        eventBus.emit(MfeEventNames.NotificationShow, {
+          type: "success",
+          message: "Logged Out Successfully",
+          duration: 5000,
         });
       },
 

@@ -1,5 +1,6 @@
 import { requireRole } from '@/auth/requireRole'
-import { MfeErrorBoundary } from '@/components/MfeErrorBoundary'
+import { RouteErrorBoundary } from '@/components/error-boundary/RouteErrorBoundary'
+import { MfeErrorBoundary } from '@/components/error-boundary/MfeErrorBoundary'
 import { ROLES } from '@/config/roles'
 import { ReturnPage } from '@apps/mfe-return'
 import { createFileRoute } from '@tanstack/react-router'
@@ -15,8 +16,10 @@ export const Route = createFileRoute('/_auth/return')({
 
 function RouteComponent() {
   return (
-    <MfeErrorBoundary mfeName="Return">
-      <ReturnPage />
-    </MfeErrorBoundary>
+    <RouteErrorBoundary routeName="Return">
+      <MfeErrorBoundary mfeName="Return">
+        <ReturnPage />
+      </MfeErrorBoundary>
+    </RouteErrorBoundary>
   )
 }

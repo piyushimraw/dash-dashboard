@@ -11,8 +11,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -b",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "prebuild": "pnpm clean",
+    "build": "tsc -b"
   },
   "devDependencies": {
     "typescript": "^5.7.2"

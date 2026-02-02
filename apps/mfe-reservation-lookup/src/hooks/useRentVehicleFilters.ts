@@ -30,7 +30,7 @@ export const useRentVehicleFilters = (data: TableType[] | GetRentedVehiclesRespo
     const searchValue = search.toLowerCase();
 
     return data.filter((item) => {
-      const rentDate = new Date(item.rentDate).getTime();
+      const rentDate = new Date(item?.rentDate).getTime();
 
       // Start date
       if (filters.startDate) {

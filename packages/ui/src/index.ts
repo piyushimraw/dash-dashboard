@@ -1,3 +1,4 @@
+
 // UI Components
 export * from "./components/button";
 export * from "./components/card";
@@ -10,6 +11,9 @@ export * from "./components/sheet";
 export * from "./components/badge";
 export * from "./components/select";
 export * from "./components/popover";
+
+// Error Boundary
+export { ErrorBoundary } from "./components/ErrorBoundary";
 
 // Table Components
 export {
@@ -44,3 +48,14 @@ export {
   DEFAULT_ITEMS_SIZE,
   DEFAULT_PAGE_INDEX,
 } from "./components/table/utils";
+
+//Toast component
+// export { Toaster } from "./components/toast_v2/toasters";
+// export { toast } from "./hooks/useToast"
+
+
+// packages/ui/src/components/toast/index.ts
+export { ToastProvider, useToastContext } from "./components/toast/ToastProvider";
+export { Toaster } from "./components/toast/Toaster";
+export * from "./components/toast/toast-ui"; // optional, if you need Radix primitives outside
+

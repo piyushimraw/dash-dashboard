@@ -16,6 +16,8 @@
     }
   },
   "scripts": {
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "prebuild": "pnpm clean",
     "build": "tsc -b",
     "dev": "tsc -b --watch"
   },
@@ -36,6 +38,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "@packages/event-bus": "workspace:*"
   }
 }
