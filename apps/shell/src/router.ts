@@ -6,6 +6,7 @@ import type { RouterContext } from './routerContext'
 
 export const router = createRouter({
   routeTree,
+  basepath: import.meta.env.BASE_URL,
   context: {
     auth: {
       isLoggedIn: false, // default placeholder
