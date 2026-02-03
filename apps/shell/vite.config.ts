@@ -19,6 +19,7 @@ const devPackageAliases = {
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: process.env.VITE_BASE || '/',
   plugins: [
     routerPlugin({
       autoCodeSplitting: true,
@@ -43,7 +44,7 @@ export default defineConfig(({ mode }) => ({
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
-        start_url: "/",
+        start_url: ".",
         icons: [
           {
             src: "/pwa-192x192.png",
@@ -63,7 +64,7 @@ export default defineConfig(({ mode }) => ({
         skipWaiting: true,
         clientsClaim: true,
         // Use index.html as the SPA shell for navigation requests
-        navigateFallback: '/index.html',
+        navigateFallback: 'index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/offline\.html$/],
         runtimeCaching: [
           // Serve offline.html when navigation fails (network error)
