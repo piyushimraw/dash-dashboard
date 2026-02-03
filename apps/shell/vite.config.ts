@@ -148,10 +148,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   preview: {
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2.pem')),
-    },
+    ...(fs.existsSync(path.resolve(__dirname, 'certs/localhost+2-key.pem')) && {
+      https: {
+        key: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2-key.pem')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'certs/localhost+2.pem')),
+      },
+    }),
     port: 4173,
   },
     test: {
