@@ -1,0 +1,74 @@
+# openapi: 3.0.0
+# info:
+#   title: Vehicle BFF
+#   version: 1.0.0
+
+# paths:
+#   /api/vehicles:
+#     get:
+#       summary: Get vehicles
+#       responses:
+#         "200":
+#           description: Vehicle list
+#           content:
+#             application/json:
+#               schema:
+#                 type: array
+#                 items:
+#                   type: object
+#                   properties:
+#                     id:
+#                       type: number
+#                     name:
+#                       type: string
+#                     status:
+#                       type: string
+
+
+openapi: 3.0.0
+info:
+  title: Vehicle BFF
+  version: 1.0.0
+
+paths:
+  /api/vehicles:
+    get:
+      summary: Get vehicles
+      responses:
+        "200":
+          description: Vehicle list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - vehicleId
+                    - customerId
+                    - rentDate
+                    - expectedReturnDate
+                    - pickupLocation
+                    - status
+                  properties:
+                    vehicleId:
+                      type: string
+                      example: "VEH-1109"
+                    customerId:
+                      type: string
+                      example: "CUST-6620"
+                    rentDate:
+                      type: string
+                      format: date
+                      example: "2025-01-02"
+                    expectedReturnDate:
+                      type: string
+                      format: date
+                      example: "2025-01-06"
+                    pickupLocation:
+                      type: string
+                      example: "Electronic City"
+                    status:
+                      type: string
+                      example: "Rejected"

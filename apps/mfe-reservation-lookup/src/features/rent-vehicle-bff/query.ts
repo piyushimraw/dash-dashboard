@@ -7,6 +7,12 @@ export const useGetRentedVehicleListWithBff = () =>
   useQuery({
     queryKey: queryKeys.rentedVehicles.bff,
     queryFn: getRentedVehicleListUsingBff,
+    throwOnError: true,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    gcTime: 0
   });
 
 // export const useUser = (id: string) =>
