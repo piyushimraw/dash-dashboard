@@ -3,10 +3,10 @@ name: CI
 on:
   pull_request:
     branches:
-      - bff-node-hono-implementation
+      - microfrontend-arch
   push:
     branches:
-      - bff-node-hono-implementation
+      - microfrontend-arch
 
 jobs:
   test:
