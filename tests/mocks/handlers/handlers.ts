@@ -25,7 +25,7 @@ export const handlers = [
   }),
   // Mock the external dummyjson endpoint used by getRentedVehicleList in tests
   http.get(
-    "https://dummyjson.com/c/1394-326c-4220-88d7",
+    "/api/rented-vehicles",
     () => HttpResponse.json(rentedVehiclesMock),
   ),
   // Mock the external dummyjson endpoint used by getLoginLocations

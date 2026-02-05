@@ -7,6 +7,8 @@
     "clean": "rm -rf apps/*/dist apps/*/dev-dist packages/*/dist packages/*/*.tsbuildinfo apps/*/node_modules packages/*/node_modules",
     "fresh": "pnpm clean && pnpm install && pnpm build",
     "dev": "pnpm --filter @apps/shell dev",
+    "bff:dev": "pnpm --filter @packages/bff dev",
+    "bff:gen": "pnpm --filter @packages/bff gen:types && pnpm --filter @packages/mfe-types build && pnpm --filter @packages/api-client build",
     "build": "pnpm --filter \"./packages/*\" build && pnpm --filter \"./apps/*\" build",
     "preview": "pnpm --filter @apps/shell preview",
     "preview:https": "./scripts/setup-https.sh && pnpm run build && pnpm run preview",

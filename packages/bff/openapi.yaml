@@ -1,0 +1,114 @@
+openapi: "3.0.3"
+info:
+  title: Dash BFF
+  version: "0.1.0"
+  description: Typesafe BFF for the frontend
+servers:
+  - url: http://localhost:3001
+paths:
+  # /api/vehicles:
+  #   get:
+  #     summary: List vehicles
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Vehicle'
+  # /api/reservations:
+  #   get:
+  #     summary: List reservations
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Reservation'
+  /api/rented-vehicles:
+    get:
+      summary: List rented vehicles (proxy to upstream service)
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+          description: Filter by search term
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RentedVehicle'
+components:
+  schemas:
+    # Vehicle:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #     make:
+    #       type: string
+    #     model:
+    #       type: string
+    #     year:
+    #       type: integer
+    #   required: [id, make, model]
+    # Reservation:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #     vehicleId:
+    #       type: string
+    #     customer:
+    #       type: string
+    #   required: [id, vehicleId, customer]
+    RentedVehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerName:
+          type: string
+        serviceLevel:
+          type: string
+        cvi:
+          type: string
+        arrivalLocation:
+          type: string
+        estArrival:
+          type: string
+        flightInfoStatus:
+          type: string
+        numberOfDays:
+          type: integer
+        resClass:
+          type: string
+        resStatus:
+          type: string
+        dashStatus:
+          type: string
+        rentDate:
+          type: string
+        returnDate:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+      required: ["id","customerName","serviceLevel","cvi","arrivalLocation","estArrival","flightInfoStatus","numberOfDays","resClass","resStatus","dashStatus","rentDate","returnDate","email","phone"]

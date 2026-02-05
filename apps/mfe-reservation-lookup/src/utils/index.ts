@@ -1,6 +1,7 @@
+import { GetRentedVehiclesResponse } from "@packages/mfe-types";
 import { TableType } from "../types/type";
 
-export const rentedVehiclesMock:TableType[] = [
+export const rentedVehiclesMock: TableType[] | GetRentedVehiclesResponse = [
   {
     id: "1",
     customerName: "John Doe",

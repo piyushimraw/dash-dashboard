@@ -2,6 +2,7 @@ import type { PaginationState } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { FilterState, TableType } from "../types/type";
 import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from "@packages/ui";
+import { GetRentedVehiclesResponse } from "@packages/mfe-types";
 
 const initialFilters: FilterState = {
   startDate: "",
@@ -9,7 +10,7 @@ const initialFilters: FilterState = {
   status: "All",
   arrivalLocation: "",
 };
-export const useRentVehicleFilters = (data: TableType[] = []) => {
+export const useRentVehicleFilters = (data: TableType[] | GetRentedVehiclesResponse = []) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: DEFAULT_PAGE_INDEX,
     pageSize: DEFAULT_ITEMS_SIZE,

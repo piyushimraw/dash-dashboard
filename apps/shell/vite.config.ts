@@ -18,7 +18,8 @@ const devPackageAliases = {
 };
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }): import('vite').UserConfig => {
+  const cfg = ({
   plugins: [
     routerPlugin({
       autoCodeSplitting: true,
@@ -119,6 +120,21 @@ export default defineConfig(({ mode }) => ({
       }),
     },
   },
+  // Dev server proxy: forward `/api` calls to the BFF running on port 3001
+  // This ensures the frontend can call `/api/...` without CORS and matches
+  // production routing where nginx or the host will route API requests.
+  server: mode === "development" ? {
+    proxy: {
+      // Proxy all /api requests to the local BFF
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+        // Preserve the original path when forwarding
+        rewrite: (path) => path,
+      },
+    },
+  } : undefined,
   build: {
     chunkSizeWarningLimit: 150,
     rollupOptions: {
@@ -170,4 +186,6 @@ export default defineConfig(({ mode }) => ({
       ],
     },
   },
-}));
+} as import('vite').UserConfig)
+  return cfg
+});

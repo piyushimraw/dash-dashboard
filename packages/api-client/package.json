@@ -23,6 +23,7 @@
   "dependencies": {
     "@packages/event-bus": "workspace:*",
     "@tanstack/react-query": "^5.90.17",
-    "@tanstack/react-query-persist-client": "^5.90.21"
+    "@tanstack/react-query-persist-client": "^5.90.21",
+    "@packages/mfe-types": "workspace:*"
   }
 }
