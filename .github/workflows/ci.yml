@@ -41,24 +41,31 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "## 📊 Code Coverage" > coverage-comment.md
+
           if [ -f coverage/coverage-summary.json ]; then
-            node -e "
+            node - <<'EOF' >> coverage-comment.md
+            try {
               const c = require('./coverage/coverage-summary.json').total;
-              console.log(
-                `Lines: ${c.lines.pct}%\nBranches: ${c.branches.pct}%\nFunctions: ${c.functions.pct}%\nStatements: ${c.statements.pct}%`
-              );
-            " >> coverage-comment.md
+              console.log(`
+      Lines: ${c.lines.pct}%
+      Branches: ${c.branches.pct}%
+      Functions: ${c.functions.pct}%
+      Statements: ${c.statements.pct}%
+              `.trim());
+            } catch (e) {
+              console.log("*Failed to read coverage-summary.json*");
+              console.log("```");
+              console.log(e.message);
+              console.log("```");
+            }
+      EOF
           else
-            echo "*Coverage summary not found (check coverage reporters and paths)*" >> coverage-comment.md
-            echo "--- Debug: coverage directory contents ---" >> coverage-comment.md
+            echo "*Coverage summary not found*" >> coverage-comment.md
+            echo "" >> coverage-comment.md
+            echo "**Debug:**" >> coverage-comment.md
             ls -la coverage || true >> coverage-comment.md
-            echo "--- Debug: lcov (first 100 lines) ---" >> coverage-comment.md
-            if [ -f coverage/lcov.info ]; then
-              head -n 100 coverage/lcov.info >> coverage-comment.md
-            else
-              echo "lcov.info not found" >> coverage-comment.md
-            fi
           fi
+
 
       - name: Post coverage comment
         if: github.event_name == 'pull_request'
