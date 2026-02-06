@@ -1,16 +1,15 @@
-import { LoginPage } from "@/pages/LoginPage";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { LoginPage } from '@/pages/LoginPage';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
-const fallback = "/dashboard" as const;
+const fallback = '/dashboard' as const;
 type LoginSearch = {
   redirect?: string;
 };
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute('/login')({
   validateSearch: (search): LoginSearch => {
     return {
-      redirect:
-        typeof search.redirect === "string" ? search.redirect : undefined,
+      redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
     };
   },
   beforeLoad: ({ context, search }) => {

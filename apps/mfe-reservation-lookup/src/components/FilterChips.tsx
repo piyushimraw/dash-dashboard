@@ -1,6 +1,6 @@
-import { Button } from "@packages/ui";
-import { X } from "lucide-react";
-import type { FilterState } from "../types/type";
+import { Button } from '@packages/ui';
+import { X } from 'lucide-react';
+import type { FilterState } from '../types/type';
 
 interface FilterChipsProps {
   filters: FilterState;
@@ -24,32 +24,32 @@ export function FilterChips({ filters, onRemoveFilter }: FilterChipsProps) {
 
   if (filters.startDate) {
     activeFilters.push({
-      key: "startDate",
-      label: "Start Date",
+      key: 'startDate',
+      label: 'Start Date',
       value: new Date(filters.startDate).toLocaleDateString(),
     });
   }
 
   if (filters.endDate) {
     activeFilters.push({
-      key: "endDate",
-      label: "End Date",
+      key: 'endDate',
+      label: 'End Date',
       value: new Date(filters.endDate).toLocaleDateString(),
     });
   }
 
   if (filters.status) {
     activeFilters.push({
-      key: "status",
-      label: "Status",
+      key: 'status',
+      label: 'Status',
       value: filters.status,
     });
   }
 
   if (filters.arrivalLocation) {
     activeFilters.push({
-      key: "arrivalLocation",
-      label: "Location",
+      key: 'arrivalLocation',
+      label: 'Location',
       value: filters.arrivalLocation,
     });
   }
@@ -59,11 +59,7 @@ export function FilterChips({ filters, onRemoveFilter }: FilterChipsProps) {
   }
 
   return (
-    <div
-      className="flex flex-wrap gap-2"
-      role="list"
-      aria-label="Active filters"
-    >
+    <div className="flex flex-wrap gap-2" role="list" aria-label="Active filters">
       {activeFilters.map((filter) => (
         <div
           key={filter.key}

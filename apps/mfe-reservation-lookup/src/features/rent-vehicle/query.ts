@@ -1,18 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-import { getRentedVehicleList, getRentedVehicleListWithCorruptData } from "./api";
-import { queryKeys } from "@packages/api-client";
+import { useQuery } from '@tanstack/react-query';
+import { getRentedVehicleList, getRentedVehicleListWithCorruptData } from './api';
+import { queryKeys } from '@packages/api-client';
 
 type UseGetRentedVehicleListParams = {
   showCorruptData: boolean;
 };
 
-export const useGetRentedVehicleList = ({showCorruptData} : UseGetRentedVehicleListParams) =>
+export const useGetRentedVehicleList = ({ showCorruptData }: UseGetRentedVehicleListParams) =>
   useQuery({
     // queryKey: queryKeys.rentedVehicles.all,
-    queryKey: [
-      ...queryKeys.rentedVehicles.all,
-      { showCorruptData }
-    ],
+    queryKey: [...queryKeys.rentedVehicles.all, { showCorruptData }],
     queryFn: showCorruptData ? getRentedVehicleListWithCorruptData : getRentedVehicleList,
 
     //uncomment to test local query error handling and removing caching

@@ -1,15 +1,15 @@
 export interface TableType {
   id: number | string;
   customerName: string;
-  serviceLevel: "Gold" | "Silver" | "Platinum";
+  serviceLevel: 'Gold' | 'Silver' | 'Platinum';
   cvi: string;
   arrivalLocation: string;
   estArrival: string;
-  flightInfoStatus: "On Time" | "Delayed" | "Cancelled";
+  flightInfoStatus: 'On Time' | 'Delayed' | 'Cancelled';
   numberOfDays: number;
-  resClass: "SUV" | "Sedan" | "Hatchback" | "Economy" | "Business";
-  resStatus: "Confirmed" | "Completed" | "Cancelled";
-  dashStatus: "Active" | "Closed" | "Inactive";
+  resClass: 'SUV' | 'Sedan' | 'Hatchback' | 'Economy' | 'Business';
+  resStatus: 'Confirmed' | 'Completed' | 'Cancelled';
+  dashStatus: 'Active' | 'Closed' | 'Inactive';
   rentDate: string;
   returnDate: string;
   email: string;

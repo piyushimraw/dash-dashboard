@@ -1,26 +1,26 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Car, Calendar, MapPin, FileText } from "lucide-react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Car, Calendar, MapPin, FileText } from 'lucide-react';
 
-import { FormProvider, FormInput, Button } from "@packages/ui";
+import { FormProvider, FormInput, Button } from '@packages/ui';
 
-import { returnVehicleSchema } from "./return.schema";
-import type { ReturnVehicleFormValues } from "./return.types";
+import { returnVehicleSchema } from './return.schema';
+import type { ReturnVehicleFormValues } from './return.types';
 
 export function ReturnVehicleForm() {
   const methods = useForm<ReturnVehicleFormValues>({
     resolver: zodResolver(returnVehicleSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      vehicleId: "",
-      returnDate: "",
-      returnLocation: "",
-      damageNotes: "",
+      vehicleId: '',
+      returnDate: '',
+      returnLocation: '',
+      damageNotes: '',
     },
   });
 
   const onSubmit = (data: ReturnVehicleFormValues) => {
-    console.log("Return Vehicle Data:", data);
+    console.log('Return Vehicle Data:', data);
     // API call here
   };
 

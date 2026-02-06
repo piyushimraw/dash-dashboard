@@ -1,33 +1,27 @@
-import { Button, Card, CardContent, CardHeader, CardTitle } from "@packages/ui";
-import {
-  Car,
-  ClipboardList,
-  ArrowRightLeft,
-  TrendingUp,
-  ChevronRight,
-} from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@packages/ui';
+import { Car, ClipboardList, ArrowRightLeft, TrendingUp, ChevronRight } from 'lucide-react';
+import { useNavigate } from '@tanstack/react-router';
 
 const quickActions = [
   {
-    label: "New Rental",
+    label: 'New Rental',
     icon: <Car className="h-5 w-5" aria-hidden="true" />,
-    path: "/rent",
+    path: '/rent',
   },
   {
-    label: "Process Return",
+    label: 'Process Return',
     icon: <ClipboardList className="h-5 w-5" aria-hidden="true" />,
-    path: "/return",
+    path: '/return',
   },
   {
-    label: "Vehicle Exchange",
+    label: 'Vehicle Exchange',
     icon: <ArrowRightLeft className="h-5 w-5" aria-hidden="true" />,
-    path: "/vehicle_exchange",
+    path: '/vehicle_exchange',
   },
   {
-    label: "AAO",
+    label: 'AAO',
     icon: <TrendingUp className="h-5 w-5" aria-hidden="true" />,
-    path: "/aao",
+    path: '/aao',
   },
 ];
 
@@ -101,10 +95,7 @@ export function DashboardPage() {
                 </span>
                 <span className="text-sm">{action.label}</span>
               </span>
-              <ChevronRight
-                className="h-4 w-4 text-muted-foreground"
-                aria-hidden="true"
-              />
+              <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             </Button>
           ))}
         </CardContent>

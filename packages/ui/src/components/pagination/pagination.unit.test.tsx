@@ -1,6 +1,6 @@
-import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 
 import {
   Pagination,
@@ -10,33 +10,33 @@ import {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
-} from "./pagination";
+} from './pagination';
 
-describe("Pagination primitives", () => {
-  it("renders Pagination with correct role and aria-label", () => {
+describe('Pagination primitives', () => {
+  it('renders Pagination with correct role and aria-label', () => {
     render(
       <Pagination>
         <PaginationContent />
-      </Pagination>
+      </Pagination>,
     );
 
-    const nav = screen.getByRole("navigation", { name: /pagination/i });
+    const nav = screen.getByRole('navigation', { name: /pagination/i });
     expect(nav).toBeInTheDocument();
   });
 
-  it("renders PaginationContent as a list", () => {
+  it('renders PaginationContent as a list', () => {
     render(
       <Pagination>
         <PaginationContent>
           <PaginationItem>Item</PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination>,
     );
 
-    expect(screen.getByText("Item")).toBeInTheDocument();
+    expect(screen.getByText('Item')).toBeInTheDocument();
   });
 
-  it("renders PaginationLink with text", () => {
+  it('renders PaginationLink with text', () => {
     render(
       <Pagination>
         <PaginationContent>
@@ -44,13 +44,13 @@ describe("Pagination primitives", () => {
             <PaginationLink href="#">1</PaginationLink>
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination>,
     );
 
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 
-  it("marks PaginationLink as active when isActive is true", () => {
+  it('marks PaginationLink as active when isActive is true', () => {
     render(
       <Pagination>
         <PaginationContent>
@@ -60,15 +60,15 @@ describe("Pagination primitives", () => {
             </PaginationLink>
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination>,
     );
 
-    const link = screen.getByText("2");
-    expect(link).toHaveAttribute("aria-current", "page");
-    expect(link).toHaveAttribute("data-active", "true");
+    const link = screen.getByText('2');
+    expect(link).toHaveAttribute('aria-current', 'page');
+    expect(link).toHaveAttribute('data-active', 'true');
   });
 
-  it("renders PaginationPrevious with accessible label", () => {
+  it('renders PaginationPrevious with accessible label', () => {
     render(
       <Pagination>
         <PaginationContent>
@@ -76,15 +76,13 @@ describe("Pagination primitives", () => {
             <PaginationPrevious href="#" />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination>,
     );
 
-    expect(
-      screen.getByLabelText(/go to previous page/i)
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/go to previous page/i)).toBeInTheDocument();
   });
 
-  it("renders PaginationNext with accessible label", () => {
+  it('renders PaginationNext with accessible label', () => {
     render(
       <Pagination>
         <PaginationContent>
@@ -92,15 +90,13 @@ describe("Pagination primitives", () => {
             <PaginationNext href="#" />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination>,
     );
 
-    expect(
-      screen.getByLabelText(/go to next page/i)
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/go to next page/i)).toBeInTheDocument();
   });
 
-  it("renders PaginationEllipsis and hides it from screen readers", () => {
+  it('renders PaginationEllipsis and hides it from screen readers', () => {
     render(
       <Pagination>
         <PaginationContent>
@@ -108,11 +104,11 @@ describe("Pagination primitives", () => {
             <PaginationEllipsis />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination>,
     );
 
     const ellipsis = screen.getByText(/more pages/i);
     expect(ellipsis).toBeInTheDocument();
-    expect(ellipsis.parentElement).toHaveAttribute("aria-hidden");
+    expect(ellipsis.parentElement).toHaveAttribute('aria-hidden');
   });
 });

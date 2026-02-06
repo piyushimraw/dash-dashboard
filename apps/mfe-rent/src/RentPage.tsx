@@ -1,10 +1,9 @@
-import { RentVehicleForm } from "./forms/RentVehicleForm";
-import { Car } from "lucide-react";
+import { RentVehicleForm } from './forms/RentVehicleForm';
+import { Car } from 'lucide-react';
 
 export function RentPage() {
   return (
     <div className="min-h-screen w-full flex flex-col md:flex-row">
-      
       {/* Left panel */}
       <div className="w-full md:w-[38%] bg-muted/40 px-4 pt-16 pb-6 md:px-8 md:pt-10 md:pb-10">
         <div className="space-y-4 text-center md:text-left">
@@ -12,9 +11,7 @@ export function RentPage() {
             <Car className="h-7 w-7 text-primary" />
           </div>
 
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Rent a Vehicle
-          </h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Rent a Vehicle</h2>
 
           <p className="text-sm leading-relaxed text-muted-foreground">
             Fill in the details to rent a vehicle quickly and easily.

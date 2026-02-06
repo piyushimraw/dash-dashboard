@@ -1,15 +1,10 @@
-import {
-  Button,
-  Input,
-  Label,
-  SelectBox
-} from "@packages/ui";
-import { Filter, RotateCcw } from "lucide-react";
-import clsx from "clsx";
-import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
-import type { FilterState } from "../types/type";
-import { ResponsiveFilterPanel } from "./ResponsiveFilterPanel";
+import { Button, Input, Label, SelectBox } from '@packages/ui';
+import { Filter, RotateCcw } from 'lucide-react';
+import clsx from 'clsx';
+import type { ChangeEvent } from 'react';
+import { useEffect, useState } from 'react';
+import type { FilterState } from '../types/type';
+import { ResponsiveFilterPanel } from './ResponsiveFilterPanel';
 
 interface Props {
   initialFilters: FilterState;
@@ -20,10 +15,10 @@ interface Props {
 }
 
 const statusValues = [
-  { label: "All", value: "All" },
-  { label: "Confirmed", value: "Confirmed" },
-  { label: "Completed", value: "Completed" },
-  { label: "Cancelled", value: "Cancelled" },
+  { label: 'All', value: 'All' },
+  { label: 'Confirmed', value: 'Confirmed' },
+  { label: 'Completed', value: 'Completed' },
+  { label: 'Cancelled', value: 'Cancelled' },
 ];
 
 export function FiltersComponent({
@@ -71,10 +66,10 @@ export function FiltersComponent({
             <Button
               variant="ghost"
               className={clsx(
-                "px-4 py-2 border rounded-lg flex items-center gap-2 transition-colors",
+                'px-4 py-2 border rounded-lg flex items-center gap-2 transition-colors',
                 hasActiveFilters
-                  ? "bg-brand-yellow-light border-brand-yellow-dark text-lavender-deep"
-                  : "border-lavender hover:bg-lavender",
+                  ? 'bg-brand-yellow-light border-brand-yellow-dark text-lavender-deep'
+                  : 'border-lavender hover:bg-lavender',
               )}
             >
               <Filter size={20} />
@@ -92,8 +87,7 @@ export function FiltersComponent({
             <div>
               <h3 className="text-lg font-semibold">Filters</h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Refine your reservation search. Click apply when you&apos;re
-                done.
+                Refine your reservation search. Click apply when you&apos;re done.
               </p>
             </div>
 
@@ -106,7 +100,7 @@ export function FiltersComponent({
                   type="date"
                   value={tempFilters.startDate}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    handleFilterChange("startDate", event.target.value);
+                    handleFilterChange('startDate', event.target.value);
                   }}
                 />
               </div>
@@ -119,7 +113,7 @@ export function FiltersComponent({
                   type="date"
                   value={tempFilters.endDate}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    handleFilterChange("endDate", event.target.value)
+                    handleFilterChange('endDate', event.target.value)
                   }
                 />
               </div>
@@ -131,7 +125,7 @@ export function FiltersComponent({
                   placeholder="Select status"
                   options={statusValues}
                   value={tempFilters.status}
-                  onValueChange={(value) => handleFilterChange("status", value)}
+                  onValueChange={(value) => handleFilterChange('status', value)}
                 />
               </div>
 
@@ -143,7 +137,7 @@ export function FiltersComponent({
                   type="text"
                   value={tempFilters.arrivalLocation}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    handleFilterChange("arrivalLocation", event.target.value)
+                    handleFilterChange('arrivalLocation', event.target.value)
                   }
                   placeholder="Ex: CCUAIR"
                 />
@@ -152,11 +146,7 @@ export function FiltersComponent({
 
             {/* Action Buttons */}
             <div className="flex gap-3 w-full pt-4">
-              <Button
-                variant="ghost"
-                className="border flex-1"
-                onClick={handleResetGlobalFilters}
-              >
+              <Button variant="ghost" className="border flex-1" onClick={handleResetGlobalFilters}>
                 Reset All
               </Button>
               <Button className="flex-1" onClick={handleApplyFilters}>

@@ -67,9 +67,8 @@ export function MfeLoadingBar() {
         className="h-full bg-yellow-500 shadow-lg shadow-yellow-500/50"
         style={{
           width: `${progress}%`,
-          transition: progress === 100
-            ? 'width 200ms ease-out'
-            : 'width 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+          transition:
+            progress === 100 ? 'width 200ms ease-out' : 'width 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       />
     </div>

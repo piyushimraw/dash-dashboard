@@ -1,4 +1,4 @@
-import { useToastStore } from "../../hooks/useToast"; // relative to toast folder
+import { useToastStore } from '../../hooks/useToast'; // relative to toast folder
 
 import {
   ToastProvider,
@@ -7,7 +7,7 @@ import {
   ToastTitle,
   ToastDescription,
   ToastClose,
-} from "./toast";
+} from './toast';
 
 export function Toaster() {
   const toasts = useToastStore();
@@ -16,11 +16,7 @@ export function Toaster() {
     <ToastProvider swipeDirection="right">
       {toasts.map((toast) => (
         <ToastRoot key={toast.id} variant={toast.variant}>
-          {toast.title && (
-            <ToastTitle className="font-medium">
-              {toast.title}
-            </ToastTitle>
-          )}
+          {toast.title && <ToastTitle className="font-medium">{toast.title}</ToastTitle>}
           {toast.description && (
             <ToastDescription className="text-sm text-muted-foreground">
               {toast.description}

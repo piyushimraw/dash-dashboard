@@ -132,8 +132,8 @@ export function getMfeByRoute(path: string): Omit<MfeMetadata, 'state' | 'error'
   if (exactMatch) return exactMatch;
 
   // Try prefix match (for nested routes like /dashboard/overview)
-  const prefixMatch = mfeRegistry.find((mfe) =>
-    normalizedPath.startsWith(mfe.path + '/') || normalizedPath === mfe.path
+  const prefixMatch = mfeRegistry.find(
+    (mfe) => normalizedPath.startsWith(mfe.path + '/') || normalizedPath === mfe.path,
   );
 
   return prefixMatch;

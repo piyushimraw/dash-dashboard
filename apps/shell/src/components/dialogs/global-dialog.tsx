@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Dialog, DialogPortal } from "../ui/dialog";
-import { type DialogRegistry, useGlobalDialogStore } from "./useGlobalDialogStore";
-import RentNewVehicleDialog from "./rent-new-vehicle";
+import { Dialog, DialogPortal } from '../ui/dialog';
+import { type DialogRegistry, useGlobalDialogStore } from './useGlobalDialogStore';
+import RentNewVehicleDialog from './rent-new-vehicle';
 
 /**
  * `DialogMap` defines all available dialog components.
@@ -10,9 +10,7 @@ import RentNewVehicleDialog from "./rent-new-vehicle";
  * - Each dialog receives its defined props (from `DialogRegistry`) plus an `onClose` callback.
  */
 const DialogMap: {
-  [K in keyof DialogRegistry]: React.ComponentType<
-    DialogRegistry[K] & { onClose: () => void }
-  >;
+  [K in keyof DialogRegistry]: React.ComponentType<DialogRegistry[K] & { onClose: () => void }>;
 } = {
   RENT_VEHICLE: RentNewVehicleDialog,
 };
@@ -39,10 +37,7 @@ export default function GlobalDialog() {
         {/* ----- background effect ----- */}
         <div className="pointer-events-auto fixed inset-0 z-50 bg-black/60" />
         {/* ------- dialog content ------- */}
-        <DialogComponent
-          {...(props as DialogRegistry[typeof type])}
-          onClose={closeDialog}
-        />
+        <DialogComponent {...(props as DialogRegistry[typeof type])} onClose={closeDialog} />
       </DialogPortal>
     </Dialog>
   );

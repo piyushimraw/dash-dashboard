@@ -5,5 +5,5 @@ export const useGetLoginLocations = () =>
   useQuery({
     queryKey: ['login-locations'],
     queryFn: getLoginLocations,
-    throwOnError : false
-});
+    throwOnError: false,
+  });

@@ -1,12 +1,6 @@
-import { useToastContext } from "./ToastProvider";
-import {
-  ToastProviderRadix,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  ToastClose,
-} from "./toast-ui";
-import { X } from "lucide-react";
+import { useToastContext } from './ToastProvider';
+import { ToastProviderRadix, ToastRoot, ToastTitle, ToastViewport, ToastClose } from './toast-ui';
+import { X } from 'lucide-react';
 
 export const Toaster = () => {
   const { toasts } = useToastContext();

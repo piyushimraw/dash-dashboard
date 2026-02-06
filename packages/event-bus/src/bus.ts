@@ -1,5 +1,5 @@
-import mitt, { type Emitter } from "mitt";
-import type { MfeEvents } from "./events";
+import mitt, { type Emitter } from 'mitt';
+import type { MfeEvents } from './events';
 
 /**
  * Typed event bus for cross-MFE communication

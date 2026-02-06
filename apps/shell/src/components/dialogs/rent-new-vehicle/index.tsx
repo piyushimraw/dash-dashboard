@@ -1,22 +1,22 @@
-import { DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { type DialogRegistry } from "../useGlobalDialogStore";
-import { RentVehicleForm } from "@apps/mfe-rent";
-import { Car } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { type DialogRegistry } from '../useGlobalDialogStore';
+import { RentVehicleForm } from '@apps/mfe-rent';
+import { Car } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function RentNewVehicleDialog({
   onClose,
-}: DialogRegistry["RENT_VEHICLE"] & { onClose: () => void }) {
+}: DialogRegistry['RENT_VEHICLE'] & { onClose: () => void }) {
   return (
     <DialogContent
       className={cn(
-        "w-full md:max-w-230 max-w-95vw rounded-md outline-none border-0 p-8",
+        'w-full md:max-w-230 max-w-95vw rounded-md outline-none border-0 p-8',
         "md:[&>button[data-slot='dialog-close']>svg]:block",
         //hiding default button for mobile screen
         "[&>button[data-slot='dialog-close']>svg]:hidden",
         "[&>button[data-slot='dialog-close']>svg]:h-6",
         "[&>button[data-slot='dialog-close']]:mr-4",
-        "[&>button[data-slot='dialog-close']]:mt-2"
+        "[&>button[data-slot='dialog-close']]:mt-2",
       )}
     >
       <div className="relative flex max-h-[100dvh] flex-col md:flex-row overflow-hidden">
@@ -38,9 +38,7 @@ export default function RentNewVehicleDialog({
               <Car className="h-7 w-7 text-primary" />
             </div>
 
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Rent a Vehicle
-            </h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Rent a Vehicle</h2>
 
             <p className="text-sm leading-relaxed text-muted-foreground">
               Fill in the details to rent a vehicle quickly and easily.

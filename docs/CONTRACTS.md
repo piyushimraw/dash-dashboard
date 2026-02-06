@@ -20,7 +20,7 @@ import { eventBus } from '@packages/event-bus';
 // Emit an event
 eventBus.emit('notification:show', {
   type: 'success',
-  message: 'Reservation saved!'
+  message: 'Reservation saved!',
 });
 
 // Subscribe to events
@@ -41,21 +41,23 @@ Request the shell to navigate to a different route.
 
 ```typescript
 interface NavigationEvent {
-  path: string;              // Target path (e.g., '/rent')
+  path: string; // Target path (e.g., '/rent')
   state?: Record<string, unknown>; // Optional route state
 }
 ```
 
 **Example:**
+
 ```typescript
 // Navigate from Reservation Lookup to Rent with pre-filled data
 eventBus.emit('navigation:change', {
   path: '/rent',
-  state: { reservationId: '12345', customerId: 'C-001' }
+  state: { reservationId: '12345', customerId: 'C-001' },
 });
 ```
 
 **Use cases:**
+
 - Cross-MFE navigation (Reservation Lookup -> Rent)
 - Deep linking from notifications
 - Programmatic navigation from business logic
@@ -68,12 +70,13 @@ Request that data for a specific entity be refetched.
 
 ```typescript
 interface DataRefreshEvent {
-  entity: string;           // Entity type (e.g., 'reservations', 'vehicles')
-  id?: string | number;     // Optional specific entity ID
+  entity: string; // Entity type (e.g., 'reservations', 'vehicles')
+  id?: string | number; // Optional specific entity ID
 }
 ```
 
 **Example:**
+
 ```typescript
 // Refresh all reservations after creating a new one
 eventBus.emit('data:refresh', { entity: 'reservations' });
@@ -83,6 +86,7 @@ eventBus.emit('data:refresh', { entity: 'vehicles', id: 'V-12345' });
 ```
 
 **Use cases:**
+
 - Invalidate React Query cache across MFEs
 - Sync data after cross-MFE operations
 - Real-time update triggers
@@ -97,27 +101,29 @@ Display a toast notification to the user.
 interface NotificationEvent {
   type: 'success' | 'error' | 'warning' | 'info';
   message: string;
-  duration?: number;        // Auto-dismiss in ms (default: 5000)
+  duration?: number; // Auto-dismiss in ms (default: 5000)
 }
 ```
 
 **Example:**
+
 ```typescript
 // Success notification
 eventBus.emit('notification:show', {
   type: 'success',
-  message: 'Rental agreement created successfully'
+  message: 'Rental agreement created successfully',
 });
 
 // Error with longer duration
 eventBus.emit('notification:show', {
   type: 'error',
   message: 'Failed to process payment. Please try again.',
-  duration: 10000
+  duration: 10000,
 });
 ```
 
 **Use cases:**
+
 - Operation success/failure feedback
 - Validation errors
 - System status updates
@@ -140,20 +146,22 @@ interface AuthStateChangedEvent {
 ```
 
 **Example:**
+
 ```typescript
 // After successful login
 eventBus.emit('auth:state-changed', {
   isAuthenticated: true,
-  user: { id: 'U-001', name: 'John Doe', role: 'counter_agent' }
+  user: { id: 'U-001', name: 'John Doe', role: 'counter_agent' },
 });
 
 // After logout
 eventBus.emit('auth:state-changed', {
-  isAuthenticated: false
+  isAuthenticated: false,
 });
 ```
 
 **Use cases:**
+
 - Sync auth state across MFEs
 - Trigger cleanup on logout
 - Update UI based on user role changes
@@ -174,12 +182,12 @@ Available user roles in the system.
 type Role = 'counter_agent' | 'system_admin' | 'fleet_manager' | 'super_admin';
 ```
 
-| Role | Description | Access |
-|------|-------------|--------|
-| `counter_agent` | Front desk staff | Rent, Return, Reservation Lookup, Vehicle Exchange, Dashboard |
-| `fleet_manager` | Vehicle fleet management | Car Control, AAO, Dashboard |
-| `system_admin` | System configuration | Reports, Settings |
-| `super_admin` | Full access | All MFEs |
+| Role            | Description              | Access                                                        |
+| --------------- | ------------------------ | ------------------------------------------------------------- |
+| `counter_agent` | Front desk staff         | Rent, Return, Reservation Lookup, Vehicle Exchange, Dashboard |
+| `fleet_manager` | Vehicle fleet management | Car Control, AAO, Dashboard                                   |
+| `system_admin`  | System configuration     | Reports, Settings                                             |
+| `super_admin`   | Full access              | All MFEs                                                      |
 
 ---
 
@@ -189,9 +197,9 @@ Authenticated user information.
 
 ```typescript
 interface User {
-  id: string;        // Unique user identifier
-  username: string;  // User's username
-  role: Role;        // Assigned role
+  id: string; // Unique user identifier
+  username: string; // User's username
+  role: Role; // Assigned role
 }
 ```
 
@@ -203,9 +211,9 @@ Current authentication state.
 
 ```typescript
 interface AuthState {
-  isAuthenticated: boolean;  // Whether user is logged in
-  user: User | null;         // Current user (null if not authenticated)
-  isLoading: boolean;        // True during auth check/refresh
+  isAuthenticated: boolean; // Whether user is logged in
+  user: User | null; // Current user (null if not authenticated)
+  isLoading: boolean; // True during auth check/refresh
 }
 ```
 
@@ -228,6 +236,7 @@ interface AuthService {
 ```
 
 **Example usage in MFE:**
+
 ```typescript
 import { useAuth } from '@/hooks/useAuth';
 
@@ -254,12 +263,12 @@ Loading states for MFE lifecycle.
 type MfeLoadingState = 'idle' | 'loading' | 'loaded' | 'error';
 ```
 
-| State | Description |
-|-------|-------------|
-| `idle` | Not yet loaded |
+| State     | Description                                    |
+| --------- | ---------------------------------------------- |
+| `idle`    | Not yet loaded                                 |
 | `loading` | Currently loading (chunk download in progress) |
-| `loaded` | Successfully loaded and rendered |
-| `error` | Failed to load |
+| `loaded`  | Successfully loaded and rendered               |
+| `error`   | Failed to load                                 |
 
 ---
 
@@ -269,14 +278,14 @@ Metadata for registered MFEs.
 
 ```typescript
 interface MfeMetadata {
-  id: string;              // Unique identifier (e.g., 'mfe-rent')
-  name: string;            // Display name (e.g., 'Rent')
-  path: string;            // Route path (e.g., '/rent')
-  allowedRoles: string[];  // Roles that can access
-  state: MfeLoadingState;  // Current loading state
-  error?: string;          // Error message if state is 'error'
-  icon?: string;           // Icon identifier for navigation
-  description?: string;    // Tooltip/help text
+  id: string; // Unique identifier (e.g., 'mfe-rent')
+  name: string; // Display name (e.g., 'Rent')
+  path: string; // Route path (e.g., '/rent')
+  allowedRoles: string[]; // Roles that can access
+  state: MfeLoadingState; // Current loading state
+  error?: string; // Error message if state is 'error'
+  icon?: string; // Icon identifier for navigation
+  description?: string; // Tooltip/help text
 }
 ```
 
@@ -307,25 +316,26 @@ Individual navigation item.
 
 ```typescript
 interface NavigationItem {
-  id: string;               // Unique identifier
-  label: string;            // Display label
-  path: string;             // Route path
-  icon?: string;            // Lucide icon name
-  allowedRoles?: string[];  // Role-based visibility
-  badge?: number;           // Notification badge count
-  disabled?: boolean;       // Disabled state
+  id: string; // Unique identifier
+  label: string; // Display label
+  path: string; // Route path
+  icon?: string; // Lucide icon name
+  allowedRoles?: string[]; // Role-based visibility
+  badge?: number; // Notification badge count
+  disabled?: boolean; // Disabled state
   children?: NavigationItem[]; // Sub-navigation items
 }
 ```
 
 **Example:**
+
 ```typescript
 const rentNavItem: NavigationItem = {
   id: 'rent',
   label: 'Rent',
   path: '/rent',
   icon: 'Car',
-  allowedRoles: ['counter_agent', 'super_admin']
+  allowedRoles: ['counter_agent', 'super_admin'],
 };
 ```
 
@@ -337,11 +347,11 @@ Group of navigation items (for sidebar sections).
 
 ```typescript
 interface NavigationGroup {
-  id: string;               // Group identifier
-  label?: string;           // Section header (optional)
-  items: NavigationItem[];  // Items in this group
-  allowedRoles?: string[];  // Role-based visibility
-  order?: number;           // Display order
+  id: string; // Group identifier
+  label?: string; // Section header (optional)
+  items: NavigationItem[]; // Items in this group
+  allowedRoles?: string[]; // Role-based visibility
+  order?: number; // Display order
 }
 ```
 
@@ -365,12 +375,12 @@ Definition for cross-MFE dialogs.
 
 ```typescript
 interface DialogDefinition {
-  id: string;                    // Unique dialog ID
-  title: string;                 // Header title
-  size?: DialogSize;             // Dialog size (default: 'md')
+  id: string; // Unique dialog ID
+  title: string; // Header title
+  size?: DialogSize; // Dialog size (default: 'md')
   closeOnOutsideClick?: boolean; // Close on backdrop click
-  closeable?: boolean;           // Show close button
-  component: string;             // Component identifier
+  closeable?: boolean; // Show close button
+  component: string; // Component identifier
   props?: Record<string, unknown>; // Props for component
 }
 ```
@@ -383,9 +393,9 @@ Current dialog state.
 
 ```typescript
 interface DialogState {
-  isOpen: boolean;           // Whether dialog is open
+  isOpen: boolean; // Whether dialog is open
   dialog: DialogDefinition | null; // Active dialog
-  result?: unknown;          // Result when dialog closes
+  result?: unknown; // Result when dialog closes
 }
 ```
 
@@ -401,33 +411,17 @@ import type {
   NavigationEvent,
   DataRefreshEvent,
   NotificationEvent,
-  AuthStateChangedEvent
+  AuthStateChangedEvent,
 } from '@packages/event-bus';
 
 // Type contracts
-import type {
-  Role,
-  User,
-  AuthState,
-  AuthService
-} from '@packages/mfe-types';
+import type { Role, User, AuthState, AuthService } from '@packages/mfe-types';
 
-import type {
-  MfeLoadingState,
-  MfeMetadata,
-  MfeRegistry
-} from '@packages/mfe-types';
+import type { MfeLoadingState, MfeMetadata, MfeRegistry } from '@packages/mfe-types';
 
-import type {
-  NavigationItem,
-  NavigationGroup
-} from '@packages/mfe-types';
+import type { NavigationItem, NavigationGroup } from '@packages/mfe-types';
 
-import type {
-  DialogSize,
-  DialogDefinition,
-  DialogState
-} from '@packages/mfe-types';
+import type { DialogSize, DialogDefinition, DialogState } from '@packages/mfe-types';
 ```
 
 ---

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-type ToastVariant = "success" | "error" | "info";
+type ToastVariant = 'success' | 'error' | 'info';
 
 export type Toast = {
   id: string;
@@ -16,7 +16,7 @@ function emit() {
   listeners.forEach((l) => l([...toasts]));
 }
 
-export function toast(t: Omit<Toast, "id">) {
+export function toast(t: Omit<Toast, 'id'>) {
   const id = crypto.randomUUID();
 
   toasts = [...toasts, { ...t, id }];

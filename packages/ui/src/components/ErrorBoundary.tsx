@@ -24,10 +24,7 @@ interface ErrorBoundaryState {
  * Error Boundary Component
  * Catches errors in components and displays fallback UI
  */
-export class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -119,9 +116,7 @@ export class ErrorBoundary extends React.Component<
                 ? `${this.props.mfeName} encountered an error`
                 : 'Something went wrong'}
             </h3>
-            <p className="text-sm text-red-700 mb-4">
-              This item is temporarily unavailable.
-            </p>
+            <p className="text-sm text-red-700 mb-4">This item is temporarily unavailable.</p>
 
             {/* Error Details (in development only) */}
             {import.meta.env.DEV && this.state.error && (
@@ -156,9 +151,7 @@ export class ErrorBoundary extends React.Component<
 
             {/* Retry Count (in development only) */}
             {import.meta.env.DEV && this.state.retryCount > 0 && (
-              <p className="mt-3 text-xs text-red-600">
-                Retry attempts: {this.state.retryCount}
-              </p>
+              <p className="mt-3 text-xs text-red-600">Retry attempts: {this.state.retryCount}</p>
             )}
           </div>
         </div>
@@ -175,7 +168,7 @@ export class ErrorBoundary extends React.Component<
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   mfeName?: string,
-  fallback?: React.ReactNode
+  fallback?: React.ReactNode,
 ): React.ComponentType<P> {
   const WrappedComponent: React.FC<P> = (props) => (
     <ErrorBoundary mfeName={mfeName} fallback={fallback}>

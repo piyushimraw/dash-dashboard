@@ -1,26 +1,26 @@
-import type { PaginationState } from "@tanstack/react-table";
-import { useEffect, useMemo, useState } from "react";
-import { FilterState, TableType } from "../types/type";
-import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from "@packages/ui";
+import type { PaginationState } from '@tanstack/react-table';
+import { useEffect, useMemo, useState } from 'react';
+import { FilterState, TableType } from '../types/type';
+import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from '@packages/ui';
 
 const initialFilters: FilterState = {
-  startDate: "",
-  endDate: "",
-  status: "All",
-  arrivalLocation: "",
+  startDate: '',
+  endDate: '',
+  status: 'All',
+  arrivalLocation: '',
 };
 export const useRentVehicleFilters = (data: TableType[] = []) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: DEFAULT_PAGE_INDEX,
     pageSize: DEFAULT_ITEMS_SIZE,
   });
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   const hasActiveFilters =
     !!filters.startDate ||
     !!filters.endDate ||
-    (!!filters.status && filters.status !== "All") ||
+    (!!filters.status && filters.status !== 'All') ||
     !!filters.arrivalLocation ||
     !!search;
 
@@ -44,19 +44,12 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
       }
 
       // Status
-      if (
-        filters.status &&
-        filters.status !== "All" &&
-        item.resStatus !== filters.status
-      ) {
+      if (filters.status && filters.status !== 'All' && item.resStatus !== filters.status) {
         return false;
       }
 
       // arrival location
-      if (
-        filters.arrivalLocation &&
-        item.arrivalLocation !== filters.arrivalLocation
-      ) {
+      if (filters.arrivalLocation && item.arrivalLocation !== filters.arrivalLocation) {
         return false;
       }
 
@@ -87,11 +80,11 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
 
   const resetFilters = () => {
     setFilters(initialFilters);
-    setSearch("");
+    setSearch('');
   };
 
   const removeFilter = (key: keyof FilterState) => {
-    setFilters((prev) => ({ ...prev, [key]: "" }));
+    setFilters((prev) => ({ ...prev, [key]: '' }));
   };
 
   return {

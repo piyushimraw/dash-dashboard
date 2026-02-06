@@ -105,16 +105,13 @@ class RouteErrorBoundaryClass extends React.Component<
               </div>
 
               {/* Error Title */}
-              <h1 className="text-2xl font-bold text-slate-900 text-center mb-2">
-                Page Error
-              </h1>
+              <h1 className="text-2xl font-bold text-slate-900 text-center mb-2">Page Error</h1>
 
               {/* Error Description */}
               <p className="text-slate-600 text-center mb-6">
                 {this.props.routeName
                   ? `The ${this.props.routeName} page encountered an error.`
-                  : 'This page encountered an error.'}
-                {' '}
+                  : 'This page encountered an error.'}{' '}
                 You can try again or navigate to another section.
               </p>
 

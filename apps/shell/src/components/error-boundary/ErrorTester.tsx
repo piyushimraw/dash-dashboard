@@ -13,7 +13,9 @@ export function ErrorTester({ level }: { level: 'component' | 'route' | 'app' })
         <h3 className="text-lg font-semibold text-sky-800">Error Tester — {level} level</h3>
         <span className="text-sm text-sky-600">Scoped: {level}</span>
       </div>
-      <p className="mt-3 text-sm text-sky-700">Trigger a simulated error at the selected scope to test error boundaries and fallbacks.</p>
+      <p className="mt-3 text-sm text-sky-700">
+        Trigger a simulated error at the selected scope to test error boundaries and fallbacks.
+      </p>
       <div className="mt-4">
         <button
           onClick={() => setShouldThrow(true)}

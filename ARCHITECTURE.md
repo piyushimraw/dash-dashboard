@@ -259,23 +259,23 @@ sequenceDiagram
 
 Shared TypeScript type definitions providing compile-time verification:
 
-| Type | Purpose |
-|------|---------|
-| `MfeMetadata`, `MfeRegistry` | MFE registration and lifecycle |
-| `AuthState`, `AuthService`, `User`, `Role` | Authentication contracts |
-| `NavigationItem`, `NavigationGroup` | Navigation structure |
-| `DialogDefinition`, `DialogState` | Cross-MFE modal system |
+| Type                                       | Purpose                        |
+| ------------------------------------------ | ------------------------------ |
+| `MfeMetadata`, `MfeRegistry`               | MFE registration and lifecycle |
+| `AuthState`, `AuthService`, `User`, `Role` | Authentication contracts       |
+| `NavigationItem`, `NavigationGroup`        | Navigation structure           |
+| `DialogDefinition`, `DialogState`          | Cross-MFE modal system         |
 
 ### 5.2 packages/event-bus
 
 Typed event bus for cross-MFE communication using mitt:
 
-| Event | Payload | Purpose |
-|-------|---------|---------|
-| `navigation:change` | `{ path, state? }` | Request navigation |
-| `data:refresh` | `{ entity, id? }` | Trigger data refetch |
-| `notification:show` | `{ type, message, duration? }` | Show toast notification |
-| `auth:state-changed` | `{ isAuthenticated, user? }` | Auth state broadcast |
+| Event                | Payload                        | Purpose                 |
+| -------------------- | ------------------------------ | ----------------------- |
+| `navigation:change`  | `{ path, state? }`             | Request navigation      |
+| `data:refresh`       | `{ entity, id? }`              | Trigger data refetch    |
+| `notification:show`  | `{ type, message, duration? }` | Show toast notification |
+| `auth:state-changed` | `{ isAuthenticated, user? }`   | Auth state broadcast    |
 
 ### 5.3 packages/ui
 
@@ -329,12 +329,12 @@ sequenceDiagram
 
 ### 6.2 Role-Based Access
 
-| Role | Access |
-|------|--------|
+| Role            | Access                                                        |
+| --------------- | ------------------------------------------------------------- |
 | `counter_agent` | Dashboard, Rent, Return, Reservation Lookup, Vehicle Exchange |
-| `fleet_manager` | Dashboard, Car Control, AAO |
-| `system_admin` | Reports, Settings |
-| `super_admin` | All MFEs |
+| `fleet_manager` | Dashboard, Car Control, AAO                                   |
+| `system_admin`  | Reports, Settings                                             |
+| `super_admin`   | All MFEs                                                      |
 
 Route guards enforce role-based access via `beforeLoad`:
 
@@ -345,7 +345,7 @@ beforeLoad: ({ context }) => {
   if (!auth.hasAnyRole(['counter_agent', 'super_admin'])) {
     throw redirect({ to: '/unauthorized' });
   }
-}
+};
 ```
 
 ---
@@ -403,11 +403,13 @@ docker-compose down         # Stop containers
 ### 8.1 Adding a New MFE
 
 1. **Create MFE package:**
+
    ```bash
    mkdir -p apps/mfe-newfeature/src
    ```
 
 2. **Add package.json:**
+
    ```json
    {
      "name": "@apps/mfe-newfeature",
@@ -420,11 +422,13 @@ docker-compose down         # Stop containers
    ```
 
 3. **Create page component in shell:**
+
    ```bash
    # apps/shell/src/pages/NewFeaturePage.tsx
    ```
 
 4. **Add route:**
+
    ```bash
    # apps/shell/src/routes/_auth.newfeature.tsx
    ```
@@ -443,14 +447,14 @@ When modifying `packages/*`:
 
 ## 9) Key Architectural Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Build-time federation | Simpler ops than runtime federation; single deployment artifact |
-| Each page = 1 MFE | Clear ownership boundaries; simple mental model |
-| Event bus for cross-MFE communication | Prevents tight coupling; typed events ensure correctness |
-| Shared types package | Compile-time verification of contracts between shell and MFEs |
-| Vendor chunk splitting | Separate cache lifetimes for React, UI libs, etc. |
-| TanStack Router auto code-splitting | Route-based lazy loading without manual configuration |
+| Decision                              | Rationale                                                       |
+| ------------------------------------- | --------------------------------------------------------------- |
+| Build-time federation                 | Simpler ops than runtime federation; single deployment artifact |
+| Each page = 1 MFE                     | Clear ownership boundaries; simple mental model                 |
+| Event bus for cross-MFE communication | Prevents tight coupling; typed events ensure correctness        |
+| Shared types package                  | Compile-time verification of contracts between shell and MFEs   |
+| Vendor chunk splitting                | Separate cache lifetimes for React, UI libs, etc.               |
+| TanStack Router auto code-splitting   | Route-based lazy loading without manual configuration           |
 
 ---
 

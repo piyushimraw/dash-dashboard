@@ -16,7 +16,7 @@ export interface DataRefreshEvent {
 }
 
 export interface NotificationEvent {
-  type: "success" | "error" | "warning" | "info";
+  type: 'success' | 'error' | 'warning' | 'info';
   message: string;
   duration?: number;
 }
@@ -31,10 +31,10 @@ export interface AuthStateChangedEvent {
 }
 
 export enum MfeEventNames {
-  NavigationChange = "navigation:change",
-  DataRefresh = "data:refresh",
-  NotificationShow = "notification:show",
-  AuthStateChanged = "auth:state-changed",
+  NavigationChange = 'navigation:change',
+  DataRefresh = 'data:refresh',
+  NotificationShow = 'notification:show',
+  AuthStateChanged = 'auth:state-changed',
 }
 
 /**
@@ -53,4 +53,3 @@ export type MfeEvents = {
   [MfeEventNames.NotificationShow]: NotificationEvent;
   [MfeEventNames.AuthStateChanged]: AuthStateChangedEvent;
 };
-

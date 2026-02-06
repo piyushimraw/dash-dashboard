@@ -101,12 +101,12 @@ For detailed architecture documentation, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Build-time over runtime federation | Simpler ops, single Docker deployment |
-| Each page = 1 MFE | Clear ownership, simple mental model |
-| Event bus for cross-MFE communication | Loose coupling, typed events |
-| Shared types package | Compile-time contract verification |
+| Decision                              | Rationale                             |
+| ------------------------------------- | ------------------------------------- |
+| Build-time over runtime federation    | Simpler ops, single Docker deployment |
+| Each page = 1 MFE                     | Clear ownership, simple mental model  |
+| Event bus for cross-MFE communication | Loose coupling, typed events          |
+| Shared types package                  | Compile-time contract verification    |
 
 ## Development Guide
 
@@ -130,7 +130,7 @@ import { eventBus } from '@packages/event-bus';
 // Emit notification
 eventBus.emit('notification:show', {
   type: 'success',
-  message: 'Saved!'
+  message: 'Saved!',
 });
 
 // Listen for navigation
@@ -143,35 +143,35 @@ For event types and payloads, see [docs/CONTRACTS.md](docs/CONTRACTS.md).
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start shell dev server |
-| `pnpm build` | Build all packages and shell |
-| `pnpm clean` | Remove dist, dev-dist, tsbuildinfo, and nested node_modules |
-| `pnpm fresh` | Clean + install + build (fresh start for dev) |
-| `pnpm preview` | Preview production build (HTTPS) |
-| `pnpm preview:https` | Setup certs + build + preview (one command) |
-| `pnpm setup:https` | Setup mkcert certificates only |
-| `pnpm typecheck` | Run TypeScript checks |
-| `pnpm lint` | Run ESLint |
-| `pnpm test` | Run unit tests (Vitest) |
-| `pnpm test:e2e` | Run E2E tests (Playwright) |
+| Script               | Description                                                 |
+| -------------------- | ----------------------------------------------------------- |
+| `pnpm dev`           | Start shell dev server                                      |
+| `pnpm build`         | Build all packages and shell                                |
+| `pnpm clean`         | Remove dist, dev-dist, tsbuildinfo, and nested node_modules |
+| `pnpm fresh`         | Clean + install + build (fresh start for dev)               |
+| `pnpm preview`       | Preview production build (HTTPS)                            |
+| `pnpm preview:https` | Setup certs + build + preview (one command)                 |
+| `pnpm setup:https`   | Setup mkcert certificates only                              |
+| `pnpm typecheck`     | Run TypeScript checks                                       |
+| `pnpm lint`          | Run ESLint                                                  |
+| `pnpm test`          | Run unit tests (Vitest)                                     |
+| `pnpm test:e2e`      | Run E2E tests (Playwright)                                  |
 
 ## Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| Framework | React 19 with React Compiler |
-| Language | TypeScript (strict mode) |
-| Build | Vite with TanStack Router plugin |
-| Monorepo | pnpm workspaces |
-| Routing | TanStack Router (file-based, auto code-splitting) |
-| State | Zustand (auth), TanStack Query (server state) |
-| Styling | Tailwind CSS v4, Radix UI, shadcn/ui-style components |
-| Forms | React Hook Form + Zod |
-| Testing | Vitest, React Testing Library, Playwright |
-| Icons | lucide-react |
-| PWA | vite-plugin-pwa |
+| Category  | Technology                                            |
+| --------- | ----------------------------------------------------- |
+| Framework | React 19 with React Compiler                          |
+| Language  | TypeScript (strict mode)                              |
+| Build     | Vite with TanStack Router plugin                      |
+| Monorepo  | pnpm workspaces                                       |
+| Routing   | TanStack Router (file-based, auto code-splitting)     |
+| State     | Zustand (auth), TanStack Query (server state)         |
+| Styling   | Tailwind CSS v4, Radix UI, shadcn/ui-style components |
+| Forms     | React Hook Form + Zod                                 |
+| Testing   | Vitest, React Testing Library, Playwright             |
+| Icons     | lucide-react                                          |
+| PWA       | vite-plugin-pwa                                       |
 
 ## Documentation
 

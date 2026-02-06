@@ -102,7 +102,10 @@ export class MfeErrorBoundary extends React.Component<
       if (this.props.fallback) {
         if (React.isValidElement(this.props.fallback)) {
           const el = this.props.fallback as React.ReactElement<any, any>;
-          return React.cloneElement(el, { error: this.state.error, resetErrorBoundary: this.handleRetry } as any);
+          return React.cloneElement(el, {
+            error: this.state.error,
+            resetErrorBoundary: this.handleRetry,
+          } as any);
         }
 
         return this.props.fallback;
@@ -177,9 +180,7 @@ export class MfeErrorBoundary extends React.Component<
 
             {/* Retry Count (in development only) */}
             {import.meta.env.DEV && this.state.retryCount > 0 && (
-              <p className="mt-4 text-xs text-red-600">
-                Retry attempts: {this.state.retryCount}
-              </p>
+              <p className="mt-4 text-xs text-red-600">Retry attempts: {this.state.retryCount}</p>
             )}
           </div>
         </div>
@@ -196,7 +197,7 @@ export class MfeErrorBoundary extends React.Component<
 export function withMfeErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   mfeName?: string,
-  fallback?: React.ReactNode
+  fallback?: React.ReactNode,
 ): React.ComponentType<P> {
   const WrappedComponent: React.FC<P> = (props) => (
     <MfeErrorBoundary mfeName={mfeName} fallback={fallback}>

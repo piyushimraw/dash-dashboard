@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 
 export function Footer() {
   return (
@@ -9,8 +9,8 @@ export function Footer() {
             Copyright (c) 2003 The Hertz Corporation - All Rights Reserved
           </p>
           <p className="text-xs text-muted-foreground mt-1 max-w-2xl mx-auto">
-            The information contained herein is confidential and proprietary.
-            Unauthorized use, duplication or disclosure is prohibited by law.
+            The information contained herein is confidential and proprietary. Unauthorized use,
+            duplication or disclosure is prohibited by law.
           </p>
         </CardContent>
       </Card>

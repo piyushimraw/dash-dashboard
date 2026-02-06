@@ -6,29 +6,13 @@
  */
 
 // MFE Registry
-export type {
-  MfeLoadingState,
-  MfeMetadata,
-  MfeRegistry,
-} from './mfe-registry';
+export type { MfeLoadingState, MfeMetadata, MfeRegistry } from './mfe-registry';
 
 // Authentication
-export type {
-  Role,
-  User,
-  AuthState,
-  AuthService,
-} from './auth';
+export type { Role, User, AuthState, AuthService } from './auth';
 
 // Navigation
-export type {
-  NavigationItem,
-  NavigationGroup,
-} from './navigation';
+export type { NavigationItem, NavigationGroup } from './navigation';
 
 // Dialogs
-export type {
-  DialogSize,
-  DialogDefinition,
-  DialogState,
-} from './dialog';
+export type { DialogSize, DialogDefinition, DialogState } from './dialog';

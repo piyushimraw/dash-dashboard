@@ -1,7 +1,7 @@
-import { Controller, useFormContext } from "react-hook-form";
-import { SelectBox } from "../selectbox";
-import { FormError } from "./FormError";
-import { cn } from "../../lib/utils";
+import { Controller, useFormContext } from 'react-hook-form';
+import { SelectBox } from '../selectbox';
+import { FormError } from './FormError';
+import { cn } from '../../lib/utils';
 
 type Option = {
   label: string;
@@ -46,8 +46,8 @@ export function FormSelect({ name, label, options, icon }: Props) {
               value={field.value}
               onValueChange={field.onChange}
               className={cn(
-                icon ? "pl-10" : "",
-                fieldState?.error ? "border-red-500 focus:ring-red-500" : "",
+                icon ? 'pl-10' : '',
+                fieldState?.error ? 'border-red-500 focus:ring-red-500' : '',
               )}
             />
           </div>

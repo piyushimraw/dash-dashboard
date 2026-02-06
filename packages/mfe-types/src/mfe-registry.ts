@@ -4,11 +4,7 @@
  * Defines the metadata and lifecycle for microfrontends (MFEs) in the shell.
  */
 
-export type MfeLoadingState =
-  | 'idle'
-  | 'loading'
-  | 'loaded'
-  | 'error';
+export type MfeLoadingState = 'idle' | 'loading' | 'loaded' | 'error';
 
 export interface MfeMetadata {
   /** Unique identifier for the MFE */

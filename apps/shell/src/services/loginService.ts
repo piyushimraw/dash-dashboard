@@ -17,14 +17,14 @@ export async function loginService(data: LoginPayload): Promise<true> {
     // console.log('PlayloadReceieved for test env', data, isTest)
 
     if (!res.ok) {
-        if (res.status === 401) throw new Error('INVALID_CREDENTIALS');
-        throw new Error('API_ERROR');
-      }
-      return true;
-    } catch (error) {
-      if (error instanceof TypeError) {
-        throw new Error('NETWORK_ERROR');
-      }
-      throw error;
+      if (res.status === 401) throw new Error('INVALID_CREDENTIALS');
+      throw new Error('API_ERROR');
     }
+    return true;
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error('NETWORK_ERROR');
+    }
+    throw error;
+  }
 }

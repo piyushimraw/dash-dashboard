@@ -1,9 +1,9 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { Role, User, AuthState } from '@packages/mfe-types';
-import { DUMMY_USERS } from "../config/users";
-import { ROLE_HIERARCHY } from "../config/roles";
-import { eventBus, MfeEventNames } from "@packages/event-bus";
+import { DUMMY_USERS } from '../config/users';
+import { ROLE_HIERARCHY } from '../config/roles';
+import { eventBus, MfeEventNames } from '@packages/event-bus';
 
 interface AuthStore extends AuthState {
   // Actions
@@ -25,20 +25,20 @@ const useAuthStore = create<AuthStore>()(
       user: null,
       isAuthenticated: false,
       isLoading: false,
-      userId: "",
+      userId: '',
       role: null,
       isLoggedIn: false,
 
       // Actions
       login: (username, password) => {
         const dummyUser = DUMMY_USERS.find(
-          (u) => u.username === username && u.password === password
+          (u) => u.username === username && u.password === password,
         );
 
         if (!dummyUser) {
           eventBus.emit(MfeEventNames.NotificationShow, {
-            type: "error",
-            message: "User ID or password is incorrect",
+            type: 'error',
+            message: 'User ID or password is incorrect',
             duration: 5000,
           });
           return false;
@@ -59,8 +59,8 @@ const useAuthStore = create<AuthStore>()(
         });
 
         eventBus.emit(MfeEventNames.NotificationShow, {
-          type: "success",
-          message: "Logged In Successfully",
+          type: 'success',
+          message: 'Logged In Successfully',
           duration: 5000,
         });
 
@@ -72,13 +72,13 @@ const useAuthStore = create<AuthStore>()(
           user: null,
           isAuthenticated: false,
           isLoggedIn: false,
-          userId: "",
+          userId: '',
           role: null,
         });
 
         eventBus.emit(MfeEventNames.NotificationShow, {
-          type: "success",
-          message: "Logged Out Successfully",
+          type: 'success',
+          message: 'Logged Out Successfully',
           duration: 5000,
         });
       },
@@ -97,7 +97,7 @@ const useAuthStore = create<AuthStore>()(
       },
     }),
     {
-      name: "auth-storage",
+      name: 'auth-storage',
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,
@@ -105,8 +105,8 @@ const useAuthStore = create<AuthStore>()(
         userId: state.userId,
         role: state.role,
       }),
-    }
-  )
+    },
+  ),
 );
 
 export default useAuthStore;
