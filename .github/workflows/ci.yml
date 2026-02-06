@@ -41,31 +41,46 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "## 📊 Code Coverage" > coverage-comment.md
-
+          echo "" >> coverage-comment.md
+          
           if [ -f coverage/coverage-summary.json ]; then
-            node - <<'EOF' >> coverage-comment.md
-            try {
-              const c = require('./coverage/coverage-summary.json').total;
-              console.log(`
-      Lines: ${c.lines.pct}%
-      Branches: ${c.branches.pct}%
-      Functions: ${c.functions.pct}%
-      Statements: ${c.statements.pct}%
-              `.trim());
-            } catch (e) {
-              console.log("*Failed to read coverage-summary.json*");
-              console.log("```");
-              console.log(e.message);
-              console.log("```");
-            }
-      EOF
+            node -e "
+              const fs = require('fs');
+              const coverage = require('./coverage/coverage-summary.json').total;
+              
+              const formatMetric = (metric) => {
+                const pct = metric.pct;
+                const emoji = pct >= 80 ? '✅' : pct >= 60 ? '⚠️' : '❌';
+                return \`\${emoji} **\${pct}%** (\${metric.covered}/\${metric.total})\`;
+              };
+              
+              const output = \`
+          | Metric | Coverage |
+          |--------|----------|
+          | Lines | \${formatMetric(coverage.lines)} |
+          | Statements | \${formatMetric(coverage.statements)} |
+          | Functions | \${formatMetric(coverage.functions)} |
+          | Branches | \${formatMetric(coverage.branches)} |
+              \`;
+              
+              fs.appendFileSync('coverage-comment.md', output);
+            "
           else
-            echo "*Coverage summary not found*" >> coverage-comment.md
+            echo "⚠️ Coverage summary not found" >> coverage-comment.md
             echo "" >> coverage-comment.md
-            echo "**Debug:**" >> coverage-comment.md
-            ls -la coverage || true >> coverage-comment.md
+            echo "<details><summary>🔍 Debug Information</summary>" >> coverage-comment.md
+            echo "" >> coverage-comment.md
+            echo "\`\`\`" >> coverage-comment.md
+            echo "Coverage directory contents:" >> coverage-comment.md
+            ls -la coverage 2>&1 || echo "Coverage directory not found" >> coverage-comment.md
+            echo "" >> coverage-comment.md
+            echo "Root directory check:" >> coverage-comment.md
+            ls -la . | grep -E '(coverage|test)' 2>&1 || echo "No coverage-related files found" >> coverage-comment.md
+            echo "\`\`\`" >> coverage-comment.md
+            echo "" >> coverage-comment.md
+            echo "**Note:** Make sure your test configuration includes \`json-summary\` reporter." >> coverage-comment.md
+            echo "</details>" >> coverage-comment.md
           fi
-
 
       - name: Post coverage comment
         if: github.event_name == 'pull_request'
