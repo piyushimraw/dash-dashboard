@@ -76,6 +76,9 @@ export default function LoginForm() {
               duration: 5000,
             });
             break;
+          case 'INVALID_CREDENTIALS':
+            setLoginError(true);
+            break;
           case 'NETWORK_ERROR':
           default:
             setNetworkError(true);
