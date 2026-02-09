@@ -1,6 +1,7 @@
 # Code Quality & Pre-commit Hooks Setup Guide
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Tools Architecture](#tools-architecture)
 3. [Installation](#installation)
@@ -67,12 +68,12 @@ These tools work together to maintain code quality, consistency, and catch issue
 
 ### Tool Responsibilities
 
-| Tool | Purpose | Scope |
-|------|---------|-------|
+| Tool         | Purpose        | Scope                                         |
+| ------------ | -------------- | --------------------------------------------- |
 | **Prettier** | Code formatter | Style consistency (quotes, spacing, brackets) |
-| **ESLint** | Linter & fixer | Code quality (unused vars, logic errors) |
-| **Oxlint** | Fast linter | Catches common mistakes quickly |
-| **Husky** | Git hooks | Automates checks on git events |
+| **ESLint**   | Linter & fixer | Code quality (unused vars, logic errors)      |
+| **Oxlint**   | Fast linter    | Catches common mistakes quickly               |
+| **Husky**    | Git hooks      | Automates checks on git events                |
 
 ---
 
@@ -150,6 +151,7 @@ Controls code formatting rules:
 ```
 
 **Key Settings:**
+
 - `semi`: Add semicolons at end of statements
 - `singleQuote`: Use single quotes instead of double
 - `trailingComma`: Add trailing commas in all cases (arrays, objects, function parameters)
@@ -246,6 +248,7 @@ pnpm typecheck
 ```
 
 **Execution Order:**
+
 1. **pnpm test** - Run test suite (can fail)
 2. **pnpm lint:fast** - Run Oxlint for fast linting (can fail)
 3. **pnpm lint** - Run ESLint for comprehensive linting (can fail)
@@ -253,6 +256,7 @@ pnpm typecheck
 5. **pnpm typecheck** - Run TypeScript type checking (can fail)
 
 **Notes:**
+
 - Tests run first to catch logical errors early
 - Oxlint and ESLint can fail if issues are found
 - Format always succeeds - it automatically applies Prettier rules to format code
@@ -294,6 +298,7 @@ pnpm format
 **Note:** This command auto-formats all files according to Prettier rules. It modifies files in-place and **always succeeds** (never fails). The formatted changes are then staged and included in your commit.
 
 Defined in `package.json`:
+
 ```json
 {
   "scripts": {
@@ -313,6 +318,7 @@ pnpm lint
 ```
 
 This command should be defined in `package.json`:
+
 ```json
 {
   "scripts": {
@@ -334,6 +340,7 @@ pnpm lint:fast
 ```
 
 This is defined in `package.json`:
+
 ```json
 {
   "scripts": {
@@ -353,6 +360,7 @@ pnpm typecheck
 ```
 
 Define in `package.json`:
+
 ```json
 {
   "scripts": {
@@ -482,6 +490,7 @@ pnpm test && pnpm lint:fast && pnpm lint && pnpm format && pnpm typecheck
 ### Real-World Example
 
 **Step 1: Make changes**
+
 ```bash
 # Edit file
 echo 'const  x  =  5;' > src/test.ts
@@ -489,6 +498,7 @@ git add src/test.ts
 ```
 
 **Step 2: Attempt commit**
+
 ```bash
 git commit -m "Add test variable"
 ```
@@ -528,6 +538,7 @@ git commit --no-verify -m "message"
 # Or use shorthand
 git commit -n -m "message"
 ```
+
 ---
 
 ## Best Practices
@@ -535,6 +546,7 @@ git commit -n -m "message"
 ### 1. **Format Before Committing**
 
 Always run format before committing:
+
 ```bash
 pnpm format && git add . && git commit -m "message"
 ```
@@ -546,6 +558,7 @@ ESLint issues need to be fixed manually. ESLint runs as part of the pre-commit h
 ### 3. **Check Locally First**
 
 Run full check suite before pushing:
+
 ```bash
 pnpm test && pnpm lint:fast && pnpm lint && pnpm format && pnpm typecheck
 ```
@@ -563,6 +576,7 @@ Avoid using `--no-verify` unless absolutely necessary.
 ### 6. **Type Checking**
 
 Always run type checks:
+
 ```bash
 pnpm typecheck
 ```
@@ -572,6 +586,7 @@ Before pushing large changes.
 ### 7. **Review Husky Output**
 
 Read error messages carefully:
+
 ```
 ❌ Prettier check failed. Run 'pnpm format' to fix.
 ```
@@ -583,6 +598,7 @@ Follow the suggestions to fix issues.
 Set up your editor to run Prettier on save:
 
 **VS Code (.vscode/settings.json):**
+
 ```json
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -596,6 +612,7 @@ Set up your editor to run Prettier on save:
 **Enable ESLint in VS Code:**
 
 Install ESLint extension and add to settings:
+
 ```json
 {
   "eslint.validate": ["javascript", "typescript"]
@@ -609,6 +626,7 @@ Install ESLint extension and add to settings:
 ### Prettier Issues
 
 **Issue:** Inconsistent code formatting
+
 ```bash
 # Format code locally before committing (not required in this setup, but good practice)
 pnpm format
@@ -621,6 +639,7 @@ pnpm format
 ### ESLint Issues
 
 **Issue:** "ESLint check failed"
+
 ```bash
 # Run ESLint to see detailed errors
 pnpm lint
@@ -631,6 +650,7 @@ Fix the reported issues directly in your code. ESLint doesn't have an auto-fix s
 ### Oxlint Issues
 
 **Issue:** "Oxlint check failed"
+
 ```bash
 # View detailed errors from Oxlint
 pnpm lint:fast
@@ -641,6 +661,7 @@ Fix the reported issues directly in your code. Oxlint runs as part of the pre-co
 ### TypeScript Issues
 
 **Issue:** "Type check failed"
+
 ```bash
 # Show detailed errors
 pnpm typecheck
@@ -652,6 +673,7 @@ pnpm tsc src/App.tsx --noEmit
 ### Husky Issues
 
 **Issue:** "pre-commit hook not running"
+
 ```bash
 # Reinstall Husky
 husky install
@@ -664,6 +686,7 @@ cat .husky/pre-commit
 ```
 
 **Issue:** "Permission denied" error
+
 ```bash
 # Fix file permissions
 chmod +x .husky/pre-commit
@@ -673,6 +696,7 @@ chmod +x .husky/pre-push
 ### Monorepo Issues
 
 **Issue:** Commands not working in monorepo
+
 ```bash
 # Use pnpm for monorepo support
 pnpm format
@@ -684,17 +708,16 @@ pnpm install
 
 ---
 
-
 ## Command Reference
 
-| Command | Purpose | Auto-fix |
-|---------|---------|----------|
-| `pnpm format` | Auto-format code with Prettier | ✅ Yes |
-| `pnpm lint` | Check code quality with ESLint | ❌ No |
-| `pnpm lint:fast` | Fast linting with Oxlint | ❌ No |
-| `pnpm typecheck` | Check types with TypeScript | ❌ No |
-| `pnpm test` | Run test suite | ❌ No |
-| `pnpm test && pnpm lint:fast && pnpm lint && pnpm format && pnpm typecheck` | Run all pre-commit checks (mimics git hook) | Partial |
+| Command                                                                     | Purpose                                     | Auto-fix |
+| --------------------------------------------------------------------------- | ------------------------------------------- | -------- |
+| `pnpm format`                                                               | Auto-format code with Prettier              | ✅ Yes   |
+| `pnpm lint`                                                                 | Check code quality with ESLint              | ❌ No    |
+| `pnpm lint:fast`                                                            | Fast linting with Oxlint                    | ❌ No    |
+| `pnpm typecheck`                                                            | Check types with TypeScript                 | ❌ No    |
+| `pnpm test`                                                                 | Run test suite                              | ❌ No    |
+| `pnpm test && pnpm lint:fast && pnpm lint && pnpm format && pnpm typecheck` | Run all pre-commit checks (mimics git hook) | Partial  |
 
 ---
 
