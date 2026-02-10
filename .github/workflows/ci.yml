@@ -2,7 +2,6 @@ name: CI
 
 permissions:
   contents: read
-  pull-requests: write
 
 on:
   pull_request:
@@ -17,6 +16,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Job-level permissions
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -42,7 +45,7 @@ jobs:
         run: |
           echo "## 📊 Code Coverage" > coverage-comment.md
           echo "" >> coverage-comment.md
-          
+
           if [ -f coverage/coverage-summary.json ]; then
             node -e "
               const fs = require('fs');
