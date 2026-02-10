@@ -34,7 +34,6 @@ export default function LoginForm() {
 
   const {
     data: locations,
-    isLoading: loadingLocations,
     isError,
   } = useGetLoginLocations();
 

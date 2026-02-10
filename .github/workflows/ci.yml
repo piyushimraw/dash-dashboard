@@ -69,20 +69,20 @@ jobs:
               fs.appendFileSync('coverage-comment.md', output);
             "
           else
-            echo "⚠️ Coverage summary not found" >> coverage-comment.md
-            echo "" >> coverage-comment.md
-            echo "<details><summary>🔍 Debug Information</summary>" >> coverage-comment.md
-            echo "" >> coverage-comment.md
-            echo "\`\`\`" >> coverage-comment.md
-            echo "Coverage directory contents:" >> coverage-comment.md
-            ls -la coverage 2>&1 || echo "Coverage directory not found" >> coverage-comment.md
-            echo "" >> coverage-comment.md
-            echo "Root directory check:" >> coverage-comment.md
-            ls -la . | grep -E '(coverage|test)' 2>&1 || echo "No coverage-related files found" >> coverage-comment.md
-            echo "\`\`\`" >> coverage-comment.md
-            echo "" >> coverage-comment.md
-            echo "**Note:** Make sure your test configuration includes \`json-summary\` reporter." >> coverage-comment.md
-            echo "</details>" >> coverage-comment.md
+             echo "⚠️ Coverage summary not found"
+             echo ""
+             echo "<details><summary>🔍 Debug Information</summary>"
+             echo ""
+             echo "```"
+             echo "Coverage directory contents:"
+             ls -la coverage || echo "Coverage directory not found"
+             echo ""
+             echo "Root directory check:"
+             ls -la . | grep -E '(coverage|test)' || echo "No coverage-related files found"
+             echo "```"
+             echo ""
+             echo "**Note:** Make sure your test configuration includes \`json-summary\` reporter."
+             echo "</details>"
           fi
 
       - name: Post coverage comment
