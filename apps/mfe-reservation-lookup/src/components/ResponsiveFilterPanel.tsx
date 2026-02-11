@@ -25,7 +25,7 @@ export function ResponsiveFilterPanel({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetTrigger>{trigger}</SheetTrigger>
+      <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         side={isDesktop ? 'right' : 'bottom'}
         className={isDesktop ? 'w-96' : 'max-h-[85vh]'}

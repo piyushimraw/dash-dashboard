@@ -1,4 +1,4 @@
-import { render , type RenderResult } from '@testing-library/react';
+import { render, type RenderResult } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Helper to render with React Query

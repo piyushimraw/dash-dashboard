@@ -14,7 +14,6 @@ import { Label } from '@/components/ui/label';
 import { useGetLoginLocations } from '@/features/hooks/useGetLoginLocations';
 import { authService } from '@/services/authSelector';
 
-
 // Icon wrapper component for consistent vertical centering
 function InputIcon({ children }: { children: React.ReactNode }) {
   return (

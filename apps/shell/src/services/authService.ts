@@ -1,4 +1,4 @@
-import { loginService , type LoginPayload } from './loginService';
+import { loginService, type LoginPayload } from './loginService';
 
 import useAuthStore from '@/store/useAuthStore';
 
