@@ -168,7 +168,7 @@ export default defineConfig(({ mode }) => ({
     setupFiles: [path.resolve(__dirname, 'test/setupTests.ts')],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html', 'lcov'],
+      reporter: ['text', 'html', 'lcov','json-summary'],
       reportsDirectory: './coverage',
       exclude: ['node_modules/', 'src/setupTests.ts', '**/*.d.ts', '**/*.config.*'],
     },

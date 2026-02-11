@@ -17,7 +17,7 @@ function InputIcon({ children }: { children: React.ReactNode }) {
   return (
     <span
       className="absolute left-3 text-muted-foreground pointer-events-none"
-      style={{ top: '50%', transform: 'translateY(-50%)' }}
+      style={{ top: "50%", transform: "translateY(-50%)" }}
     >
       {children}
     </span>
@@ -53,6 +53,10 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    setLoginError(false);
+    setApiError(false);
+    setNetworkError(false);
     setIsLoading(true);
     setLoginError(false);
     setApiError(false);
@@ -122,7 +126,13 @@ export default function LoginForm() {
           <Label htmlFor="password" className="text-sm font-medium">
             Password
           </Label>
+          <Label htmlFor="password" className="text-sm font-medium">
+            Password
+          </Label>
           <div className="relative">
+            <InputIcon>
+              <Lock size={20} />
+            </InputIcon>
             <InputIcon>
               <Lock size={20} />
             </InputIcon>
@@ -143,7 +153,13 @@ export default function LoginForm() {
             <Label htmlFor="userLocation" className="text-sm font-medium">
               User Location
             </Label>
+            <Label htmlFor="userLocation" className="text-sm font-medium">
+              User Location
+            </Label>
             <div className="relative">
+              <InputIcon>
+                <MapPin size={20} />
+              </InputIcon>
               <InputIcon>
                 <MapPin size={20} />
               </InputIcon>
@@ -160,7 +176,13 @@ export default function LoginForm() {
             <Label htmlFor="loginLocation" className="text-sm font-medium">
               Login Location
             </Label>
+            <Label htmlFor="loginLocation" className="text-sm font-medium">
+              Login Location
+            </Label>
             <div className="relative">
+              <InputIcon>
+                <Building2 size={20} />
+              </InputIcon>
               <InputIcon>
                 <Building2 size={20} />
               </InputIcon>
@@ -180,7 +202,7 @@ export default function LoginForm() {
               </select>
               <span
                 className="absolute right-3 text-muted-foreground pointer-events-none"
-                style={{ top: '50%', transform: 'translateY(-50%)' }}
+                style={{ top: "50%", transform: "translateY(-50%)" }}
               >
                 <ChevronDown size={16} />
               </span>
@@ -188,9 +210,19 @@ export default function LoginForm() {
           </div>
         </div>
 
-        {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
-        {(apiError || isError) && <p className="text-sm text-red-600">API error occurred</p>}
-        {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
+        {loginError && (
+          <p className="text-sm text-red-600">
+            User ID or password is incorrect
+          </p>
+        )}
+        {(apiError || isError) && (
+          <p className="text-sm text-red-600">API error occurred</p>
+        )}
+        {networkError && (
+          <p className="text-sm text-red-600">
+            Network issue. Please try again.
+          </p>
+        )}
         {isLoading && <p>Loading</p>}
 
         <Button type="submit" size="lg" className="w-full mt-6">
