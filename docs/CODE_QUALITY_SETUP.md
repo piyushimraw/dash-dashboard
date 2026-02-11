@@ -721,7 +721,6 @@ pnpm install
 
 ---
 
-
 ### When to use **ESLint vs Oxlint**
 
 **Use ESLint when:**
@@ -744,8 +743,8 @@ pnpm install
 
 ### Quick rule
 
-* **Feature-rich & ecosystem support → ESLint**
-* **Speed & basic linting → Oxlint**
+- **Feature-rich & ecosystem support → ESLint**
+- **Speed & basic linting → Oxlint**
 
 ## Resources
 

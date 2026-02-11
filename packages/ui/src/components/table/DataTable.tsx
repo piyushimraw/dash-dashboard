@@ -8,7 +8,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   type PaginationState,
-  type Row 
+  type Row,
 } from '@tanstack/react-table';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './table';
 import { useEffect, useState } from 'react';

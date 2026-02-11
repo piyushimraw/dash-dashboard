@@ -1,6 +1,6 @@
 import { Header, Footer, Sidebar } from '@/components/layout';
 import useAuthStore from '@/store/useAuthStore';
-import { createFileRoute, Outlet, useNavigate , redirect } from '@tanstack/react-router';
+import { createFileRoute, Outlet, useNavigate, redirect } from '@tanstack/react-router';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/_auth')({
