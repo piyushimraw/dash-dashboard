@@ -52,12 +52,12 @@ export class MfeErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error details for debugging
-    console.error('MFE Error Boundary caught an error:', {
-      mfeName: this.props.mfeName || 'Unknown MFE',
-      error: error.message,
-      componentStack: errorInfo.componentStack,
-      retryCount: this.state.retryCount,
-    });
+    // console.error('MFE Error Boundary caught an error:', {
+    //   mfeName: this.props.mfeName || 'Unknown MFE',
+    //   error: error.message,
+    //   componentStack: errorInfo.componentStack,
+    //   retryCount: this.state.retryCount,
+    // });
 
     // Update state with error info
     this.setState({

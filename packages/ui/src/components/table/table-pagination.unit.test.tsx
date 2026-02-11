@@ -41,7 +41,8 @@ function createTableMock(): Table<any> {
       },
     }),
     getFilteredRowModel: () => ({
-      rows: new Array(25).fill({}),
+      // rows: new Array(25).fill({}),
+      rows: Array.from({ length: 25 }, () => ({})),
     }),
     setPageSize: vi.fn(),
     setPageIndex: vi.fn(),

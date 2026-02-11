@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { MfeEventNames, NotificationEvent } from '@packages/event-bus';
-import { eventBus } from '@packages/event-bus';
+import { MfeEventNames, NotificationEvent, eventBus } from '@packages/event-bus';
 
 export type Toast = {
   id: string;

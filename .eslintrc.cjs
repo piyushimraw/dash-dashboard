@@ -13,13 +13,40 @@ module.exports = {
   settings: {
     react: { version: 'detect' },
   },
-  rules: {
-    '@typescript-eslint/no-unused-vars': 'warn',
-    'react/react-in-jsx-scope': 'off',
-    'no-console': 'warn',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    'react-refresh/only-export-components': 'warn',
-    'react-hooks/exhaustive-deps': 'warn',
-    'react-hooks/incompatible-library': 'warn',
-  },
+ rules: {
+  "@typescript-eslint/no-unused-vars": [
+    "warn",
+    { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
+  ],
+  "@typescript-eslint/no-explicit-any": "warn",
+  "@typescript-eslint/consistent-type-imports": "error",
+  "@typescript-eslint/no-floating-promises": "error",
+  "@typescript-eslint/no-misused-promises": "error",
+  "no-console": "warn",
+  "no-debugger": "error",
+  "no-unreachable": "error",
+  "no-duplicate-imports": "error",
+  "no-var": "error",
+  "prefer-const": "error",
+  "eqeqeq": ["error", "always"],
+  "import/order": [
+    "warn",
+    {
+      groups: [
+        "builtin",
+        "external",
+        "internal",
+        ["parent", "sibling", "index"]
+      ],
+      "newlines-between": "always"
+    }
+  ],
+  "react/react-in-jsx-scope": "off",
+  "react/prop-types": "off",
+  "react/jsx-key": "error",
+  "react/jsx-no-duplicate-props": "error",
+  "react-hooks/exhaustive-deps": "warn",
+  "react-hooks/incompatible-library": "warn",
+  "react-refresh/only-export-components": "warn"
+}
 };

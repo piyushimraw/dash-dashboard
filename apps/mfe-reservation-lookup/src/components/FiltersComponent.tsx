@@ -1,8 +1,7 @@
 import { Button, Input, Label, SelectBox } from '@packages/ui';
 import { Filter, RotateCcw } from 'lucide-react';
 import clsx from 'clsx';
-import type { ChangeEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useState, useEffect,  type ChangeEvent } from 'react';
 import type { FilterState } from '../types/type';
 import { ResponsiveFilterPanel } from './ResponsiveFilterPanel';
 

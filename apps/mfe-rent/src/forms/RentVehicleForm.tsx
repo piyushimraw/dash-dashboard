@@ -3,13 +3,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Car, Calendar, User, MapPin } from 'lucide-react';
 
 import { FormProvider, FormInput, FormSelect, Button } from '@packages/ui';
-import { eventBus } from '@packages/event-bus';
+import { eventBus, MfeEventNames } from '@packages/event-bus';
 
 import { rentVehicleSchema } from './rent.schema';
 import type { RentVehicleFormValues } from './rent.types';
 
 export function RentVehicleForm() {
-  console.log('RentVehicleForm');
+  // console.log('RentVehicleForm');
   const form = useForm<RentVehicleFormValues>({
     resolver: zodResolver(rentVehicleSchema),
     mode: 'onChange',
@@ -24,11 +24,11 @@ export function RentVehicleForm() {
     },
   });
 
-  const onSubmit = (data: RentVehicleFormValues) => {
-    console.log('Rent form submitted:', data);
+  const onSubmit = (_data: RentVehicleFormValues) => {
+    // console.log('Rent form submitted:', data);
     // TODO: API call here
 
-    eventBus.emit('data:refresh', { entity: 'rental' });
+    eventBus.emit(MfeEventNames.DataRefresh, { entity: 'rental' });
   };
 
   return (

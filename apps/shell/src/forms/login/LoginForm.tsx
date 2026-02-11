@@ -32,7 +32,7 @@ export default function LoginForm() {
   const [networkError, setNetworkError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: locations, isLoading: loadingLocations, isError } = useGetLoginLocations();
+  const { data: locations, isError } = useGetLoginLocations();
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

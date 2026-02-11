@@ -1,7 +1,6 @@
 import { Button, Input, useIsDesktop } from '@packages/ui';
 import { Search, X } from 'lucide-react';
-import type { ChangeEvent } from 'react';
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 
 interface Props {
   search?: string;

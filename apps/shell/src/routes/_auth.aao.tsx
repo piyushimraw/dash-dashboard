@@ -2,7 +2,6 @@ import { RouteErrorBoundary } from '@/components/error-boundary/RouteErrorBounda
 import { MfeErrorBoundary } from '@/components/error-boundary/MfeErrorBoundary';
 import { AaoPage } from '@apps/mfe-aao';
 import { createFileRoute } from '@tanstack/react-router';
-import { ErrorTester } from '@/components/error-boundary/ErrorTester';
 
 export const Route = createFileRoute('/_auth/aao')({
   component: RouteComponent,

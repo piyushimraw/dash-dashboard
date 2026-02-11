@@ -1,4 +1,4 @@
-import { handleQueryError, http } from '@packages/api-client';
+import { http } from '@packages/api-client';
 
 export type RentedVehicleResponseType = {
   id: number;

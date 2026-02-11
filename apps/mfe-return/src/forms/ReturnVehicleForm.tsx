@@ -19,8 +19,8 @@ export function ReturnVehicleForm() {
     },
   });
 
-  const onSubmit = (data: ReturnVehicleFormValues) => {
-    console.log('Return Vehicle Data:', data);
+  const onSubmit = (_data: ReturnVehicleFormValues) => {
+    // console.log('Return Vehicle Data:', data);
     // API call here
   };
 

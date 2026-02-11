@@ -95,14 +95,14 @@ export function handleQueryError(error: unknown): void {
   });
 
   // Log original error for debugging purposes
-  if (typeof globalThis !== 'undefined' && (globalThis as any).__DEBUG__) {
-    console.error('[React Query Error]', {
-      userMessage: context.userMessage,
-      httpStatus: context.httpStatus,
-      isRetryable: context.isRetryable,
-      originalError: context.originalError,
-    });
-  }
+  // if (typeof globalThis !== 'undefined' && (globalThis as any).__DEBUG__) {
+  //   console.error('[React Query Error]', {
+  //     userMessage: context.userMessage,
+  //     httpStatus: context.httpStatus,
+  //     isRetryable: context.isRetryable,
+  //     originalError: context.originalError,
+  //   });
+  // }
 }
 
 export function useQueryErrorHandler() {

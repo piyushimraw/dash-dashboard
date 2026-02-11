@@ -48,13 +48,13 @@ class RouteErrorBoundaryClass extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log route-level error
-    console.error('🟠 [RouteErrorBoundary] Route-level error:', {
-      route: this.props.routeName || 'Unknown Route',
-      error: error.message,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      retryCount: this.state.retryCount,
-    });
+    // console.error('🟠 [RouteErrorBoundary] Route-level error:', {
+    //   route: this.props.routeName || 'Unknown Route',
+    //   error: error.message,
+    //   componentStack: errorInfo.componentStack,
+    //   timestamp: new Date().toISOString(),
+    //   retryCount: this.state.retryCount,
+    // });
 
     // Update state with error info
     this.setState({

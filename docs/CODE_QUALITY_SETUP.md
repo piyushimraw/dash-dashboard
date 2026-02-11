@@ -721,6 +721,32 @@ pnpm install
 
 ---
 
+
+### When to use **ESLint vs Oxlint**
+
+**Use ESLint when:**
+
+1. You need React/Next.js/framework lint rules.
+2. You need ESLint plugins.
+3. You need custom lint rules.
+4. You need strong auto-fix support.
+5. Your project or CI already uses ESLint.
+6. You need detailed rule configuration.
+7. IDE integration relies on ESLint.
+
+**Use Oxlint when:**
+
+1. You want very fast linting.
+2. You have a large monorepo and lint speed matters.
+3. You mainly need core JS/TS correctness checks.
+4. You want fast pre-commit lint checks.
+5. Your project doesn't need many plugins or custom rules.
+
+### Quick rule
+
+* **Feature-rich & ecosystem support → ESLint**
+* **Speed & basic linting → Oxlint**
+
 ## Resources
 
 - [Prettier Documentation](https://prettier.io/docs/en/)

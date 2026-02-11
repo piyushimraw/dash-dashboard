@@ -47,12 +47,12 @@ export class AppErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error to console
-    console.error('🔴 [AppErrorBoundary] Catastrophic Application Error:', {
-      error: error.message,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      errorCount: this.state.errorCount + 1,
-    });
+    // console.error('🔴 [AppErrorBoundary] Catastrophic Application Error:', {
+    //   error: error.message,
+    //   componentStack: errorInfo.componentStack,
+    //   timestamp: new Date().toISOString(),
+    //   errorCount: this.state.errorCount + 1,
+    // });
 
     // Update state with error info
     this.setState((prev) => ({

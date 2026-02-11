@@ -29,7 +29,7 @@ export function Header({ onMenuClick, sidebarOpen }: HeaderProps) {
     });
   }, [location.pathname]);
 
-  const pageName = breadcrumbs[breadcrumbs.length - 1] || 'Dashboard';
+  // const pageName = breadcrumbs[breadcrumbs.length - 1] || 'Dashboard';
 
   return (
     <>
