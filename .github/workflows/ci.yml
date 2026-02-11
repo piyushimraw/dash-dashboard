@@ -1,5 +1,8 @@
 name: CI
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches:
@@ -13,6 +16,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Job-level permissions
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -37,23 +44,45 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "## 📊 Code Coverage" > coverage-comment.md
+          echo "" >> coverage-comment.md
+
           if [ -f coverage/coverage-summary.json ]; then
             node -e "
-              const c = require('./coverage/coverage-summary.json').total;
-              console.log(
-                `Lines: ${c.lines.pct}%\nBranches: ${c.branches.pct}%\nFunctions: ${c.functions.pct}%\nStatements: ${c.statements.pct}%`
-              );
-            " >> coverage-comment.md
+              const fs = require('fs');
+              const coverage = require('./coverage/coverage-summary.json').total;
+              
+              const formatMetric = (metric) => {
+                const pct = metric.pct;
+                const emoji = pct >= 80 ? '✅' : pct >= 60 ? '⚠️' : '❌';
+                return \`\${emoji} **\${pct}%** (\${metric.covered}/\${metric.total})\`;
+              };
+              
+              const output = \`
+          | Metric | Coverage |
+          |--------|----------|
+          | Lines | \${formatMetric(coverage.lines)} |
+          | Statements | \${formatMetric(coverage.statements)} |
+          | Functions | \${formatMetric(coverage.functions)} |
+          | Branches | \${formatMetric(coverage.branches)} |
+              \`;
+              
+              fs.appendFileSync('coverage-comment.md', output);
+            "
           else
-            echo "*Coverage summary not found (check coverage reporters and paths)*" >> coverage-comment.md
-            echo "--- Debug: coverage directory contents ---" >> coverage-comment.md
-            ls -la coverage || true >> coverage-comment.md
-            echo "--- Debug: lcov (first 100 lines) ---" >> coverage-comment.md
-            if [ -f coverage/lcov.info ]; then
-              head -n 100 coverage/lcov.info >> coverage-comment.md
-            else
-              echo "lcov.info not found" >> coverage-comment.md
-            fi
+             echo "⚠️ Coverage summary not found"
+             echo ""
+             echo "<details><summary>🔍 Debug Information</summary>"
+             echo ""
+             echo "```"
+             echo "Coverage directory contents:"
+             ls -la coverage || echo "Coverage directory not found"
+             echo ""
+             echo "Root directory check:"
+             ls -la . | grep -E '(coverage|test)' || echo "No coverage-related files found"
+             echo "```"
+             echo ""
+             echo "**Note:** Make sure your test configuration includes \`json-summary\` reporter."
+             echo "</details>"
           fi
 
       - name: Post coverage comment
