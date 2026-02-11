@@ -1,5 +1,6 @@
-import { LoginPage } from '@/pages/LoginPage';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+
+import { LoginPage } from '@/pages/LoginPage';
 
 const fallback = '/dashboard' as const;
 type LoginSearch = {

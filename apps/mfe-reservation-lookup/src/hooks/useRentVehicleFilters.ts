@@ -1,7 +1,8 @@
 import type { PaginationState } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
-import { FilterState, TableType } from '../types/type';
 import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from '@packages/ui';
+
+import type { FilterState, TableType } from '../types/type';
 
 const initialFilters: FilterState = {
   startDate: '',

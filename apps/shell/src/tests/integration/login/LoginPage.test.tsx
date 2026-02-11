@@ -2,10 +2,12 @@ import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
+
+import { server } from '../../../../../../tests/mocks/server';
+
 import LoginForm from '@/forms/login/LoginForm';
 import { renderWithQueryClient } from '@/tests/utils/test-utils';
 import { LoginPage } from '@/pages/LoginPage';
-import { server } from '../../../../../../tests/mocks/server';
 
 const EmailPlaceHolder = 'Enter your user ID';
 const PasswordPlaceHolder = 'Enter your password';

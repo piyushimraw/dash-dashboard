@@ -1,7 +1,9 @@
-import { DialogContent, DialogHeader } from '@/components/ui/dialog';
-import { type DialogRegistry } from '../useGlobalDialogStore';
 import { RentVehicleForm } from '@apps/mfe-rent';
 import { Car } from 'lucide-react';
+
+import { type DialogRegistry } from '../useGlobalDialogStore';
+
+import { DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
 export default function RentNewVehicleDialog({

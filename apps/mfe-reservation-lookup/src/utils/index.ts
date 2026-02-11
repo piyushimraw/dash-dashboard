@@ -1,4 +1,4 @@
-import { TableType } from '../types/type';
+import type { TableType } from '../types/type';
 
 export const rentedVehiclesMock: TableType[] = [
   {

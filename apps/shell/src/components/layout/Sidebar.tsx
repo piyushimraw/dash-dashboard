@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   ChevronDown,
   LogOut,
@@ -11,8 +9,11 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { cn } from '@/lib/utils';
 import { menuItems, type MenuItemType } from '@/config/sidebar-menu.config';
 import { iconMap } from '@/icons/iconMap';
 import useAuthStore from '@/store/useAuthStore';

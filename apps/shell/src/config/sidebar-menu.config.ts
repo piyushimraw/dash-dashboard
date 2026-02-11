@@ -1,6 +1,8 @@
 import type { Role } from '@packages/mfe-types';
-import type { IconKey } from '@/icons/iconKeys';
+
 import { ROLES } from './roles';
+
+import type { IconKey } from '@/icons/iconKeys';
 
 export interface MenuItemChild {
   label: string;

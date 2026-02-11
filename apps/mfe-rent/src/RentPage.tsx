@@ -1,5 +1,6 @@
-import { RentVehicleForm } from './forms/RentVehicleForm';
 import { Car } from 'lucide-react';
+
+import { RentVehicleForm } from './forms/RentVehicleForm';
 
 export function RentPage() {
   return (

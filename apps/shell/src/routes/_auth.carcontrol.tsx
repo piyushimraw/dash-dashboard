@@ -1,9 +1,10 @@
+import { CarControlPage } from '@apps/mfe-car-control';
+import { createFileRoute } from '@tanstack/react-router';
+
 import { requireRole } from '@/auth/requireRole';
 import { RouteErrorBoundary } from '@/components/error-boundary/RouteErrorBoundary';
 import { MfeErrorBoundary } from '@/components/error-boundary/MfeErrorBoundary';
 import { ROLES } from '@/config/roles';
-import { CarControlPage } from '@apps/mfe-car-control';
-import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_auth/carcontrol')({
   beforeLoad: () => requireRole([ROLES.SUPER_ADMIN, ROLES.FLEET_MANAGER]),

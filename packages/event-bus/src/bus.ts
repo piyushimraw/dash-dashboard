@@ -1,4 +1,5 @@
 import mitt, { type Emitter } from 'mitt';
+
 import type { MfeEvents } from './events';
 
 /**

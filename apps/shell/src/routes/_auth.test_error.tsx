@@ -1,6 +1,7 @@
+import { createFileRoute } from '@tanstack/react-router';
+
 import { MfeErrorBoundary } from '@/components/error-boundary/MfeErrorBoundary';
 import { RouteErrorBoundary } from '@/components/error-boundary/RouteErrorBoundary';
-import { createFileRoute } from '@tanstack/react-router';
 import { ErrorTester } from '@/components/error-boundary/ErrorTester';
 import { ComponentErrorFallback } from '@/components/error-boundary/ComponentErrorFallback';
 

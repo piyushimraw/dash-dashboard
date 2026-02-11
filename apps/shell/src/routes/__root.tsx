@@ -1,5 +1,6 @@
-import type { RouterContext } from '@/routerContext';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
+
+import type { RouterContext } from '@/routerContext';
 import { PWAInstallBanner } from '@/components/PWAInstallBanner';
 import { MfeLoadingBar } from '@/components/MfeLoadingBar';
 import { MfeErrorBoundary } from '@/components/error-boundary/MfeErrorBoundary';

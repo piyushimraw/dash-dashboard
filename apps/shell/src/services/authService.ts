@@ -1,5 +1,6 @@
+import { loginService , type LoginPayload } from './loginService';
+
 import useAuthStore from '@/store/useAuthStore';
-import { LoginPayload, loginService } from './loginService';
 
 export interface AuthService {
   login(data: LoginPayload): Promise<boolean>;

@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, beforeEach, MockedFunction } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { DataTable, customSortDataTable } from './DataTable';
 import type { ColumnDef } from '@tanstack/react-table';
+
+import { DataTable, customSortDataTable } from './DataTable';
 
 /* ---------------------------------------------------
    MOCKS

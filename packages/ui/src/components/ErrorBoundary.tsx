@@ -43,7 +43,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+  componentDidCatch(_error: Error, errorInfo: React.ErrorInfo): void {
     // Log error details for debugging
     // console.error('Error Boundary caught an error:', {
     //   mfeName: this.props.mfeName || 'Unknown Component',

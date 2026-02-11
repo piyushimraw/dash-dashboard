@@ -1,11 +1,13 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
+
+import { server } from '../../../../../../tests/mocks/server';
+
 import LoginForm from '@/forms/login/LoginForm';
 import { LOCATION_OPTIONS } from '@/forms/login/login.schema';
 import { LOGIN_LOCATION_LIST_API } from '@/features/login-location/api/getLoginLocation';
 import { renderWithQueryClient } from '@/tests/utils/test-utils';
-import { server } from '../../../../../../tests/mocks/server';
 
 describe('LoginForm > FormSelect API behavior', () => {
   it('renders FormSelect options from API', async () => {

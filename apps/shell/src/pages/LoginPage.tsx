@@ -1,6 +1,7 @@
+import { Car, Lock, User, Building2 } from 'lucide-react';
+
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import LoginForm from '@/forms/login/LoginForm';
-import { Car, Lock, User, Building2 } from 'lucide-react';
 
 export function LoginPage() {
   return (

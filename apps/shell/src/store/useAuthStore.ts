@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Role, User, AuthState } from '@packages/mfe-types';
+import { eventBus, MfeEventNames } from '@packages/event-bus';
+
 import { DUMMY_USERS } from '../config/users';
 import { ROLE_HIERARCHY } from '../config/roles';
-import { eventBus, MfeEventNames } from '@packages/event-bus';
 
 interface AuthStore extends AuthState {
   // Actions

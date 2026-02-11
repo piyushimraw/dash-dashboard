@@ -2,8 +2,9 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { TablePagination } from './table-pagination';
 import type { Table } from '@tanstack/react-table';
+
+import { TablePagination } from './table-pagination';
 
 /* ---------------------------------------------------
    MOCK CHILD COMPONENTS

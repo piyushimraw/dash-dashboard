@@ -1,9 +1,10 @@
-import { Button } from '@/components/ui/button';
 import { Menu, ChevronRight } from 'lucide-react';
 import { useLocation } from '@tanstack/react-router';
 import { useMemo } from 'react';
-import useAuthStore from '@/store/useAuthStore';
 import { OfflineIndicator } from '@packages/ui';
+
+import useAuthStore from '@/store/useAuthStore';
+import { Button } from '@/components/ui/button';
 import { useNetworkState } from '@/hooks/useNetworkState';
 
 interface HeaderProps {

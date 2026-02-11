@@ -1,4 +1,4 @@
-import { LoginLocationDataType } from '../types';
+import type { LoginLocationDataType } from '../types';
 
 export const LOGIN_LOCATION_LIST_API = 'https://dummyjson.com/c/4fa3-3817-4472-b407';
 

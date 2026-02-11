@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRentedVehicleList, getRentedVehicleListWithCorruptData } from './api';
 import { queryKeys } from '@packages/api-client';
+
+import { getRentedVehicleList, getRentedVehicleListWithCorruptData } from './api';
 
 type UseGetRentedVehicleListParams = {
   showCorruptData: boolean;

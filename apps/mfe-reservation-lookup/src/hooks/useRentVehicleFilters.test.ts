@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
+
 import { useRentVehicleFilters } from './useRentVehicleFilters';
 import { rentedVehiclesMock } from '../utils';
 vi.mock('@packages/ui', () => ({

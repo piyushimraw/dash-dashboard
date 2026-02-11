@@ -10,10 +10,11 @@ import {
   type PaginationState,
   type Row,
 } from '@tanstack/react-table';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './table';
 import { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import clsx from 'clsx';
+
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './table';
 import { TablePagination } from './table-pagination';
 import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from './utils';
 import { useIsDesktop } from '../../hooks/useIsDesktop';

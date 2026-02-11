@@ -1,5 +1,6 @@
 import { Button } from '@packages/ui';
 import { X } from 'lucide-react';
+
 import type { FilterState } from '../types/type';
 
 interface FilterChipsProps {

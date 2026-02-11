@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
+
 import { rentedVehiclesMock } from '../shared-mocks/rentedVehicles.mock';
+
 import { LOCATION_OPTIONS } from '@/forms/login/login.schema';
 
 type LoginRequestBody = {

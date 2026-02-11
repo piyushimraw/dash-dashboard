@@ -1,23 +1,26 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { loginSchema } from './login.schema';
-import type { LoginFormValues } from './login.types';
 import { useNavigate } from '@tanstack/react-router';
 import { Building2, ChevronDown, Lock, MapPin, User } from 'lucide-react';
 import { useState } from 'react';
+import { eventBus, MfeEventNames } from '@packages/event-bus';
+
+import { loginSchema } from './login.schema';
+import type { LoginFormValues } from './login.types';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useGetLoginLocations } from '@/features/hooks/useGetLoginLocations';
 import { authService } from '@/services/authSelector';
-import { eventBus, MfeEventNames } from '@packages/event-bus';
+
 
 // Icon wrapper component for consistent vertical centering
 function InputIcon({ children }: { children: React.ReactNode }) {
   return (
     <span
       className="absolute left-3 text-muted-foreground pointer-events-none"
-      style={{ top: "50%", transform: "translateY(-50%)" }}
+      style={{ top: '50%', transform: 'translateY(-50%)' }}
     >
       {children}
     </span>
@@ -176,9 +179,6 @@ export default function LoginForm() {
             <Label htmlFor="loginLocation" className="text-sm font-medium">
               Login Location
             </Label>
-            <Label htmlFor="loginLocation" className="text-sm font-medium">
-              Login Location
-            </Label>
             <div className="relative">
               <InputIcon>
                 <Building2 size={20} />
@@ -202,7 +202,7 @@ export default function LoginForm() {
               </select>
               <span
                 className="absolute right-3 text-muted-foreground pointer-events-none"
-                style={{ top: "50%", transform: "translateY(-50%)" }}
+                style={{ top: '50%', transform: 'translateY(-50%)' }}
               >
                 <ChevronDown size={16} />
               </span>
@@ -210,19 +210,9 @@ export default function LoginForm() {
           </div>
         </div>
 
-        {loginError && (
-          <p className="text-sm text-red-600">
-            User ID or password is incorrect
-          </p>
-        )}
-        {(apiError || isError) && (
-          <p className="text-sm text-red-600">API error occurred</p>
-        )}
-        {networkError && (
-          <p className="text-sm text-red-600">
-            Network issue. Please try again.
-          </p>
-        )}
+        {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
+        {(apiError || isError) && <p className="text-sm text-red-600">API error occurred</p>}
+        {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
         {isLoading && <p>Loading</p>}
 
         <Button type="submit" size="lg" className="w-full mt-6">

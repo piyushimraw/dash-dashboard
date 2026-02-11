@@ -1,9 +1,10 @@
+import path from 'path';
+import fs from 'fs';
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import routerPlugin from '@tanstack/router-plugin/vite';
-import path from 'path';
-import fs from 'fs';
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -168,7 +169,7 @@ export default defineConfig(({ mode }) => ({
     setupFiles: [path.resolve(__dirname, 'test/setupTests.ts')],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html', 'lcov','json-summary'],
+      reporter: ['text', 'html', 'lcov', 'json-summary'],
       reportsDirectory: './coverage',
       exclude: ['node_modules/', 'src/setupTests.ts', '**/*.d.ts', '**/*.config.*'],
     },

@@ -1,16 +1,19 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from '@tanstack/react-router';
+import { Toaster, ToastProvider } from '@packages/ui';
+import { queryClient } from '@packages/api-client';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+
 import useAuthStore from './store/useAuthStore';
 import './index.css';
 import { router } from './router';
+
 import { registerSW } from 'virtual:pwa-register';
+
 import GlobalDialog from './components/dialogs/global-dialog';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import { queryClient } from '@packages/api-client';
 import { createIDBPersister } from './lib/queryPersister';
 import { AppErrorBoundary } from './components/error-boundary/AppErrorBoundary';
-import { Toaster, ToastProvider } from '@packages/ui';
 // import { ErrorTester } from "./components/error-boundary/ErrorTester";
 
 registerSW({ immediate: true });

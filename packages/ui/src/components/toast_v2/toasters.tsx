@@ -1,5 +1,4 @@
 import { useToastStore } from '../../hooks/useToast'; // relative to toast folder
-
 import {
   ToastProvider,
   ToastViewport,

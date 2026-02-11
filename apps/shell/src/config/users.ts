@@ -1,4 +1,5 @@
 import type { Role } from '@packages/mfe-types';
+
 import { ROLES } from './roles';
 
 export interface DummyUser {

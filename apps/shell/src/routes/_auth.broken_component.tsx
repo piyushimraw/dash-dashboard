@@ -1,6 +1,7 @@
+import { createFileRoute } from '@tanstack/react-router';
+
 import { ErrorTester } from '@/components/error-boundary/ErrorTester';
 import { RouteErrorBoundary } from '@/components/error-boundary/RouteErrorBoundary';
-import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_auth/broken_component')({
   component: BrokenComponent,
