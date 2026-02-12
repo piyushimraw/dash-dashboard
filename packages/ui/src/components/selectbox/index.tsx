@@ -1,7 +1,6 @@
-
-import { cn } from "../../lib/utils"
-import { Label } from "../label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
+import { cn } from '../../lib/utils';
+import { Label } from '../label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
 
 export type SelectOption = {
   label: string;
@@ -29,7 +28,7 @@ export function SelectBox({
   defaultValue,
   onValueChange,
   options,
-  placeholder = "Select an option",
+  placeholder = 'Select an option',
   label,
   description,
   disabled,
@@ -58,31 +57,23 @@ export function SelectBox({
             className,
           )}
         >
-          <SelectValue placeholder={loading ? "Loading..." : placeholder} />
+          <SelectValue placeholder={loading ? 'Loading...' : placeholder} />
         </SelectTrigger>
 
         <SelectContent>
           {options.length === 0 && (
-            <div className="px-2 py-1 text-sm text-muted-foreground">
-              No options found
-            </div>
+            <div className="px-2 py-1 text-sm text-muted-foreground">No options found</div>
           )}
 
           {options.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
-            >
+            <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      {description && (
-        <p className="text-xs text-muted-foreground">{description}</p>
-      )}
+      {description && <p className="text-xs text-muted-foreground">{description}</p>}
     </div>
   );
 }

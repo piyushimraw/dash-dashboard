@@ -1,12 +1,13 @@
-import { screen} from "@testing-library/react";
-import { describe, it, expect , vi} from "vitest";
+import { screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import LoginForm from "@/forms/login/LoginForm";
-import { LoginPage } from "@/pages/LoginPage";
-import { renderWithQueryClient } from "@/tests/utils/test-utils";
 
-const EmailPlaceHolder = "Enter your user ID";
-const PasswordPlaceHolder =  "Enter your password";
+import LoginForm from '@/forms/login/LoginForm';
+import { LoginPage } from '@/pages/LoginPage';
+import { renderWithQueryClient } from '@/tests/utils/test-utils';
+
+const EmailPlaceHolder = 'Enter your user ID';
+const PasswordPlaceHolder = 'Enter your password';
 
 // vi.mock('@tanstack/react-router', () => ({
 //   useNavigate: () => vi.fn(), // returns a mock function
@@ -17,15 +18,14 @@ const PasswordPlaceHolder =  "Enter your password";
 // });
 
 // test is checking whether the form UI renders, not whether it works.
-describe("LoginPage", () => {
-  it("renders login form fields", () => {
+describe('LoginPage', () => {
+  it('renders login form fields', () => {
     renderWithQueryClient(<LoginPage />);
     expect(screen.getByPlaceholderText(EmailPlaceHolder)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(PasswordPlaceHolder)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument(); // where name is sign in,  /i means case sensitive
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument(); // where name is sign in,  /i means case sensitive
   });
 });
-
 
 describe('LoginForm - Form Validation', () => {
   it('shows validation errors when fields are empty', async () => {

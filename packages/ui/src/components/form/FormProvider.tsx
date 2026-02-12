@@ -1,4 +1,4 @@
-import { FormProvider as RHFProvider, type UseFormReturn } from "react-hook-form";
+import { FormProvider as RHFProvider, type UseFormReturn } from 'react-hook-form';
 
 type Props = {
   children: React.ReactNode;

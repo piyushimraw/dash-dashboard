@@ -1,10 +1,7 @@
-export async function http<T>(
-  url: string,
-  options?: RequestInit
-): Promise<T> {
+export async function http<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     ...options,
   });

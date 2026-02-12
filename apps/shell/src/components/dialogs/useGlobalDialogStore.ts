@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 /**
  * A central registry of all dialog types and the props they accept.
  *
@@ -13,7 +13,7 @@ import { create } from "zustand";
  *   }
  */
 export interface DialogRegistry {
-  RENT_VEHICLE: { 0?: "" }; //no props we are passing here
+  RENT_VEHICLE: { 0?: '' }; //no props we are passing here
   // ... add more here as you go
 }
 type DialogType = keyof DialogRegistry | null;
@@ -21,10 +21,7 @@ interface DialogState {
   isOpen: boolean;
   type: DialogType;
   props: unknown;
-  openDialog: <K extends keyof DialogRegistry>(
-    type: K,
-    props?: DialogRegistry[K],
-  ) => void;
+  openDialog: <K extends keyof DialogRegistry>(type: K, props?: DialogRegistry[K]) => void;
   closeDialog: () => void;
 }
 export const useGlobalDialogStore = create<DialogState>((set) => ({

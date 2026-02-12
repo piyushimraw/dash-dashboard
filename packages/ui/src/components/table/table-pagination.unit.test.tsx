@@ -1,18 +1,19 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
-import { TablePagination } from "./table-pagination";
-import type { Table } from "@tanstack/react-table";
+import type { Table } from '@tanstack/react-table';
+
+import { TablePagination } from './table-pagination';
 
 /* ---------------------------------------------------
    MOCK CHILD COMPONENTS
 --------------------------------------------------- */
 
-vi.mock("../select", () => ({
+vi.mock('../select', () => ({
   Select: ({ children, onValueChange }: any) => (
     <div>
-      <button onClick={() => onValueChange("10")}>change-page-size</button>
+      <button onClick={() => onValueChange('10')}>change-page-size</button>
       {children}
     </div>
   ),
@@ -22,7 +23,7 @@ vi.mock("../select", () => ({
   SelectItem: ({ children }: any) => <div>{children}</div>,
 }));
 
-vi.mock("../pagination/AppPagination", () => ({
+vi.mock('../pagination/AppPagination', () => ({
   AppPagination: ({ onPageChange }: any) => (
     <button onClick={() => onPageChange(2)}>go-to-page-2</button>
   ),
@@ -41,7 +42,8 @@ function createTableMock(): Table<any> {
       },
     }),
     getFilteredRowModel: () => ({
-      rows: new Array(25).fill({}),
+      // rows: new Array(25).fill({}),
+      rows: Array.from({ length: 25 }, () => ({})),
     }),
     setPageSize: vi.fn(),
     setPageIndex: vi.fn(),
@@ -52,48 +54,40 @@ function createTableMock(): Table<any> {
    TESTS
 --------------------------------------------------- */
 
-describe("TablePagination", () => {
-  it("returns null when disabledPagination is true", () => {
+describe('TablePagination', () => {
+  it('returns null when disabledPagination is true', () => {
     const table = createTableMock();
 
-    const { container } = render(
-      <TablePagination table={table} disabledPagination={true} />,
-    );
+    const { container } = render(<TablePagination table={table} disabledPagination={true} />);
 
     expect(container.firstChild).toBeNull();
   });
 
-  it("renders rows per page selector and pagination", () => {
+  it('renders rows per page selector and pagination', () => {
     const table = createTableMock();
 
-    render(
-      <TablePagination table={table} disabledPagination={false} />,
-    );
+    render(<TablePagination table={table} disabledPagination={false} />);
 
-    expect(screen.getByText("Rows per page")).toBeInTheDocument();
-    expect(screen.getByText("page-size")).toBeInTheDocument();
+    expect(screen.getByText('Rows per page')).toBeInTheDocument();
+    expect(screen.getByText('page-size')).toBeInTheDocument();
   });
 
-  it("calls table.setPageSize when page size changes", () => {
+  it('calls table.setPageSize when page size changes', () => {
     const table = createTableMock();
 
-    render(
-      <TablePagination table={table} disabledPagination={false} />,
-    );
+    render(<TablePagination table={table} disabledPagination={false} />);
 
-    fireEvent.click(screen.getByText("change-page-size"));
+    fireEvent.click(screen.getByText('change-page-size'));
 
     expect(table.setPageSize).toHaveBeenCalledWith(10);
   });
 
-  it("calls table.setPageIndex when page changes", () => {
+  it('calls table.setPageIndex when page changes', () => {
     const table = createTableMock();
 
-    render(
-      <TablePagination table={table} disabledPagination={false} />,
-    );
+    render(<TablePagination table={table} disabledPagination={false} />);
 
-    fireEvent.click(screen.getByText("go-to-page-2"));
+    fireEvent.click(screen.getByText('go-to-page-2'));
 
     expect(table.setPageIndex).toHaveBeenCalledWith(1);
   });

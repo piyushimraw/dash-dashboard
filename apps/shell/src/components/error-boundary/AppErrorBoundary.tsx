@@ -47,12 +47,12 @@ export class AppErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error to console
-    console.error('🔴 [AppErrorBoundary] Catastrophic Application Error:', {
-      error: error.message,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      errorCount: this.state.errorCount + 1,
-    });
+    // console.error('🔴 [AppErrorBoundary] Catastrophic Application Error:', {
+    //   error: error.message,
+    //   componentStack: errorInfo.componentStack,
+    //   timestamp: new Date().toISOString(),
+    //   errorCount: this.state.errorCount + 1,
+    // });
 
     // Update state with error info
     this.setState((prev) => ({
@@ -103,8 +103,8 @@ export class AppErrorBoundary extends React.Component<
 
               {/* Error Description */}
               <p className="text-slate-600 text-center mb-6">
-                We're sorry, but something unexpected happened. Our team has been notified and we're working to
-                fix it.
+                We're sorry, but something unexpected happened. Our team has been notified and we're
+                working to fix it.
               </p>
 
               {/* Error Details (Development Only) */}
@@ -130,7 +130,9 @@ export class AppErrorBoundary extends React.Component<
                     )}
                     {this.state.errorCount > 1 && (
                       <div>
-                        <p className="font-semibold text-red-800">Error Count: {this.state.errorCount}</p>
+                        <p className="font-semibold text-red-800">
+                          Error Count: {this.state.errorCount}
+                        </p>
                       </div>
                     )}
                   </div>

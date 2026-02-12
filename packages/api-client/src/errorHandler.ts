@@ -1,4 +1,3 @@
-
 import { eventBus, MfeEventNames } from '@packages/event-bus';
 
 export interface ErrorResponse {
@@ -15,12 +14,10 @@ export interface QueryErrorContext {
   originalError: unknown;
 }
 
-
 function isRetriableError(status?: number): boolean {
   if (!status) return false;
   return status === 408 || status === 429 || (status >= 500 && status < 600);
 }
-
 
 function getHttpStatus(error: unknown): number | undefined {
   if (error && typeof error === 'object') {
@@ -32,7 +29,6 @@ function getHttpStatus(error: unknown): number | undefined {
   }
   return undefined;
 }
-
 
 function getErrorMessage(status?: number, error?: unknown): string {
   if (!status) {
@@ -75,7 +71,6 @@ function getErrorMessage(status?: number, error?: unknown): string {
   }
 }
 
-
 function extractErrorContext(error: unknown): QueryErrorContext {
   const httpStatus = getHttpStatus(error);
   const isRetryable = isRetriableError(httpStatus);
@@ -89,7 +84,6 @@ function extractErrorContext(error: unknown): QueryErrorContext {
   };
 }
 
-
 export function handleQueryError(error: unknown): void {
   const context = extractErrorContext(error);
 
@@ -101,14 +95,14 @@ export function handleQueryError(error: unknown): void {
   });
 
   // Log original error for debugging purposes
-  if (typeof globalThis !== 'undefined' && (globalThis as any).__DEBUG__) {
-    console.error('[React Query Error]', {
-      userMessage: context.userMessage,
-      httpStatus: context.httpStatus,
-      isRetryable: context.isRetryable,
-      originalError: context.originalError,
-    });
-  }
+  // if (typeof globalThis !== 'undefined' && (globalThis as any).__DEBUG__) {
+  //   console.error('[React Query Error]', {
+  //     userMessage: context.userMessage,
+  //     httpStatus: context.httpStatus,
+  //     isRetryable: context.isRetryable,
+  //     originalError: context.originalError,
+  //   });
+  // }
 }
 
 export function useQueryErrorHandler() {
@@ -118,7 +112,7 @@ export function useQueryErrorHandler() {
 export function emitErrorNotification(
   httpStatus?: number,
   customMessage?: string,
-  isRetryable?: boolean
+  isRetryable?: boolean,
 ): void {
   const message = customMessage || getErrorMessage(httpStatus);
 
@@ -161,5 +155,3 @@ export function emitWarningNotification(message: string, duration = 4000): void 
     duration,
   });
 }
-
-

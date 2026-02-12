@@ -1,6 +1,7 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import LoginForm from "@/forms/login/LoginForm";
-import { Car, Lock, User, Building2 } from "lucide-react";
+import { Car, Lock, User, Building2 } from 'lucide-react';
+
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import LoginForm from '@/forms/login/LoginForm';
 
 export function LoginPage() {
   return (
@@ -20,17 +21,11 @@ export function LoginPage() {
             {/* Logo */}
             <div className="flex items-center gap-4">
               <div className="h-14 w-14 rounded-2xl bg-sidebar-primary flex items-center justify-center shadow-xl">
-                <span className="font-bold text-2xl text-sidebar-primary-foreground">
-                  H
-                </span>
+                <span className="font-bold text-2xl text-sidebar-primary-foreground">H</span>
               </div>
               <div>
-                <h1 className="font-bold text-2xl text-white tracking-tight">
-                  Hertz DASH
-                </h1>
-                <p className="text-sm text-white/60">
-                  Rental Management System
-                </p>
+                <h1 className="font-bold text-2xl text-white tracking-tight">Hertz DASH</h1>
+                <p className="text-sm text-white/60">Rental Management System</p>
               </div>
             </div>
           </div>
@@ -43,33 +38,29 @@ export function LoginPage() {
                 <span className="text-sidebar-primary">DASH Portal</span>
               </h2>
               <p className="mt-4 text-lg text-white/70 max-w-md">
-                Access your rental management tools, fleet operations, and
-                customer services all in one place.
+                Access your rental management tools, fleet operations, and customer services all in
+                one place.
               </p>
             </div>
 
             {/* Features */}
-            <div
-              className="grid grid-cols-2 gap-4"
-              role="list"
-              aria-label="Key features"
-            >
+            <div className="grid grid-cols-2 gap-4" role="list" aria-label="Key features">
               {[
                 {
                   icon: <Car className="h-5 w-5" aria-hidden="true" />,
-                  label: "Fleet Management",
+                  label: 'Fleet Management',
                 },
                 {
                   icon: <User className="h-5 w-5" aria-hidden="true" />,
-                  label: "Customer Portal",
+                  label: 'Customer Portal',
                 },
                 {
                   icon: <Building2 className="h-5 w-5" aria-hidden="true" />,
-                  label: "Multi-Location",
+                  label: 'Multi-Location',
                 },
                 {
                   icon: <Lock className="h-5 w-5" aria-hidden="true" />,
-                  label: "Secure Access",
+                  label: 'Secure Access',
                 },
               ].map((feature, i) => (
                 <div
@@ -83,9 +74,7 @@ export function LoginPage() {
                   >
                     {feature.icon}
                   </div>
-                  <span className="text-sm font-medium text-white/90">
-                    {feature.label}
-                  </span>
+                  <span className="text-sm font-medium text-white/90">{feature.label}</span>
                 </div>
               ))}
             </div>
@@ -104,17 +93,11 @@ export function LoginPage() {
           <div className="lg:hidden mb-8 text-center">
             <div className="inline-flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-lg">
-                <span className="font-bold text-xl text-sidebar-primary-foreground">
-                  H
-                </span>
+                <span className="font-bold text-xl text-sidebar-primary-foreground">H</span>
               </div>
               <div className="text-left">
-                <h1 className="font-bold text-xl text-foreground">
-                  Hertz DASH
-                </h1>
-                <p className="text-xs text-muted-foreground">
-                  Rental Management System
-                </p>
+                <h1 className="font-bold text-xl text-foreground">Hertz DASH</h1>
+                <p className="text-xs text-muted-foreground">Rental Management System</p>
               </div>
             </div>
           </div>
@@ -122,9 +105,7 @@ export function LoginPage() {
           <Card className="glass border-0 shadow-2xl shadow-lavender-dark/20">
             <CardHeader className="text-center pb-2">
               <h2 className="text-2xl font-bold text-foreground">Sign In</h2>
-              <p className="text-muted-foreground">
-                Enter your credentials to continue
-              </p>
+              <p className="text-muted-foreground">Enter your credentials to continue</p>
             </CardHeader>
             <CardContent className="pt-4">
               <LoginForm />

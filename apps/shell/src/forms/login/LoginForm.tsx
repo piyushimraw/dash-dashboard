@@ -1,23 +1,25 @@
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { loginSchema } from "./login.schema";
-import type { LoginFormValues } from "./login.types";
-import { useNavigate } from "@tanstack/react-router";
-import { Building2, ChevronDown, Lock, MapPin, User } from "lucide-react";
-import { useState } from "react";
-import { useGetLoginLocations } from "@/features/hooks/useGetLoginLocations";
-import { authService } from "@/services/authSelector";
-import { eventBus, MfeEventNames } from "@packages/event-bus";
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
+import { Building2, ChevronDown, Lock, MapPin, User } from 'lucide-react';
+import { useState } from 'react';
+import { eventBus, MfeEventNames } from '@packages/event-bus';
+
+import { loginSchema } from './login.schema';
+import type { LoginFormValues } from './login.types';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useGetLoginLocations } from '@/features/hooks/useGetLoginLocations';
+import { authService } from '@/services/authSelector';
 
 // Icon wrapper component for consistent vertical centering
 function InputIcon({ children }: { children: React.ReactNode }) {
   return (
     <span
       className="absolute left-3 text-muted-foreground pointer-events-none"
-      style={{ top: "50%", transform: "translateY(-50%)" }}
+      style={{ top: '50%', transform: 'translateY(-50%)' }}
     >
       {children}
     </span>
@@ -32,20 +34,17 @@ export default function LoginForm() {
   const [networkError, setNetworkError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    data: locations,
-    isError,
-  } = useGetLoginLocations();
+  const { data: locations, isError } = useGetLoginLocations();
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    mode: "onChange",
-    reValidateMode: "onChange",
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
-      userId: "",
-      password: "",
-      userLocation: "",
-      loginLocation: "",
+      userId: '',
+      password: '',
+      userLocation: '',
+      loginLocation: '',
     },
   });
 
@@ -60,34 +59,38 @@ export default function LoginForm() {
     setLoginError(false);
     setApiError(false);
     setNetworkError(false);
+    setIsLoading(true);
+    setLoginError(false);
+    setApiError(false);
+    setNetworkError(false);
 
     try {
       const success = await authService.login(data);
       if (success) {
-        navigate({ to: "/dashboard" });
+        navigate({ to: '/dashboard' });
       } else {
         setLoginError(true);
       }
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case "API_ERROR":
+          case 'API_ERROR':
             setApiError(true);
             eventBus.emit(MfeEventNames.NotificationShow, {
-              type: "error",
-              message: "API error occurred. Please try again.",
+              type: 'error',
+              message: 'API error occurred. Please try again.',
               duration: 5000,
             });
             break;
-          case "INVALID_CREDENTIALS":
+          case 'INVALID_CREDENTIALS':
             setLoginError(true);
             break;
-          case "NETWORK_ERROR":
+          case 'NETWORK_ERROR':
           default:
             setNetworkError(true);
             eventBus.emit(MfeEventNames.NotificationShow, {
-              type: "error",
-              message: "Network issue. Please try again.",
+              type: 'error',
+              message: 'Network issue. Please try again.',
               duration: 5000,
             });
             break;
@@ -114,12 +117,10 @@ export default function LoginForm() {
               id="userId"
               placeholder="Enter your user ID"
               className="pl-10"
-              {...register("userId")}
+              {...register('userId')}
             />
           </div>
-          {errors.userId && (
-            <p className="text-sm text-red-500">{errors.userId.message}</p>
-          )}
+          {errors.userId && <p className="text-sm text-red-500">{errors.userId.message}</p>}
         </div>
 
         {/* Password */}
@@ -127,7 +128,13 @@ export default function LoginForm() {
           <Label htmlFor="password" className="text-sm font-medium">
             Password
           </Label>
+          <Label htmlFor="password" className="text-sm font-medium">
+            Password
+          </Label>
           <div className="relative">
+            <InputIcon>
+              <Lock size={20} />
+            </InputIcon>
             <InputIcon>
               <Lock size={20} />
             </InputIcon>
@@ -136,12 +143,10 @@ export default function LoginForm() {
               type="password"
               placeholder="Enter your password"
               className="pl-10"
-              {...register("password")}
+              {...register('password')}
             />
           </div>
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password.message}</p>
-          )}
+          {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
         </div>
 
         {/* Location Fields */}
@@ -150,7 +155,13 @@ export default function LoginForm() {
             <Label htmlFor="userLocation" className="text-sm font-medium">
               User Location
             </Label>
+            <Label htmlFor="userLocation" className="text-sm font-medium">
+              User Location
+            </Label>
             <div className="relative">
+              <InputIcon>
+                <MapPin size={20} />
+              </InputIcon>
               <InputIcon>
                 <MapPin size={20} />
               </InputIcon>
@@ -158,7 +169,7 @@ export default function LoginForm() {
                 id="userLocation"
                 placeholder="Location"
                 className="pl-10"
-                {...register("userLocation")}
+                {...register('userLocation')}
               />
             </div>
           </div>
@@ -171,9 +182,12 @@ export default function LoginForm() {
               <InputIcon>
                 <Building2 size={20} />
               </InputIcon>
+              <InputIcon>
+                <Building2 size={20} />
+              </InputIcon>
               <select
                 id="loginLocation"
-                {...register("loginLocation")}
+                {...register('loginLocation')}
                 className="h-11 w-full rounded-lg border border-input bg-white pl-10 pr-10 text-base shadow-sm transition-all duration-200 appearance-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent"
               >
                 <option value="" disabled hidden>
@@ -187,7 +201,7 @@ export default function LoginForm() {
               </select>
               <span
                 className="absolute right-3 text-muted-foreground pointer-events-none"
-                style={{ top: "50%", transform: "translateY(-50%)" }}
+                style={{ top: '50%', transform: 'translateY(-50%)' }}
               >
                 <ChevronDown size={16} />
               </span>
@@ -195,19 +209,9 @@ export default function LoginForm() {
           </div>
         </div>
 
-        {loginError && (
-          <p className="text-sm text-red-600">
-            User ID or password is incorrect
-          </p>
-        )}
-        {(apiError || isError) && (
-          <p className="text-sm text-red-600">API error occurred</p>
-        )}
-        {networkError && (
-          <p className="text-sm text-red-600">
-            Network issue. Please try again.
-          </p>
-        )}
+        {loginError && <p className="text-sm text-red-600">User ID or password is incorrect</p>}
+        {(apiError || isError) && <p className="text-sm text-red-600">API error occurred</p>}
+        {networkError && <p className="text-sm text-red-600">Network issue. Please try again.</p>}
         {isLoading && <p>Loading</p>}
 
         <Button type="submit" size="lg" className="w-full mt-6">

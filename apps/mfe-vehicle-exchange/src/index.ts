@@ -1,1 +1,1 @@
-export { VehicleExchangePage } from "./VehicleExchangePage";
+export { VehicleExchangePage } from './VehicleExchangePage';

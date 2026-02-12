@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 /**
  * Detects if viewport is at or above the specified breakpoint.
@@ -13,8 +13,8 @@ export function useIsDesktop(breakpoint: number = 1024): boolean {
   useEffect(() => {
     const checkWidth = () => setIsDesktop(window.innerWidth >= breakpoint);
     checkWidth();
-    window.addEventListener("resize", checkWidth);
-    return () => window.removeEventListener("resize", checkWidth);
+    window.addEventListener('resize', checkWidth);
+    return () => window.removeEventListener('resize', checkWidth);
   }, [breakpoint]);
 
   return isDesktop;

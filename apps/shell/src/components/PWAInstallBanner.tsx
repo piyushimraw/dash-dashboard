@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 
@@ -34,12 +35,8 @@ export function PWAInstallBanner() {
             </svg>
           </div>
           <div className="min-w-0">
-            <p className="font-medium text-sm truncate">
-              Install app
-            </p>
-            <p className="text-xs opacity-90 truncate">
-              Works offline - Faster access
-            </p>
+            <p className="font-medium text-sm truncate">Install app</p>
+            <p className="text-xs opacity-90 truncate">Works offline - Faster access</p>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">

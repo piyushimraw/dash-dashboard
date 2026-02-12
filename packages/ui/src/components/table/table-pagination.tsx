@@ -1,7 +1,7 @@
+import type { Table } from '@tanstack/react-table';
 
-import type { Table } from "@tanstack/react-table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
-import { AppPagination } from "../pagination/AppPagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
+import { AppPagination } from '../pagination/AppPagination';
 
 export interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -21,9 +21,7 @@ export function TablePagination<TData>({
     <div className="flex flex-col gap-3 px-2 py-3 sm:flex-row sm:items-center sm:justify-between">
       {/* Left: Rows per page */}
       <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">
-          Rows per page
-        </span>
+        <span className="text-sm text-muted-foreground">Rows per page</span>
 
         <Select
           value={String(pageSize)}

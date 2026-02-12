@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 type SubmitHandler<T> = (data: T) => Promise<void> | void;
 
@@ -13,9 +13,7 @@ export default function useFormSubmit<T>(onSubmit: SubmitHandler<T>) {
 
       await onSubmit(data);
     } catch (error: any) {
-      setSubmitError(
-        error?.message || "Something went wrong. Please try again."
-      );
+      setSubmitError(error?.message || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { MfeEventNames, NotificationEvent } from '@packages/event-bus'
-import { eventBus } from '@packages/event-bus'
+import { createContext, useContext, useEffect, useState } from 'react';
+import { MfeEventNames, eventBus, type NotificationEvent } from '@packages/event-bus';
 
 export type Toast = {
   id: string;
@@ -45,6 +44,6 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useToastContext = () => {
   const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error("useToastContext must be used inside ToastProvider");
+  if (!ctx) throw new Error('useToastContext must be used inside ToastProvider');
   return ctx;
 };

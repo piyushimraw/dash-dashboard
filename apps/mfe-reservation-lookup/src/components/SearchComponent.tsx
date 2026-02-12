@@ -1,14 +1,13 @@
-import { Button, Input, useIsDesktop } from "@packages/ui";
-import { Search, X } from "lucide-react";
-import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { Button, Input, useIsDesktop } from '@packages/ui';
+import { Search, X } from 'lucide-react';
+import { useState, type ChangeEvent } from 'react';
 
 interface Props {
   search?: string;
   setSearch: (v: string) => void;
 }
 
-export function SearchComponent({ setSearch, search = "" }: Props) {
+export function SearchComponent({ setSearch, search = '' }: Props) {
   const isDesktop = useIsDesktop();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -17,7 +16,7 @@ export function SearchComponent({ setSearch, search = "" }: Props) {
   };
 
   const handleClear = () => {
-    setSearch("");
+    setSearch('');
     setIsExpanded(false);
   };
 

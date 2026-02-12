@@ -1,20 +1,21 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-import routerPlugin from "@tanstack/router-plugin/vite";
-import path from "path";
-import fs from "fs";
+import path from 'path';
+import fs from 'fs';
+
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import routerPlugin from '@tanstack/router-plugin/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 // Resolve @packages/* to source files in dev for HMR support
-const packagesRoot = path.resolve(__dirname, "../../packages");
+const packagesRoot = path.resolve(__dirname, '../../packages');
 const devPackageAliases = {
-  "@packages/ui/lib/utils": path.resolve(packagesRoot, "ui/src/lib/utils.ts"),
-  "@packages/ui": path.resolve(packagesRoot, "ui/src/index.ts"),
-  "@packages/api-client": path.resolve(packagesRoot, "api-client/src/index.ts"),
-  "@packages/event-bus": path.resolve(packagesRoot, "event-bus/src/index.ts"),
-  "@packages/mfe-types": path.resolve(packagesRoot, "mfe-types/src/index.ts"),
+  '@packages/ui/lib/utils': path.resolve(packagesRoot, 'ui/src/lib/utils.ts'),
+  '@packages/ui': path.resolve(packagesRoot, 'ui/src/index.ts'),
+  '@packages/api-client': path.resolve(packagesRoot, 'api-client/src/index.ts'),
+  '@packages/event-bus': path.resolve(packagesRoot, 'event-bus/src/index.ts'),
+  '@packages/mfe-types': path.resolve(packagesRoot, 'mfe-types/src/index.ts'),
 };
 
 // https://vite.dev/config/
@@ -26,35 +27,35 @@ export default defineConfig(({ mode }) => ({
     }),
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler"]],
+        plugins: [['babel-plugin-react-compiler']],
       },
     }),
     tailwindcss(),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: 'autoUpdate',
       devOptions: {
         enabled: true,
-        type: "module",
+        type: 'module',
       },
-      includeAssets: ["favicon.svg"],
+      includeAssets: ['favicon.svg'],
       manifest: {
-        name: "Hertz",
-        short_name: "Hertz",
-        description: "Hertz pwa",
-        theme_color: "#ffffff",
-        background_color: "#ffffff",
-        display: "standalone",
-        start_url: ".",
+        name: 'Hertz',
+        short_name: 'Hertz',
+        description: 'Hertz pwa',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        display: 'standalone',
+        start_url: '.',
         icons: [
           {
-            src: "/pwa-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
           },
           {
-            src: "/pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
           },
         ],
       },
@@ -110,14 +111,16 @@ export default defineConfig(({ mode }) => ({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
       // In dev mode, resolve packages to source for HMR
-      ...(mode === "development" ? devPackageAliases : {
-        "@packages/event-bus": path.resolve(packagesRoot, "event-bus/dist/index.js"),
-        "@packages/api-client": path.resolve(packagesRoot, "api-client/dist/index.js"),
-        "@packages/ui": path.resolve(packagesRoot, "ui/dist/index.js"),
-        "@packages/mfe-types": path.resolve(packagesRoot, "mfe-types/dist/index.js"),
-      }),
+      ...(mode === 'development'
+        ? devPackageAliases
+        : {
+            '@packages/event-bus': path.resolve(packagesRoot, 'event-bus/dist/index.js'),
+            '@packages/api-client': path.resolve(packagesRoot, 'api-client/dist/index.js'),
+            '@packages/ui': path.resolve(packagesRoot, 'ui/dist/index.js'),
+            '@packages/mfe-types': path.resolve(packagesRoot, 'mfe-types/dist/index.js'),
+          }),
     },
   },
   build: {
@@ -133,12 +136,15 @@ export default defineConfig(({ mode }) => ({
             const nodeModulesSegments = id.split('node_modules/');
             const lastSegment = nodeModulesSegments[nodeModulesSegments.length - 1];
             const parts = lastSegment.split('/');
-            const packageName = parts[0].startsWith('@')
-              ? `${parts[0]}/${parts[1]}`
-              : parts[0];
+            const packageName = parts[0].startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0];
 
             if (packageName.startsWith('@radix-ui')) return 'vendor-radix';
-            if (packageName === 'react' || packageName === 'react-dom' || packageName === 'scheduler') return 'vendor-react';
+            if (
+              packageName === 'react' ||
+              packageName === 'react-dom' ||
+              packageName === 'scheduler'
+            )
+              return 'vendor-react';
             if (packageName.startsWith('@tanstack')) return 'vendor-tanstack';
             if (packageName === 'zustand') return 'vendor-zustand';
             return 'vendor-other';
@@ -156,21 +162,16 @@ export default defineConfig(({ mode }) => ({
     }),
     port: 4173,
   },
-    test: {
-    environment: "jsdom",
+  test: {
+    environment: 'jsdom',
     globals: true,
     // setupFiles: "./src/setupTests.ts",
-        setupFiles: [path.resolve(__dirname, 'test/setupTests.ts')],
+    setupFiles: [path.resolve(__dirname, 'test/setupTests.ts')],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html', 'lcov','json-summary'],
+      reporter: ['text', 'html', 'lcov', 'json-summary'],
       reportsDirectory: './coverage',
-      exclude: [
-        'node_modules/',
-        'src/setupTests.ts',
-        '**/*.d.ts',
-        '**/*.config.*',
-      ],
+      exclude: ['node_modules/', 'src/setupTests.ts', '**/*.d.ts', '**/*.config.*'],
     },
   },
 }));

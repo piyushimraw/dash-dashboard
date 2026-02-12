@@ -1,9 +1,10 @@
-import { useFormContext, useFormState } from "react-hook-form";
-import type { ReactNode } from "react";
-import { Label } from "../label";
-import { Input } from "../input";
-import { FormError } from "./FormError";
-import { cn } from "../../lib/utils";
+import { useFormContext, useFormState } from 'react-hook-form';
+import type { ReactNode } from 'react';
+
+import { Label } from '../label';
+import { Input } from '../input';
+import { FormError } from './FormError';
+import { cn } from '../../lib/utils';
 
 type Props = {
   name: string;
@@ -29,13 +30,7 @@ type Props = {
 />
 */
 
-export function FormInput({
-  name,
-  label,
-  type = "text",
-  icon,
-  placeholder,
-}: Props) {
+export function FormInput({ name, label, type = 'text', icon, placeholder }: Props) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
 
@@ -60,8 +55,8 @@ export function FormInput({
           placeholder={placeholder}
           {...register(name)}
           className={cn(
-            icon && "pl-10",
-            error && "border-destructive focus-visible:ring-destructive",
+            icon && 'pl-10',
+            error && 'border-destructive focus-visible:ring-destructive',
           )}
         />
       </div>

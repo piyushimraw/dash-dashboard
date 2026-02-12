@@ -14,7 +14,7 @@ import {
   BarChart3,
   Wrench,
   X,
-} from "lucide-react";
+} from 'lucide-react';
 
 export const iconMap = {
   chevronDown: ChevronDown,

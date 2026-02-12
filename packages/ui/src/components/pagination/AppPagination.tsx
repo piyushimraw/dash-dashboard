@@ -6,7 +6,7 @@ import {
   PaginationNext,
   PaginationPrevious,
   PaginationEllipsis,
-} from "./pagination";
+} from './pagination';
 
 interface AppPaginationProps {
   page: number; // current page (1-based)
@@ -44,11 +44,11 @@ export function AppPagination({
     const showLeftEllipsis = leftSibling > 2;
     const showRightEllipsis = rightSibling < totalPages - 1;
 
-    const range: (number | "ellipsis")[] = [];
+    const range: (number | 'ellipsis')[] = [];
 
     range.push(1);
 
-    if (showLeftEllipsis) range.push("ellipsis");
+    if (showLeftEllipsis) range.push('ellipsis');
 
     for (let i = leftSibling; i <= rightSibling; i++) {
       if (i !== 1 && i !== totalPages) {
@@ -56,7 +56,7 @@ export function AppPagination({
       }
     }
 
-    if (showRightEllipsis) range.push("ellipsis");
+    if (showRightEllipsis) range.push('ellipsis');
 
     if (totalPages !== 1) range.push(totalPages);
 
@@ -72,8 +72,8 @@ export function AppPagination({
             aria-disabled={!canGoPrev}
             className={
               !canGoPrev
-                ? "pointer-events-none opacity-50 text-muted-foreground transition-none"
-                : ""
+                ? 'pointer-events-none opacity-50 text-muted-foreground transition-none'
+                : ''
             }
             onClick={(e) => {
               e.preventDefault();
@@ -83,16 +83,13 @@ export function AppPagination({
         </PaginationItem>
 
         {createPageRange().map((item, index) =>
-          item === "ellipsis" ? (
+          item === 'ellipsis' ? (
             <PaginationItem key={`ellipsis-${index}`}>
               <PaginationEllipsis />
             </PaginationItem>
           ) : (
             <PaginationItem key={item}>
-              <PaginationLink
-                isActive={item === page}
-                onClick={() => onPageChange(item)}
-              >
+              <PaginationLink isActive={item === page} onClick={() => onPageChange(item)}>
                 {item}
               </PaginationLink>
             </PaginationItem>
@@ -104,8 +101,8 @@ export function AppPagination({
             aria-disabled={!canGoNext}
             className={
               !canGoNext
-                ? "pointer-events-none opacity-50 text-muted-foreground transition-none"
-                : ""
+                ? 'pointer-events-none opacity-50 text-muted-foreground transition-none'
+                : ''
             }
             onClick={(e) => {
               e.preventDefault();

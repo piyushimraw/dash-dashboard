@@ -48,13 +48,13 @@ class RouteErrorBoundaryClass extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log route-level error
-    console.error('🟠 [RouteErrorBoundary] Route-level error:', {
-      route: this.props.routeName || 'Unknown Route',
-      error: error.message,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      retryCount: this.state.retryCount,
-    });
+    // console.error('🟠 [RouteErrorBoundary] Route-level error:', {
+    //   route: this.props.routeName || 'Unknown Route',
+    //   error: error.message,
+    //   componentStack: errorInfo.componentStack,
+    //   timestamp: new Date().toISOString(),
+    //   retryCount: this.state.retryCount,
+    // });
 
     // Update state with error info
     this.setState({
@@ -105,16 +105,13 @@ class RouteErrorBoundaryClass extends React.Component<
               </div>
 
               {/* Error Title */}
-              <h1 className="text-2xl font-bold text-slate-900 text-center mb-2">
-                Page Error
-              </h1>
+              <h1 className="text-2xl font-bold text-slate-900 text-center mb-2">Page Error</h1>
 
               {/* Error Description */}
               <p className="text-slate-600 text-center mb-6">
                 {this.props.routeName
                   ? `The ${this.props.routeName} page encountered an error.`
-                  : 'This page encountered an error.'}
-                {' '}
+                  : 'This page encountered an error.'}{' '}
                 You can try again or navigate to another section.
               </p>
 

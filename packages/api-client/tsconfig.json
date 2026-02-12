@@ -11,7 +11,5 @@
     }
   },
   "include": ["src"],
-  "references": [
-    { "path": "../event-bus" }
-  ]
+  "references": [{ "path": "../event-bus" }]
 }

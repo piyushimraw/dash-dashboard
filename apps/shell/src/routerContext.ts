@@ -1,5 +1,5 @@
 export type RouterContext = {
   auth: {
-    isLoggedIn: boolean
-  }
-}
+    isLoggedIn: boolean;
+  };
+};

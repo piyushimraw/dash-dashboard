@@ -5,18 +5,21 @@
 A comprehensive three-tier error boundary system for production-grade error handling:
 
 ### 1. **AppErrorBoundary** (Root Level)
+
 - **File:** `apps/shell/src/components/AppErrorBoundary.tsx`
 - **Purpose:** Catches catastrophic application errors
 - **UI:** Full-page dark fallback
 - **Actions:** "Go Home", "Reload Application"
 
 ### 2. **RouteErrorBoundary** (Route Level)
+
 - **File:** `apps/shell/src/components/RouteErrorBoundary.tsx`
 - **Purpose:** Isolates errors to specific routes/pages
 - **UI:** Page-level fallback
 - **Actions:** "Try Again", "Back", "Home"
 
 ### 3. **MfeErrorBoundary** (Component Level)
+
 - **File:** `apps/shell/src/components/MfeErrorBoundary.tsx`
 - **Purpose:** Isolates component/widget failures
 - **UI:** Inline error message
@@ -35,22 +38,26 @@ apps/shell/src/components/
 ├── ERROR_BOUNDARY_EXAMPLES.tsx       💡 Implementation examples
 
 ```
+
 ---
 
 ## Key Features
 
 ### ✅ Error Catching
+
 - AppErrorBoundary: Catastrophic errors
 - RouteErrorBoundary: Route-specific errors
 - MfeErrorBoundary: Component/widget errors
 
 ### ✅ User-Friendly UI
+
 - Friendly error messages (no raw error objects)
 - Consistent styling with Tailwind CSS
 - Accessible with ARIA labels and roles
 - Responsive design
 
 ### ✅ Development Features
+
 - Error details expandable section
 - Component stack traces
 - Retry counters
@@ -58,6 +65,7 @@ apps/shell/src/components/
 - `import.meta.env.DEV` checks (Vite-compatible)
 
 ### ✅ User Actions
+
 - Try Again / Retry
 - Back navigation
 - Home navigation
@@ -98,6 +106,7 @@ export function RouteComponent() {
   <PaymentComponent />
 </MfeErrorBoundary>
 ```
+
 ---
 
 ## Error Hierarchy

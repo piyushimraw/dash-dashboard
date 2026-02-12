@@ -48,12 +48,12 @@ export class MfeErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error details for debugging
-    console.error('MFE Error Boundary caught an error:', {
-      mfeName: this.props.mfeName || 'Unknown MFE',
-      error: error.message,
-      componentStack: errorInfo.componentStack,
-      retryCount: this.state.retryCount,
-    });
+    // console.error('MFE Error Boundary caught an error:', {
+    //   mfeName: this.props.mfeName || 'Unknown MFE',
+    //   error: error.message,
+    //   componentStack: errorInfo.componentStack,
+    //   retryCount: this.state.retryCount,
+    // });
 
     // Update state with error info
     this.setState({
@@ -157,9 +157,7 @@ export class MfeErrorBoundary extends React.Component<
 
             {/* Retry Count (in development only) */}
             {import.meta.env.DEV && this.state.retryCount > 0 && (
-              <p className="mt-4 text-xs text-red-600">
-                Retry attempts: {this.state.retryCount}
-              </p>
+              <p className="mt-4 text-xs text-red-600">Retry attempts: {this.state.retryCount}</p>
             )}
           </div>
         </div>
@@ -176,7 +174,7 @@ export class MfeErrorBoundary extends React.Component<
 export function withMfeErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   mfeName?: string,
-  fallback?: React.ReactNode
+  fallback?: React.ReactNode,
 ): React.ComponentType<P> {
   const WrappedComponent: React.FC<P> = (props) => (
     <MfeErrorBoundary mfeName={mfeName} fallback={fallback}>

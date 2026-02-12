@@ -15,6 +15,7 @@
 GitHub Pages serves this repo at `https://piyushimraw.github.io/dash-dashboard/`. All asset URLs must be prefixed with `/dash-dashboard/`. We use an environment variable so local dev is unaffected.
 
 **Files:**
+
 - Modify: `apps/shell/vite.config.ts:21` (the `defineConfig` return object)
 
 **Step 1: Add `base` to the Vite config**
@@ -48,17 +49,21 @@ Change the workbox `navigateFallback` from `'/index.html'` to `'index.html'`:
 **Step 4: Verify the build works locally**
 
 Run:
+
 ```bash
 VITE_BASE=/dash-dashboard/ pnpm build
 ```
+
 Expected: Build succeeds. Check that `apps/shell/dist/index.html` contains asset URLs prefixed with `/dash-dashboard/`.
 
 **Step 5: Verify default (no env var) build still works**
 
 Run:
+
 ```bash
 pnpm build
 ```
+
 Expected: Build succeeds. Asset URLs in `apps/shell/dist/index.html` use `/` prefix (no subpath).
 
 **Step 6: Commit**
@@ -73,6 +78,7 @@ git commit -m "feat: add configurable Vite base path for GitHub Pages deployment
 ### Task 2: Create the GitHub Pages deployment workflow
 
 **Files:**
+
 - Create: `.github/workflows/deploy.yml`
 
 **Step 1: Create the workflow file**
@@ -141,9 +147,11 @@ jobs:
 **Step 2: Validate the workflow YAML syntax**
 
 Run:
+
 ```bash
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/deploy.yml'))" && echo "YAML valid"
 ```
+
 Expected: `YAML valid`
 
 **Step 3: Commit**
@@ -160,6 +168,7 @@ git commit -m "ci: add GitHub Pages deployment workflow"
 The existing CI workflow (`.github/workflows/ci.yml`) only runs on the `microfrontend-arch` branch. It should also run on `main` so tests execute before deployments.
 
 **Files:**
+
 - Modify: `.github/workflows/ci.yml:3-9`
 
 **Step 1: Update the CI trigger branches**
@@ -183,14 +192,14 @@ on:
 The existing CI installs pnpm via `npm install -g pnpm`. The official `pnpm/action-setup@v4` action is more reliable and auto-detects the version from `packageManager` in `package.json`. Replace:
 
 ```yaml
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+- name: Install pnpm
+  uses: pnpm/action-setup@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: 20
+    cache: pnpm
 ```
 
 This replaces the old "Setup Node" and "Install pnpm" steps. Note: `pnpm/action-setup` must come **before** `actions/setup-node` so that pnpm is available for Node's cache setup.
@@ -200,8 +209,8 @@ This replaces the old "Setup Node" and "Install pnpm" steps. Note: `pnpm/action-
 Change the install step to:
 
 ```yaml
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+- name: Install dependencies
+  run: pnpm install --frozen-lockfile
 ```
 
 **Step 4: Commit**
@@ -228,6 +237,7 @@ This is required for the `actions/deploy-pages` action to work. Without this set
 **Step 2: Verify deployment**
 
 After pushing the commits to `main`, check:
+
 1. The workflow runs at `https://github.com/piyushimraw/dash-dashboard/actions`
 2. The site is live at `https://piyushimraw.github.io/dash-dashboard/`
 
@@ -235,11 +245,11 @@ After pushing the commits to `main`, check:
 
 ## Summary of changes
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `apps/shell/vite.config.ts` | Modify | Add `base` from env var, fix PWA paths |
-| `.github/workflows/deploy.yml` | Create | Build + deploy to GitHub Pages |
-| `.github/workflows/ci.yml` | Modify | Add `main` branch, use official pnpm action |
+| File                           | Action | Purpose                                     |
+| ------------------------------ | ------ | ------------------------------------------- |
+| `apps/shell/vite.config.ts`    | Modify | Add `base` from env var, fix PWA paths      |
+| `.github/workflows/deploy.yml` | Create | Build + deploy to GitHub Pages              |
+| `.github/workflows/ci.yml`     | Modify | Add `main` branch, use official pnpm action |
 
 ## Post-deployment notes
 

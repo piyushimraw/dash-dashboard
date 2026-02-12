@@ -1,34 +1,33 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Car, Calendar, User, MapPin } from "lucide-react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Car, Calendar, User, MapPin } from 'lucide-react';
+import { FormProvider, FormInput, FormSelect, Button } from '@packages/ui';
+import { eventBus, MfeEventNames } from '@packages/event-bus';
 
-import { FormProvider, FormInput, FormSelect, Button } from "@packages/ui";
-import { eventBus } from "@packages/event-bus";
-
-import { rentVehicleSchema } from "./rent.schema";
-import type { RentVehicleFormValues } from "./rent.types";
+import { rentVehicleSchema } from './rent.schema';
+import type { RentVehicleFormValues } from './rent.types';
 
 export function RentVehicleForm() {
-  console.log("RentVehicleForm");
+  // console.log('RentVehicleForm');
   const form = useForm<RentVehicleFormValues>({
     resolver: zodResolver(rentVehicleSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      custName: "",
-      custEmail: "",
-      custPhone: "",
-      vehicleType: "SUV",
-      rentDate: "",
-      expectedReturnDate: "",
-      pickupLocation: "",
+      custName: '',
+      custEmail: '',
+      custPhone: '',
+      vehicleType: 'SUV',
+      rentDate: '',
+      expectedReturnDate: '',
+      pickupLocation: '',
     },
   });
 
-  const onSubmit = (data: RentVehicleFormValues) => {
-    console.log("Rent form submitted:", data);
+  const onSubmit = (_data: RentVehicleFormValues) => {
+    // console.log('Rent form submitted:', data);
     // TODO: API call here
 
-    eventBus.emit("data:refresh", { entity: "rental" });
+    eventBus.emit(MfeEventNames.DataRefresh, { entity: 'rental' });
   };
 
   return (
@@ -58,9 +57,9 @@ export function RentVehicleForm() {
             name="vehicleType"
             label="Vehicle Type"
             options={[
-              { label: "SUV", value: "SUV" },
-              { label: "Sedan\t", value: "Sedan" },
-              { label: "Hatchback\t", value: "Hatchback" },
+              { label: 'SUV', value: 'SUV' },
+              { label: 'Sedan\t', value: 'Sedan' },
+              { label: 'Hatchback\t', value: 'Hatchback' },
             ]}
           />
         </div>

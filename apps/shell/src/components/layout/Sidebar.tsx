@@ -1,10 +1,4 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { useEffect, useState, useReducer } from 'react';
 import {
   ChevronDown,
   LogOut,
@@ -14,12 +8,15 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { menuItems, type MenuItemType } from "@/config/sidebar-menu.config";
-import { iconMap } from "@/icons/iconMap";
-import useAuthStore from "@/store/useAuthStore";
+} from 'lucide-react';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { cn } from '@/lib/utils';
+import { menuItems, type MenuItemType } from '@/config/sidebar-menu.config';
+import { iconMap } from '@/icons/iconMap';
+import useAuthStore from '@/store/useAuthStore';
 
 interface SidebarProps {
   onLogout: () => void;
@@ -29,14 +26,14 @@ interface SidebarProps {
 
 const quickLinks = [
   {
-    label: "Reservation Lookup:",
+    label: 'Reservation Lookup:',
     icon: <Search className="h-4 w-4" aria-hidden="true" />,
-    pathname: "/reservation_lookup",
+    pathname: '/reservation_lookup',
   },
   {
-    label: "Scan & Payment Integration",
+    label: 'Scan & Payment Integration',
     icon: <Users className="h-4 w-4" aria-hidden="true" />,
-    pathname: "",
+    pathname: '',
   },
 ];
 
@@ -51,14 +48,28 @@ function SidebarMenuItem({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-  const menuId = `menu-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
+  const [isOpen, dispatch] = useReducer(
+    (state: boolean, action: { type: 'OPEN' | 'TOGGLE' | 'CHECK'; isCurrentPath?: boolean }) => {
+      switch (action.type) {
+        case 'OPEN':
+          return true;
+        case 'TOGGLE':
+          return !state;
+        case 'CHECK':
+          return action.isCurrentPath && !state ? true : state;
+        default:
+          return state;
+      }
+    },
+    false,
+  );
+  const menuId = `menu-${item.label.replace(/\s+/g, '-').toLowerCase()}`;
 
+  // Sync state when current path matches a child
   useEffect(() => {
-    if (item.children?.some((v) => v?.pathname === location.pathname)) {
-      setIsOpen(true);
-    }
-  }, [location, item]);
+    const isCurrentPath = item.children?.some((v) => v?.pathname === location.pathname);
+    dispatch({ type: 'CHECK', isCurrentPath });
+  }, [location.pathname, item.children]);
 
   if (!item.children) {
     return (
@@ -93,7 +104,7 @@ function SidebarMenuItem({
   }
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+    <Collapsible open={isOpen} onOpenChange={() => dispatch({ type: 'TOGGLE' })}>
       <CollapsibleTrigger asChild>
         <Button
           variant="sidebar"
@@ -109,8 +120,8 @@ function SidebarMenuItem({
 
           <ChevronDown
             className={cn(
-              "h-4 w-4 text-sidebar-muted transition-transform duration-200",
-              isOpen && "rotate-180",
+              'h-4 w-4 text-sidebar-muted transition-transform duration-200',
+              isOpen && 'rotate-180',
             )}
             aria-hidden="true"
           />
@@ -120,10 +131,7 @@ function SidebarMenuItem({
         id={menuId}
         className="overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-up data-[state=open]:slide-down"
       >
-        <ul
-          className="ml-4 mt-1 space-y-0.5 border-l border-sidebar-border pl-3"
-          role="menu"
-        >
+        <ul className="ml-4 mt-1 space-y-0.5 border-l border-sidebar-border pl-3" role="menu">
           {item.children.map((child, index) => {
             const Icon = iconMap[child.icon as keyof typeof iconMap];
             return (
@@ -136,8 +144,8 @@ function SidebarMenuItem({
                     if (onItemClick) onItemClick();
                   }}
                   className={cn(
-                    location.pathname === child.pathname && "bg-sidebar-accent",
-                    "w-full min-w-0 justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3",
+                    location.pathname === child.pathname && 'bg-sidebar-accent',
+                    'w-full min-w-0 justify-start text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px] touch-manipulation pl-3',
                   )}
                   role="menuitem"
                 >
@@ -146,9 +154,7 @@ function SidebarMenuItem({
                       <Icon />
                     </span>
                   )}
-                  <span className="break-words whitespace-normal">
-                    {child.label}
-                  </span>
+                  <span className="break-words whitespace-normal">{child.label}</span>
                 </Button>
               </li>
             );
@@ -166,7 +172,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
 
   // Track if we're on desktop (lg breakpoint = 1024px)
   const [isDesktop, setIsDesktop] = useState(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       return window.innerWidth >= 1024;
     }
     return true;
@@ -177,15 +183,15 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Desktop collapsed state with localStorage persistence
   const [collapsedPreference, setCollapsedPreference] = useState(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("sidebar-collapsed");
-      return stored === "true";
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('sidebar-collapsed');
+      return stored === 'true';
     }
     return false;
   });
@@ -195,8 +201,8 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
 
   // Persist collapsed state
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("sidebar-collapsed", collapsedPreference.toString());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sidebar-collapsed', collapsedPreference.toString());
     }
   }, [collapsedPreference]);
 
@@ -211,7 +217,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden touch-manipulation"
           onClick={onClose}
-          onKeyDown={(e) => e.key === "Escape" && onClose()}
+          onKeyDown={(e) => e.key === 'Escape' && onClose()}
           role="button"
           tabIndex={0}
           aria-label="Close navigation menu"
@@ -223,15 +229,13 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
         id="main-sidebar"
         role="navigation"
         aria-label="Main navigation"
-        aria-hidden={
-          !isOpen && typeof window !== "undefined" && window.innerWidth < 1024
-        }
+        aria-hidden={!isOpen && typeof window !== 'undefined' && window.innerWidth < 1024}
         className={cn(
-          "h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 bg-sidebar flex flex-col shadow-xl transition-all duration-300 lg:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full",
+          'h-screen no-scrollbar fixed lg:static inset-y-0 top-0 left-0 z-50 bg-sidebar flex flex-col shadow-xl transition-all duration-300 lg:translate-x-0',
+          isOpen ? 'translate-x-0' : '-translate-x-full',
           // Mobile always full width, desktop respects collapsed state
-          "w-64",
-          collapsed && "lg:w-16",
+          'w-64',
+          collapsed && 'lg:w-16',
         )}
       >
         {/* Logo & Brand */}
@@ -239,9 +243,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           {!collapsed && (
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-lg">
-                <span className="font-bold text-lg text-sidebar-primary-foreground">
-                  H
-                </span>
+                <span className="font-bold text-lg text-sidebar-primary-foreground">H</span>
               </div>
               <div>
                 <Link to="/dashboard">
@@ -256,9 +258,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
           {collapsed && (
             <div className="mx-auto">
               <div className="h-10 w-10 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-lg">
-                <span className="font-bold text-lg text-sidebar-primary-foreground">
-                  H
-                </span>
+                <span className="font-bold text-lg text-sidebar-primary-foreground">H</span>
               </div>
             </div>
           )}
@@ -280,8 +280,8 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             size="icon"
             onClick={toggleCollapsed}
             className="h-8 w-8 text-sidebar-muted hover:bg-sidebar-accent"
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" aria-hidden="true" />
@@ -299,8 +299,8 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
         >
           <div
             className={cn(
-              "flex items-center rounded-lg bg-sidebar-accent/50 p-2.5",
-              collapsed ? "justify-center" : "gap-3",
+              'flex items-center rounded-lg bg-sidebar-accent/50 p-2.5',
+              collapsed ? 'justify-center' : 'gap-3',
             )}
           >
             <div
@@ -311,9 +311,7 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-sidebar-foreground truncate">
-                  GEHDOFF
-                </p>
+                <p className="text-sm font-medium text-sidebar-foreground truncate">GEHDOFF</p>
                 <p className="text-xs text-sidebar-muted">Location: 01</p>
               </div>
             )}
@@ -334,9 +332,8 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
                     size="sidebar"
                     onClick={onClose}
                     className={cn(
-                      location.pathname === link.pathname &&
-                        "bg-sidebar-accent",
-                      "min-h-[44px] touch-manipulation",
+                      location.pathname === link.pathname && 'bg-sidebar-accent',
+                      'min-h-[44px] touch-manipulation',
                     )}
                   >
                     {link.icon}
@@ -374,8 +371,8 @@ export function Sidebar({ onLogout, isOpen, onClose }: SidebarProps) {
             size="sidebar"
             onClick={onLogout}
             className={cn(
-              "w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] touch-manipulation",
-              collapsed && "justify-center",
+              'w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 min-h-[44px] touch-manipulation',
+              collapsed && 'justify-center',
             )}
             aria-label="Sign out of your account"
             title="Sign Out"

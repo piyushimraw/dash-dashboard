@@ -1,12 +1,7 @@
-import { ReturnVehicleForm } from "./forms/ReturnVehicleForm";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@packages/ui";
-import { RotateCcw } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@packages/ui';
+import { RotateCcw } from 'lucide-react';
+
+import { ReturnVehicleForm } from './forms/ReturnVehicleForm';
 
 export function ReturnPage() {
   return (
@@ -17,13 +12,9 @@ export function ReturnPage() {
             <RotateCcw className="h-6 w-6 text-primary" />
           </div>
 
-          <CardTitle className="text-2xl font-semibold">
-            Return Vehicle
-          </CardTitle>
+          <CardTitle className="text-2xl font-semibold">Return Vehicle</CardTitle>
 
-          <CardDescription>
-            Complete the return process for a rented vehicle
-          </CardDescription>
+          <CardDescription>Complete the return process for a rented vehicle</CardDescription>
         </CardHeader>
 
         <CardContent>

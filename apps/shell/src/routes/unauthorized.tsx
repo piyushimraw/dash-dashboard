@@ -1,6 +1,7 @@
-import Unauthorized from "@/pages/UnAuthorized";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute("/unauthorized")({
+import Unauthorized from '@/pages/UnAuthorized';
+
+export const Route = createFileRoute('/unauthorized')({
   component: Unauthorized,
 });
