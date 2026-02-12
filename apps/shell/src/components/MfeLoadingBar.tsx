@@ -5,8 +5,34 @@
  * Provides visual feedback during route transitions and MFE loading.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useRouterState } from '@tanstack/react-router';
+
+type LoadingState = {
+  progress: number;
+  visible: boolean;
+};
+
+type LoadingAction =
+  | { type: 'START' }
+  | { type: 'PROGRESS'; value: number }
+  | { type: 'COMPLETE' }
+  | { type: 'HIDE' };
+
+function loadingReducer(state: LoadingState, action: LoadingAction): LoadingState {
+  switch (action.type) {
+    case 'START':
+      return { progress: 0, visible: true };
+    case 'PROGRESS':
+      return { ...state, progress: action.value };
+    case 'COMPLETE':
+      return { ...state, progress: 100 };
+    case 'HIDE':
+      return { progress: 0, visible: false };
+    default:
+      return state;
+  }
+}
 
 /**
  * Loading Progress Bar Component
@@ -14,19 +40,19 @@ import { useRouterState } from '@tanstack/react-router';
  */
 export function MfeLoadingBar() {
   const isLoading = useRouterState({ select: (s) => s.status === 'pending' });
-  const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [{ progress, visible }, dispatch] = useReducer(loadingReducer, {
+    progress: 0,
+    visible: false,
+  });
 
   useEffect(() => {
     if (isLoading) {
-      // Show bar and start progress
-      setVisible(true);
-      setProgress(0);
+      dispatch({ type: 'START' });
 
       // Simulate progress animation
-      const timer1 = setTimeout(() => setProgress(30), 50);
-      const timer2 = setTimeout(() => setProgress(60), 200);
-      const timer3 = setTimeout(() => setProgress(80), 400);
+      const timer1 = setTimeout(() => dispatch({ type: 'PROGRESS', value: 30 }), 50);
+      const timer2 = setTimeout(() => dispatch({ type: 'PROGRESS', value: 60 }), 200);
+      const timer3 = setTimeout(() => dispatch({ type: 'PROGRESS', value: 80 }), 400);
 
       return () => {
         clearTimeout(timer1);
@@ -34,13 +60,9 @@ export function MfeLoadingBar() {
         clearTimeout(timer3);
       };
     } else {
-      // Complete progress and hide
-      setProgress(100);
+      dispatch({ type: 'COMPLETE' });
 
-      const hideTimer = setTimeout(() => {
-        setVisible(false);
-        setProgress(0);
-      }, 300);
+      const hideTimer = setTimeout(() => dispatch({ type: 'HIDE' }), 300);
 
       return () => clearTimeout(hideTimer);
     }

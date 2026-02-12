@@ -15,7 +15,7 @@
     "test": "vitest",
     "test:file": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint . || true",
+    "lint": "eslint .",
     "lint:fast": "oxlint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",

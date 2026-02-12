@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import {
   ChevronDown,
   LogOut,
@@ -48,14 +48,28 @@ function SidebarMenuItem({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, dispatch] = useReducer(
+    (state: boolean, action: { type: 'OPEN' | 'TOGGLE' | 'CHECK'; isCurrentPath?: boolean }) => {
+      switch (action.type) {
+        case 'OPEN':
+          return true;
+        case 'TOGGLE':
+          return !state;
+        case 'CHECK':
+          return action.isCurrentPath && !state ? true : state;
+        default:
+          return state;
+      }
+    },
+    false,
+  );
   const menuId = `menu-${item.label.replace(/\s+/g, '-').toLowerCase()}`;
 
+  // Sync state when current path matches a child
   useEffect(() => {
-    if (item.children?.some((v) => v?.pathname === location.pathname)) {
-      setIsOpen(true);
-    }
-  }, [location, item]);
+    const isCurrentPath = item.children?.some((v) => v?.pathname === location.pathname);
+    dispatch({ type: 'CHECK', isCurrentPath });
+  }, [location.pathname, item.children]);
 
   if (!item.children) {
     return (
@@ -90,7 +104,7 @@ function SidebarMenuItem({
   }
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+    <Collapsible open={isOpen} onOpenChange={() => dispatch({ type: 'TOGGLE' })}>
       <CollapsibleTrigger asChild>
         <Button
           variant="sidebar"

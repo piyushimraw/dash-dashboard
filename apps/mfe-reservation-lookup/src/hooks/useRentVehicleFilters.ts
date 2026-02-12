@@ -1,5 +1,6 @@
 import type { PaginationState } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import * as React from 'react';
 import { DEFAULT_ITEMS_SIZE, DEFAULT_PAGE_INDEX } from '@packages/ui';
 
 import type { FilterState, TableType } from '../types/type';
@@ -67,11 +68,9 @@ export const useRentVehicleFilters = (data: TableType[] = []) => {
     });
   }, [data, filters, search]);
 
-  useEffect(() => {
-    setPagination((prev) => ({
-      ...prev,
-      pageIndex: 0,
-    }));
+  // Reset pagination when search or filters change - using layout effect to avoid cascading renders
+  React.useLayoutEffect(() => {
+    setPagination((prev) => (prev.pageIndex === 0 ? prev : { ...prev, pageIndex: 0 }));
   }, [search, filters, setPagination]);
 
   // UI-only action

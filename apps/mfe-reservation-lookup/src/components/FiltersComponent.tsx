@@ -1,7 +1,7 @@
 import { Button, Input, Label, SelectBox } from '@packages/ui';
 import { Filter, RotateCcw } from 'lucide-react';
 import clsx from 'clsx';
-import { useState, useEffect, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 
 import type { FilterState } from '../types/type';
 import { ResponsiveFilterPanel } from './ResponsiveFilterPanel';
@@ -31,9 +31,19 @@ export function FiltersComponent({
   const [open, setOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState(initialFilters);
 
+  const handleOpen = () => {
+    setTempFilters(filters);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setTempFilters(initialFilters);
+    setOpen(false);
+  };
+
   const handleApplyFilters = () => {
     submitFilters(tempFilters);
-    setOpen(false);
+    handleClose();
   };
 
   const resetTempFilters = () => setTempFilters(initialFilters);
@@ -47,21 +57,13 @@ export function FiltersComponent({
     setTempFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  useEffect(() => {
-    if (!open) {
-      resetTempFilters();
-    } else {
-      setTempFilters(filters);
-    }
-  }, [open]);
-
   return (
     <>
       {/* Filter and Reset Buttons */}
       <div className="flex gap-2">
         <ResponsiveFilterPanel
           open={open}
-          onOpenChange={setOpen}
+          onOpenChange={(isOpen) => (isOpen ? handleOpen() : handleClose())}
           trigger={
             <Button
               variant="ghost"
