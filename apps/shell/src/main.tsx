@@ -44,7 +44,10 @@ createRoot(document.getElementById("root")!).render(
           dehydrateOptions: {
             shouldDehydrateQuery: (query) => {
               // Only persist successful queries with data
-              return query.state.status === 'success' && query.state.data !== undefined;
+              return (
+                query.state.status === "success" &&
+                query.state.data !== undefined
+              );
             },
           },
         }}
@@ -53,11 +56,11 @@ createRoot(document.getElementById("root")!).render(
           {/* {import.meta.env.DEV && (
             <ErrorTester level="app" />
           )} */}
-        <AppRouter />
-        <GlobalDialog />
-        <Toaster />
+          <AppRouter />
+          <GlobalDialog />
+          <Toaster />
         </ToastProvider>
       </PersistQueryClientProvider>
     </AppErrorBoundary>
-  </StrictMode>
+  </StrictMode>,
 );
